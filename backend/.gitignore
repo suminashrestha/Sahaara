@@ -1,0 +1,19 @@
+# Node.js dependencies
+node_modules/
+
+# Environment variable files
+.env
+
+# Build output
+dist/
+build/
+
+logs/
+*.log
+
+.vscode/
+
+.DS_Store
+
+# TypeScript cache
+*.tsbuildinfo
