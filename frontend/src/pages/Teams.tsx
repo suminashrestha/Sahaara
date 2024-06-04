@@ -1,4 +1,3 @@
-import { Outlet } from "react-router"
 import LandingNav from "../components/LandingNav"
 
 function Teams() {
