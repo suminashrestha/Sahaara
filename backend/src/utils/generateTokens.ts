@@ -1,9 +1,10 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { User } from "../models/user.model";
 
 dotenv.config();
 
-interface User {
+export interface TokenPropsUser {
   _id: string;
   username: string;
   email: string;
@@ -11,7 +12,7 @@ interface User {
   isVerified: boolean;
 }
 
-const generateAccessToken = (user: User): string => {
+const generateAccessToken = (user: TokenPropsUser): string => {
   const payload = {
     _id: user._id,
     username: user.username,
@@ -25,7 +26,7 @@ const generateAccessToken = (user: User): string => {
   });
 };
 
-const generateRefreshToken = (user: User): string => {
+const generateRefreshToken = (user: TokenPropsUser): string => {
   const payload = {
     _id: user._id,
   };
@@ -35,9 +36,11 @@ const generateRefreshToken = (user: User): string => {
   });
 };
 
-const generateAccessAndRefreshTokens = (
-  user: User
-): { accessToken: string; refreshToken: string } => {
+const generateAccessAndRefreshTokens = async (
+  user: TokenPropsUser
+): Promise<{ accessToken: string; refreshToken: string }> => {
+  const userFound = await User.findById({ _id: user._id });
+
   const accessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user);
 

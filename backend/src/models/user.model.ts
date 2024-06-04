@@ -40,6 +40,7 @@ const userSchema: Schema<IUser> = new Schema(
     },
     refreshToken: String,
     verifyCode: String,
+    verifyCodeExpiry: Date,
     isVerified: {
       type: Boolean,
       default: false,
