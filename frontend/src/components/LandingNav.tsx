@@ -19,6 +19,9 @@ export default function LandingNav() {
           <li>
             <NavLink  to="/contact">Contact</NavLink>
           </li>
+          <li>
+            <NavLink  to="/join">Get started</NavLink>
+          </li>
         </div>
       </ul>
     </nav>
