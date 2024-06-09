@@ -5,6 +5,8 @@ export interface IOrganization extends Document {
   name: string;
   location: string;
   profilePicture?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const organizationSchema: Schema<IOrganization> = new Schema(
@@ -25,4 +27,7 @@ const organizationSchema: Schema<IOrganization> = new Schema(
   }
 );
 
-export const Organization = model("Organization", organizationSchema);
+export const Organization = model<IOrganization>(
+  "Organization",
+  organizationSchema
+);

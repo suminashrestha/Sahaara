@@ -10,7 +10,7 @@ import {
   generateAccessToken,
   generateRefreshToken,
 } from "../utils/generateTokens";
-import { resourceLimits } from "worker_threads";
+import { verifySchema } from "../validators/verify-code.validators";
 
 const signUpHandler = async (
   req: Request,
@@ -200,6 +200,16 @@ const signInHandler = async (
 const codeVerifier = async (req: Request, res: Response<ApiResponse>) => {
   try {
     const { username, verifyCode } = req.body;
+
+    const verifyCodeValidation = verifySchema.safeParse({ code: verifyCode });
+
+    if (!verifyCodeValidation.success) {
+      console.log("verifyCodeValidation");
+      return res.status(400).json({
+        success: false,
+        message: verifyCodeValidation.error.errors[0].message,
+      });
+    }
 
     const user = await User.findOne({ username });
 
