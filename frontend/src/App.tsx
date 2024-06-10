@@ -10,10 +10,10 @@ import LandingNav from "./components/LandingNav";
 export default function App() {
   return (
     <>
-      <div className="bg-gradient-to-r from-indigo-400 via-purple-500 to-purple-500 h-[100vh] flex justify-center items-center">
+      <div className="bg-primary h-[100vh] flex justify-center items-center">
         <div className="bg-white h-[90vh] w-[95vw] rounded-lg overflow-hidden shadow-floating-deep border-none">
           <BrowserRouter>
-          <LandingNav/>
+            <LandingNav />
             <Routes>
               <Route path="/" element={<Homepage />}></Route>
               <Route path="about" element={<About />} />
