@@ -10,7 +10,6 @@ export default function LandingNav() {
           </li>
         </div>
 
-
         <div className="flex justify-evenly w-[30%] items-center">
           <li className="transition ease-in-out delay-60 hover:-translate-y-1 hover:scale-110 hover:text-btnColor duration-300">
             <NavLink to="/about">About Us</NavLink>
@@ -22,8 +21,6 @@ export default function LandingNav() {
             <NavLink to="/contact">Contact</NavLink>
           </li>
           <li className="transition ease-in-out delay-60 hover:-translate-y-1 hover:scale-110 hover:text-btnColor duration-300">
-
-          
             <NavLink to="/join">
               <Button>Get started</Button>
             </NavLink>

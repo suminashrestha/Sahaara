@@ -7,10 +7,10 @@ export default {
         primary: "#C3BFD9",
         btnColor: "#9f86c0",
         btnHover: "#231942",
-        // secondary: ,
+        secondary: "#9F86C0",
       },
       fontFamily: {
-        "Oswald": ["Oswald", "sans-serif"]
+        Oswald: ["Oswald", "sans-serif"],
       },
       boxShadow: {
         "floating-light":

@@ -1,8 +1,15 @@
+import React from "react";
+import SliderComponent from "../components/Slider";
 
-export default function About(){
-    return(
-        <div>
-            aboutus
-        </div>
-    )
-}
+const About = () => {
+  return (
+    <div>
+      <h1>About Us</h1>
+      <div style={{ position: "relative" }}>
+        <SliderComponent />
+      </div>
+    </div>
+  );
+};
+
+export default About;
