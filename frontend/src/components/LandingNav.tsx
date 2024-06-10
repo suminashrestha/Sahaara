@@ -1,5 +1,4 @@
-import { NavLink, Outlet } from "react-router-dom";
-import Button from "./Button";
+import { NavLink} from "react-router-dom";
 export default function LandingNav() {
   return (
     <nav>

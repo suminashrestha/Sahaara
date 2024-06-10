@@ -31,7 +31,7 @@ function Signup() {
       {userMode && (
         <form className="flex flex-col h-[100%] p-5 gap-5 justify-center">
           <InputField
-            placeholder="Enter username"
+            placeholder={userMode==="organization"? "Enter name": "Enter username"}
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
