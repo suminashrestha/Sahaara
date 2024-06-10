@@ -1,4 +1,5 @@
-import { NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import Button from "./Button";
 export default function LandingNav() {
   return (
     <nav>
@@ -13,13 +14,15 @@ export default function LandingNav() {
             <NavLink to="/about">About Us</NavLink>
           </li>
           <li>
-            <NavLink  to="/teams">Teams</NavLink>
+            <NavLink to="/teams">Teams</NavLink>
           </li>
           <li>
-            <NavLink  to="/contact">Contact</NavLink>
+            <NavLink to="/contact">Contact</NavLink>
           </li>
           <li>
-            <NavLink  to="/join">Get started</NavLink>
+            <NavLink to="/join">
+              <Button>Get started</Button>
+            </NavLink>
           </li>
         </div>
       </ul>
