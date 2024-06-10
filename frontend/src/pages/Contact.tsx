@@ -3,12 +3,9 @@ import Button from "../components/Button";
 function Contact() {
   return (
     <>
-      <div className="justify-center text-center m-2 p-4 h-50 text-5xl font-bold text-secondary ">
-        Contact us
-      </div>
       <div className="flex justify-center ">
-        <div className="justify-center w-[5%] h-[50%] p-5 flex-auto text-center ">
-          <form className="flex  bg-gray-200 flex-col h-[100%] p-5 gap-3 w-[100%] text-left">
+        <div className="justify-center m-2 w-[5%] h-[50%] p-6 flex-auto text-center ">
+          <form className="flex  bg-gray-200 flex-col h-[100%] p-4 gap-2 w-[100%] text-left">
             <label htmlFor="name">Full Name</label>
             <InputField placeholder="Full Name" type="text" />
 
@@ -27,10 +24,10 @@ function Contact() {
         </div>
         <div className=" p-5 m-2 flex-auto w-[5%]  ">
           <div className="bg-gray-200 flex flex-col gap-3 w-[70%] h-[80%] p-9">
-            <h1 className=" text-center font-bold text-2xl text-secondary">
+            <h1 className=" text-center font-bold text-3xl text-secondary">
               Get in Touch:
             </h1>
-            <h2 className="text-center  text-xl text-secondary">
+            <h2 className="text-xl text-secondary">
               Fill in the form to start a conversation
             </h2>
             <div className="flex items-center mt-4 text-gray-600">
