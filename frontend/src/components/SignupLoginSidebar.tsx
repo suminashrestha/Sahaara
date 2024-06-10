@@ -1,18 +1,23 @@
-function SignupLoginSidebar({ status }) {
+function SignupLoginSidebar({ status }: { status: string }) {
   return (
     <div className=" h-[80%] w-[40%] shadow-md bg-cover bg-[url('/dog.avif')] flex flex-col-reverse items-center p-3">
       {status === "login" && (
-        <div>
-          <h2 className="text-4xl">welcome</h2>
+        <div className="backdrop-blur-lg w-full">
+          <h2 className="text-5xl font-Oswald text-btnColor">WELCOME BACK</h2>
           <p>
             Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-            Voluptates, eos natus quam quo ratione, dolorum nesciunt dolores
-            quidem iusto suscipit animi, facilis ut provident? Vel nam quam hic
-            maxime possimus.
+            Voluptates, eos natus
           </p>
         </div>
       )}
-      {status === "signup" && <h2>shdknf</h2>}
+      {status === "signup" && (
+        <div className="backdrop-blur-lg w-full">
+          <h2 className="text-5xl font-Oswald text-btnColor">BE A SAAHARA</h2>
+          <p>
+            By registering
+          </p>
+        </div>
+      )}
     </div>
   );
 }

@@ -20,7 +20,7 @@ function Contact() {
 
             <label htmlFor="msg">Message</label>
             <textarea className="h-50"></textarea>
-            <Button className="text-white font-bold h-[50px] w-[150px] px-3 py-2 bg-btnColor hover: bg-btnHover">
+            <Button className="text-white font-bold h-[50px] w-[150px] px-3 py-2 bg-btnColor hover:bg-btnHover">
               Submit
             </Button>
           </form>

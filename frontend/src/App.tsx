@@ -2,11 +2,14 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import About from "./pages/About";
 import Teams from "./pages/Teams";
+import ResetPassword from "./pages/ResetPassword";
 import Contact from "./pages/Contact";
 import Login from "./components/Login";
 import SignUp from "./components/Signup";
 import LoginSignup from "./pages/SignupLogin";
 import LandingNav from "./components/LandingNav";
+
+
 export default function App() {
   return (
     <>
@@ -23,6 +26,7 @@ export default function App() {
                 <Route index element={<Navigate replace to="login" />} />
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<SignUp />} />
+                <Route path="reset" element={<ResetPassword />} />
               </Route>
             </Routes>
           </BrowserRouter>
