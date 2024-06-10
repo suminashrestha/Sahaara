@@ -25,13 +25,13 @@ function Signup() {
           <div className="flex items-center justify-center gap-11">
             <Button
               onClick={() => setUserMode("individual")}
-              className="h-[50px] w-[150px] px-3 py-2 shadow-md"
+              className="h-[100px] w-[160px] px-3 py-2 shadow-md font-Oswald uppercase transition ease-in-out delay-60 hover:-translate-y-1 hover:scale-110 hover:text-white duration-300"
             >
               Individual
             </Button>
             <Button
               onClick={() => setUserMode("organization")}
-              className="h-[50px] w-[150px] px-3 py-2 shadow-md"
+              className="h-[100px] w-[160px] px-3 py-2 shadow-md font-Oswald uppercase transition ease-in-out delay-60 hover:-translate-y-1 hover:scale-110 hover:text-white duration-300"
             >
               Organization
             </Button>
@@ -68,6 +68,14 @@ function Signup() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+
+          <InputField
+            placeholder="Confirm Password"
+            type="password"
+            
+          />
+
+
 
           <Button>Signup</Button>
         </form>

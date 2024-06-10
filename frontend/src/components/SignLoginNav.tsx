@@ -8,7 +8,7 @@ function SignLoginNav({ status, setStatus }) {
           <NavLink
             to="login"
             className={({ isActive }) =>
-              isActive ? "text-btnHover font-bold border-b-2 border-primary" : "text-gray-500"
+              isActive ? "text-btnHover font-bold border-b-2 border-primary" : "text-gray-500 hover:text-btnColor" 
             }
           >
             Login
@@ -18,7 +18,7 @@ function SignLoginNav({ status, setStatus }) {
           <NavLink
             to="signup"
             className={({ isActive }) =>
-              isActive ? "text-btnHover font-bold border-b-2 border-primary" : "text-gray-500"
+              isActive ? "text-btnHover font-bold border-b-2 border-primary" : "text-gray-500 hover:text-btnColor"
             }
           >
             Signup

@@ -28,7 +28,7 @@ function Login() {
           <span>Remember me?</span>
         </li>
         <li className="w-[50%] flex justify-end">
-          <Link to="/reset">Forgot password?</Link>
+          <Link to="/join/reset">Forgot password?</Link>
         </li>
       </ul>
       <Button>Login</Button>
