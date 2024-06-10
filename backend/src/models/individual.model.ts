@@ -6,6 +6,8 @@ export interface IIndividual extends Document {
   location: string;
   isVolunteer: boolean;
   profilePicture?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const individualSchema: Schema<IIndividual> = new Schema(
@@ -29,4 +31,4 @@ const individualSchema: Schema<IIndividual> = new Schema(
   }
 );
 
-export const Individual = model("Individual", individualSchema);
+export const Individual = model<IIndividual>("Individual", individualSchema);
