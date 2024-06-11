@@ -2,11 +2,12 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model";
 import dotenv from "dotenv";
+import { AuthRequest } from "../controllers/adoption-post.controllers";
 
 dotenv.config();
 
 const authenticateWithJwt = (
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -34,7 +35,7 @@ const authenticateWithJwt = (
         const user = await User.findById({ _id: token?._id }).select(
           "-password -refreshToken -verifyCode -verifyCodeExpiry"
         );
-
+        console.log("--user in middleware", user);
         if (!user) {
           return res.status(404).json({ message: "User not found." });
         }

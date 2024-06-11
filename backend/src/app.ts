@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { userRoute } from "./routes/user.route";
-import { authenticateWithJwt } from "./middlewares/auth.middleware";
+import { adoptionPostRoute } from "./routes/adoption-post.route";
+import errorHandler from "./middlewares/errorHandler";
 
 const app = express();
 
@@ -11,13 +12,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/v1/user", userRoute);
-
-app.get("/iii", authenticateWithJwt, (req, res) => {
-  res.send("iiiiiiiiiiiiii");
-});
-
-app.get("/", (_, res) => {
-  res.send("huehueuehu");
-});
+app.use("/api/v1/adoption-posts", adoptionPostRoute);
+app.use(errorHandler);
 
 export default app;
