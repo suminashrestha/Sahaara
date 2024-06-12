@@ -1,31 +1,36 @@
-import { useEffect, useState } from "react";
-import Button from "./Button";
-import InputField from "./InputField";
-import { signupSchema, Schema } from "../validators/signupValidators";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
+import { signupSchema, Schema } from "../validators/signupValidators";
+import Button from "./Button";
+import ErrorText from "./ErrorText";
 
 function Signup() {
   const {
     register,
+    handleSubmit,
     formState: { errors },
-  } = useForm<Schema>({ mode: "all", resolver: zodResolver(signupSchema) });
+  } = useForm<Schema>({
+    mode: "all",
+    resolver: zodResolver(signupSchema),
+  });
 
   const [user, setUser] = useState({
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
     userMode: "",
   });
-  // const [username, setUsername] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [userMode, setUserMode] = useState("");
 
   function handleBack() {
     setUser({ ...user, userMode: "" });
   }
+
+  const onSubmit = (data: Schema) => {
+    console.log(data);
+  };
 
   return (
     <>
@@ -53,20 +58,29 @@ function Signup() {
       )}
 
       {user.userMode && (
-        <form className="flex flex-col h-[100%] p-5 gap-5 justify-center">
-          <button onClick={handleBack}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col h-[100%] p-5 gap-5 justify-center"
+        >
+          <button type="button" onClick={handleBack}>
             <IoArrowBackCircleSharp size={30} />
           </button>
-          <InputField
+
+          <input
+            {...register("username")}
             placeholder={
               user.userMode === "organization"
-                ? "Enter Organization name"
-                : "Enter username"
+                ? "Enter Organization's username"
+                : "Enter Individual's username"
             }
             type="text"
+            className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
             value={user.username}
             onChange={(e) => setUser({ ...user, username: e.target.value })}
           />
+          {errors.username && (
+            <ErrorText message={errors.username.message as string} />
+          )}
 
           <input
             {...register("email")}
@@ -74,18 +88,37 @@ function Signup() {
             placeholder="enter email"
             className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
             value={user.email}
-            onChange={(e)=>setUser({ ...user, email: e.target.value })}
+            onChange={(e) => setUser({ ...user, email: e.target.value })}
           />
-          <p>{errors.email?.message}</p>
+          {errors.email && (
+            <ErrorText message={errors.email.message as string} />
+          )}
 
-          <InputField
+          <input
+            {...register("password")}
             placeholder="Enter Password"
             type="password"
+            className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
             value={user.password}
             onChange={(e) => setUser({ ...user, password: e.target.value })}
           />
+          {errors.password && (
+            <ErrorText message={errors.password.message as string} />
+          )}
 
-          <InputField placeholder="Confirm Password" type="password" />
+          <input
+            placeholder="Confirm Password"
+            {...register("confirmPassword")}
+            value={user.confirmPassword}
+            className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
+            type="password"
+            onChange={(e) =>
+              setUser({ ...user, confirmPassword: e.target.value })
+            }
+          />
+          {errors.confirmPassword && (
+            <ErrorText message={errors.confirmPassword.message as string} />
+          )}
 
           <Button>Signup</Button>
         </form>

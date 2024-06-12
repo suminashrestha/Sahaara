@@ -1,4 +1,4 @@
-import React from "react";
+
 import SliderComponent from "../components/Slider";
 
 const About = () => {

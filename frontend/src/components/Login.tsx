@@ -1,5 +1,4 @@
 import { useState } from "react";
-import {CiLogin} from "react-icons/ci";
 import Button from "./Button";
 import InputField from "./InputField";
 import { Link } from "react-router-dom";
