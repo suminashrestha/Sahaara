@@ -5,9 +5,9 @@ export default function LandingNav() {
     <nav>
       <ul className="flex justify-between h-[10%] items-center p-5 w-[100%]">
         <div className="w-[20%] flex items-center justify-center">
-          <li className="transition ease-in-out delay-60 hover:-translate-y-1 hover:scale-110 hover:text-btnColor duration-300">
+          <li>
             <NavLink to="/">
-              <img className="h-[90%] w-[50%]" src="/Logo.png" alt="Sahaara" />
+              <img className="h-20 w-27" src="/Logo.png" alt="Sahaara" />
             </NavLink>
           </li>
         </div>
