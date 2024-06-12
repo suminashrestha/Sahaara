@@ -5,6 +5,7 @@ export interface IAdoptionPost extends Document {
   title: string;
   description: string;
   location?: string;
+  category?: string;
   adoptionPostImage?: string;
   adoptersList?: IAdopter[];
   createdAt: Date;
@@ -46,12 +47,14 @@ const adoptionPostSchema: Schema<IAdoptionPost> = new Schema(
       required: true,
     },
     location: String,
+    category: String,
     adoptionPostImage: {
       type: String,
-      required: true,
+      default: "",
     },
     adoptersList: [adopterSchema],
   },
+
   {
     timestamps: true,
   }

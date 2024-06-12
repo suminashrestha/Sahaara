@@ -11,12 +11,14 @@ import {
   generateRefreshToken,
 } from "../utils/generateTokens";
 import { verifySchema } from "../validators/verify-code.validators";
+import asyncHandler from "../utils/asyncHandler";
+import { sendResetCode } from "../utils/sendResetCode";
 
-const signUpHandler = async (
-  req: Request,
-  res: Response<ApiResponse>
-): Promise<Response<ApiResponse>> => {
-  try {
+const signUpHandler = asyncHandler(
+  async (
+    req: Request,
+    res: Response<ApiResponse>
+  ): Promise<Response<ApiResponse>> => {
     const { username, email, password, type } = req.body;
 
     const validationResult = signupSchema.safeParse({
@@ -99,21 +101,14 @@ const signUpHandler = async (
         data: newUser,
       });
     }
-  } catch (error: any) {
-    console.error("Error during signup:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      error: error.message,
-    });
   }
-};
+);
 
-const signInHandler = async (
-  req: Request,
-  res: Response<ApiResponse>
-): Promise<Response<ApiResponse>> => {
-  try {
+const signInHandler = asyncHandler(
+  async (
+    req: Request,
+    res: Response<ApiResponse>
+  ): Promise<Response<ApiResponse>> => {
     const { identifier, password } = req.body;
 
     const signInValidationResult = signinSchema.safeParse({
@@ -188,17 +183,11 @@ const signInHandler = async (
       message: "User logged in successfully",
       data: { user: loggedInUser, refreshToken, accessToken },
     });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
   }
-};
+);
 
-const codeVerifier = async (req: Request, res: Response<ApiResponse>) => {
-  try {
+const codeVerifier = asyncHandler(
+  async (req: Request, res: Response<ApiResponse>) => {
     const { username, verifyCode } = req.body;
 
     const verifyCodeValidation = verifySchema.safeParse({ code: verifyCode });
@@ -242,13 +231,99 @@ const codeVerifier = async (req: Request, res: Response<ApiResponse>) => {
         message: "Verification Code Expired, Please Login again",
       });
     }
-  } catch (error: any) {
-    return res.status(500).json({
-      success: false,
-      message: "Internal Server Error",
-      error: error.message,
+  }
+);
+
+const getVerificationCode = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
+    const user = await User.findOne({ email, isVerified: true });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User Not Found",
+      });
+    }
+    const verifyCode = Math.floor(1000 + Math.random() * 900000).toString();
+
+    user.verifyCode = verifyCode;
+    user.verifyCodeExpiry = new Date(Date.now() + 3600000);
+
+    await user.save();
+
+    await sendResetCode(email, verifyCode);
+
+    res.status(200).json({
+      success: true,
+      message: "Verification code has been sent to your email.",
     });
   }
-};
+);
 
-export { signUpHandler, signInHandler, codeVerifier };
+const resetPassword = asyncHandler(async (req: Request, res: Response) => {
+  const { username, verifyCode, newPassword, confirmNewPassword } = req.body;
+  if (!username || !verifyCode || !newPassword || !confirmNewPassword) {
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required",
+    });
+  }
+
+  const user = await User.findOne({
+    username,
+  });
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User with this username cannot be found",
+    });
+  }
+
+  const isVerifyCodeCorrect = user.verifyCode === verifyCode;
+  const isVerifyCodeNotExpired = new Date(user.verifyCodeExpiry) > new Date();
+
+  if (isVerifyCodeCorrect && isVerifyCodeNotExpired) {
+    if (newPassword !== confirmNewPassword) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Passwords donot match" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "User's password successfully changed",
+    });
+  } else if (!isVerifyCodeCorrect) {
+    return res.status(400).json({
+      success: false,
+      message: "Incorrect Verification Code, Please try again",
+    });
+  } else if (!isVerifyCodeNotExpired) {
+    return res.status(400).json({
+      success: false,
+      message: "Verification Code Expired, Please Login again",
+    });
+  }
+});
+
+export {
+  signUpHandler,
+  signInHandler,
+  codeVerifier,
+  getVerificationCode,
+  resetPassword,
+};
