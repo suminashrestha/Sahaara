@@ -1,11 +1,36 @@
 import InputField from "../components/InputField";
 import Button from "../components/Button";
-function Contact() {
+import { useForm, FieldValues } from "react-hook-form";
+
+interface contactSchema{
+    fullName: string;
+    email: string;
+    phone: number;
+    message: string;
+}
+const Contact: React.FC <contactSchema>=()=> {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: {error}
+  }=useForm({
+    defaultValues: {
+      fullName: '',
+      email: '',
+      phone: '',
+      message: '',
+    }
+  })
+
+  function formSubmit(data:contactSchema){
+    console.log(data)
+  }
   return (
     <>
       <div className="flex justify-center ">
         <div className="justify-center m-2 w-[5%] h-[50%] p-6 flex-auto text-center ">
-          <form className="flex  bg-gray-200 flex-col h-[100%] p-4 gap-2 w-[100%] text-left">
+          <form onSubmit={handleSubmit(formSubmit)} className="flex  bg-gray-200 flex-col h-[100%] p-4 gap-2 w-[100%] text-left">
             <label htmlFor="name">Full Name</label>
             <InputField placeholder="Full Name" type="text" />
 

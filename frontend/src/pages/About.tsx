@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> 3eec5ba9c6a94505f9bb542d74ed17e010fc5de1
 import SliderComponent from "../components/Slider";
 
 const About = () => {
