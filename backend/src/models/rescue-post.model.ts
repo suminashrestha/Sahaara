@@ -66,4 +66,4 @@ const rescuePostSchema: Schema<IRescuePost> = new Schema(
   }
 );
 
-export const AdoptionPost = model<IRescuePost>("RescuePost", rescuePostSchema);
+export const RescuePost = model<IRescuePost>("RescuePost", rescuePostSchema);
