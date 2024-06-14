@@ -1,12 +1,18 @@
 import { useState } from "react";
-import {CiLogin} from "react-icons/ci";
 import Button from "./Button";
 import InputField from "./InputField";
 import { Link } from "react-router-dom";
+import { useDebounceValue } from "usehooks-ts";
 
-function Login() {
+
+const Login=()=>{
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [usernameMessage,setusernameMessage] = useState("");
+  const [isCheckingUsername,setCheckingUsername]=useState(false);
+  const [isSubmitting,setIsSubmitting]=useState(false)
+
+  // const debouncedUsername = useDebounceValue(username,300)
 
   return (
     <form className="flex flex-col h-full px-5 gap-6 justify-center">

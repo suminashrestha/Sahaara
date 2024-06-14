@@ -1,22 +1,94 @@
-import InputField from "../components/InputField";
 import Button from "../components/Button";
-function Contact() {
+import { useForm } from "react-hook-form";
+import { contactForm, contactSchema } from "../validators/contactValidators";
+import { zodResolver } from "@hookform/resolvers/zod";
+import ErrorText from "../components/ErrorText";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import LandingNav from "../components/LandingNav";
+
+interface contactSchema {
+  fullName: string;
+  email: string;
+  phone: string;
+  message: string;
+}
+const Contact = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<contactForm>({
+    resolver: zodResolver(contactSchema),
+    mode: "all",
+    defaultValues: {
+      fullName: "",
+      email: "",
+      phone: "",
+      message: "",
+    },
+  });
+
+  function formSubmit(data: contactSchema) {
+    console.log(data);
+    toast.success("Thank you for reaching us!");
+    reset();
+  }
   return (
     <>
+    <LandingNav/>
       <div className="flex justify-center ">
         <div className="justify-center m-2 w-[5%] h-[50%] p-6 flex-auto text-center ">
-          <form className="flex  bg-gray-200 flex-col h-[100%] p-4 gap-2 w-[100%] text-left">
+          <form
+            onSubmit={handleSubmit(formSubmit)}
+            className="flex  bg-gray-200 flex-col h-[100%] p-4 gap-2 w-[100%] text-left"
+          >
             <label htmlFor="name">Full Name</label>
-            <InputField placeholder="Full Name" type="text" />
+            <input
+              id="name"
+              className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
+              placeholder="Full Name"
+              type="text"
+              {...register("fullName")}
+              autoComplete="off"
+            />
+            {errors.fullName && (
+              <ErrorText message={errors.fullName.message as string} />
+            )}
 
             <label htmlFor="email">Email</label>
-            <InputField placeholder="Email" type="text" />
+            <input
+              id="email"
+              className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
+              placeholder="Email"
+              type="text"
+              {...register("email")}
+              autoComplete="off"
+            />
+            {errors.email && (
+              <ErrorText message={errors.email.message as string} />
+            )}
 
             <label htmlFor="phone">Phone</label>
-            <InputField placeholder="Phone" type="text" />
+            <input
+              id="phone"
+              className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
+              placeholder="Phone"
+              type="text"
+              {...register("phone")}
+              autoComplete="off"
+            />
+            {errors.phone && (
+              <ErrorText message={errors.phone.message as string} />
+            )}
 
             <label htmlFor="msg">Message</label>
-            <textarea className="h-50"></textarea>
+            <textarea  className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none" {...register("message")}></textarea>
+            {errors.message && (
+              <ErrorText message={errors.message.message as string} />
+            )}
+
             <Button className="text-white font-bold h-[50px] w-[150px] px-3 py-2 bg-btnColor hover:bg-btnHover">
               Submit
             </Button>
@@ -60,8 +132,9 @@ function Contact() {
           </div>
         </div>
       </div>
+      <ToastContainer position="bottom-right" />
     </>
   );
-}
+};
 
 export default Contact;

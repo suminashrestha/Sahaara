@@ -12,10 +12,8 @@ function SignupLoginSidebar({ status }: { status: string }) {
       )}
       {status === "signup" && (
         <div className="backdrop-blur-lg w-full">
-          <h2 className="text-5xl font-Oswald text-btnColor">BE A SAAHARA</h2>
-          <p>
-            By registering
-          </p>
+          <h2 className="text-5xl font-Oswald text-btnColor">BE A SAHAARA</h2>
+          <p>By registering</p>
         </div>
       )}
     </div>

@@ -9,6 +9,9 @@ export default {
         btnHover: "#231942",
         secondary: "#9F86C0",
       },
+      height: {
+        120: "30rem",
+      },
       fontFamily: {
         Oswald: ["Oswald", "sans-serif"],
       },

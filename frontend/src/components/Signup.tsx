@@ -1,35 +1,57 @@
-import { useEffect, useState } from "react";
-import Button from "./Button";
-import InputField from "./InputField";
-import { signupSchema, Schema } from "../validators/signupValidators";
-import { useForm } from "react-hook-form";
+import  { useState } from "react";
+import { useForm, FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
+import { signupSchema, Schema } from "../validators/signupValidators";
+import Button from "./Button";
+import ErrorText from "./ErrorText";
+import API from "../../config/baseUrl"
+import { useNavigate } from "react-router";
 
 function Signup() {
+  const navigate= useNavigate();
+  const [userMode, setUserMode] = useState<string>("");
   const {
     register,
+    reset,
+    handleSubmit,
     formState: { errors },
-  } = useForm<Schema>({ mode: "all", resolver: zodResolver(signupSchema) });
-
-  const [user, setUser] = useState({
-    username: "",
-    email: "",
-    password: "",
-    userMode: "",
+  } = useForm<Schema>({
+    resolver: zodResolver(signupSchema),
+    mode: "all",
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      type: "",
+    },
   });
-  // const [username, setUsername] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [userMode, setUserMode] = useState("");
 
   function handleBack() {
-    setUser({ ...user, userMode: "" });
+    reset(); // Reset form to default values
+    setUserMode(""); // Clear userMode
   }
+
+  const submitData = async(data: FieldValues) => {
+    data.type = userMode;
+    const { username, email, password, type }=data;
+    // console.log({ username, email, password, type })
+   
+   try {
+     const {data}= await API.post("/api/v1/user/sign-up", { username, email, password, type })
+     console.log(data)
+     navigate("/otpverify")
+
+   } catch (error){
+     console.log(error)
+   }
+    reset(); // Reset form after submission
+  };
 
   return (
     <>
-      {user.userMode === "" && (
+      {userMode === "" && (
         <div className="flex flex-col items-center justify-center gap-20 h-full p-9">
           <p className="text-xl text-center">
             Before continuing, please specify a role according to the service
@@ -37,13 +59,13 @@ function Signup() {
           </p>
           <div className="flex items-center justify-center gap-11">
             <Button
-              onClick={() => setUser({ ...user, userMode: "individual" })}
+              onClick={() => setUserMode(() => "individual")}
               className="h-[100px] w-[160px] px-3 py-2 shadow-md font-Oswald uppercase transition ease-in-out delay-60 hover:-translate-y-1 hover:scale-110 hover:text-white duration-300"
             >
               Individual
             </Button>
             <Button
-              onClick={() => setUser({ ...user, userMode: "organization" })}
+              onClick={() => setUserMode(() => "organization")}
               className="h-[100px] w-[160px] px-3 py-2 shadow-md font-Oswald uppercase transition ease-in-out delay-60 hover:-translate-y-1 hover:scale-110 hover:text-white duration-300"
             >
               Organization
@@ -52,42 +74,63 @@ function Signup() {
         </div>
       )}
 
-      {user.userMode && (
-        <form className="flex flex-col h-[100%] p-5 gap-5 justify-center">
-          <button onClick={handleBack}>
-            <IoArrowBackCircleSharp size={30} />
-          </button>
-          <InputField
+      {userMode !== "" && (
+        <form
+          onSubmit={handleSubmit(submitData)}
+          className="flex flex-col h-[100%] p-5 gap-5 justify-center overflow-y-scroll max-h-screen"
+        >
+          <IoArrowBackCircleSharp onClick={handleBack} size={30} />
+
+          <input
+            {...register("username")}
             placeholder={
-              user.userMode === "organization"
-                ? "Enter Organization name"
-                : "Enter username"
+              userMode === "organization"
+                ? "Enter Organization's username"
+                : "Enter Individual's username"
             }
             type="text"
-            value={user.username}
-            onChange={(e) => setUser({ ...user, username: e.target.value })}
+            className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
           />
+          {errors.username && (
+            <ErrorText message={errors.username.message as string} />
+          )}
 
           <input
             {...register("email")}
             type="email"
-            placeholder="enter email"
+            placeholder="Enter email"
             className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
-            value={user.email}
-            onChange={(e)=>setUser({ ...user, email: e.target.value })}
           />
-          <p>{errors.email?.message}</p>
+          {errors.email && (
+            <ErrorText message={errors.email.message as string} />
+          )}
 
-          <InputField
+          <input
+            {...register("password")}
             placeholder="Enter Password"
             type="password"
-            value={user.password}
-            onChange={(e) => setUser({ ...user, password: e.target.value })}
+            className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
           />
+          {errors.password && (
+            <ErrorText message={errors.password.message as string} />
+          )}
 
-          <InputField placeholder="Confirm Password" type="password" />
+          <input
+            placeholder="Confirm Password"
+            {...register("confirmPassword")}
+            className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
+            type="password"
+          />
+          {errors.confirmPassword && (
+            <ErrorText message={errors.confirmPassword.message as string} />
+          )}
 
-          <Button>Signup</Button>
+          <button
+            type="submit"
+            className={`bg-btnColor px-5 py-2 text-white rounded-lg hover:bg-btnHover`}
+          >
+            Signup
+          </button>
         </form>
       )}
     </>
