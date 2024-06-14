@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorText from "../components/ErrorText";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LandingNav from "../components/LandingNav";
 
 interface contactSchema {
   fullName: string;
@@ -36,6 +37,7 @@ const Contact = () => {
   }
   return (
     <>
+    <LandingNav/>
       <div className="flex justify-center ">
         <div className="justify-center m-2 w-[5%] h-[50%] p-6 flex-auto text-center ">
           <form

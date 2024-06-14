@@ -1,6 +1,9 @@
+import LandingNav from "../components/LandingNav";
+
 export default function Homepage() {
   return (
     <>
+      <LandingNav />
       <div className="w-full h-full flex  ">
         <div className="flex-auto items-center w-[50%] h-[80%]  m-4 flex-cols gap-2">
           <div className="flex flex-col items-center w-full h-[65%] m-2  justify-around">
