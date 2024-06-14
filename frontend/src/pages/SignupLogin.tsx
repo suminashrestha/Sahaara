@@ -2,12 +2,14 @@ import { useState } from "react";
 import SignLoginNav from "../components/SignLoginNav";
 import { Outlet } from "react-router";
 import SignupLoginSidebar from "../components/SignupLoginSidebar";
+import LandingNav from "../components/LandingNav";
 
 function LoginSignup() {
   const [status, setStatus] = useState("login");
 
   return (
     <div>
+      <LandingNav/>
       <div className="flex justify-center">
         <div className="flex px-10 w-[85vw] h-[80vh] justify-center items-center">
           <SignupLoginSidebar status={status}/>

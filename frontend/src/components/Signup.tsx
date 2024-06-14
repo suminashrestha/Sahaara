@@ -5,8 +5,11 @@ import { IoArrowBackCircleSharp } from "react-icons/io5";
 import { signupSchema, Schema } from "../validators/signupValidators";
 import Button from "./Button";
 import ErrorText from "./ErrorText";
+import API from "../../config/baseUrl"
+import { useNavigate } from "react-router";
 
 function Signup() {
+  const navigate= useNavigate();
   const [userMode, setUserMode] = useState<string>("");
   const {
     register,
@@ -30,10 +33,19 @@ function Signup() {
     setUserMode(""); // Clear userMode
   }
 
-  const submitData = (data: FieldValues) => {
+  const submitData = async(data: FieldValues) => {
     data.type = userMode;
     const { username, email, password, type }=data;
-    console.log({ username, email, password, type })
+    // console.log({ username, email, password, type })
+   
+   try {
+     const {data}= await API.post("/api/v1/user/sign-up", { username, email, password, type })
+     console.log(data)
+     navigate("/otpverify")
+
+   } catch (error){
+     console.log(error)
+   }
     reset(); // Reset form after submission
   };
 
@@ -65,7 +77,7 @@ function Signup() {
       {userMode !== "" && (
         <form
           onSubmit={handleSubmit(submitData)}
-          className="flex flex-col h-[100%] p-5 gap-5 justify-center"
+          className="flex flex-col h-[100%] p-5 gap-5 justify-center overflow-y-scroll max-h-screen"
         >
           <IoArrowBackCircleSharp onClick={handleBack} size={30} />
 
