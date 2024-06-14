@@ -3,10 +3,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
- 
+
 const SliderComponent = () => {
   const sliderRef = useRef<Slider | null>(null);
- 
+
   const settings = {
     dots: true,
     infinite: true,
@@ -14,7 +14,7 @@ const SliderComponent = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
- 
+
   const slides = [
     {
       image:
@@ -46,7 +46,7 @@ const SliderComponent = () => {
         "There are many ways to get involved with 'Sahaara'. Whether you choose to adopt, volunteer, or donate, your support is crucial to our mission. Together, we can create a community where every animal is treated with the love and respect they deserve. Thank you for visiting Sahaara. We invite you to explore our website, learn more about our work, and join us in our mission to give every animal a chance at a better life.",
     },
   ];
- 
+
   const handleNextClick = () => {
     if (sliderRef.current) {
       sliderRef.current.slickNext();
@@ -117,5 +117,5 @@ const SliderComponent = () => {
     </div>
   );
 };
- 
+
 export default SliderComponent;

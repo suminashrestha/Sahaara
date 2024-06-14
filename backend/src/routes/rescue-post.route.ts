@@ -9,24 +9,31 @@ import {
 } from "../controllers/adoption-post.controllers";
 import upload from "../middlewares/upload.middleware";
 import { authenticateWithJwt, authorize } from "../middlewares/auth.middleware";
+import {
+  createRescuePost,
+  deleteRescuePost,
+  updateRescuePost,
+  getAllRescuePosts,
+  getSingleRescuePost,
+} from "../controllers/rescue-post.controllers";
 
 const router = express.Router();
 
-router.get("/", getAllAdoptionPosts);
+router.get("/", getAllRescuePosts);
 router.post(
   "/",
   authenticateWithJwt,
   authorize(["individual", "organization"]),
   upload.single("adoptionPostImage"),
-  createAdoptionPost
+  createRescuePost
 );
-router.delete("/:postId", authenticateWithJwt, deleteAdoptionPost);
+router.delete("/:postId", authenticateWithJwt, deleteRescuePost);
 router.put(
   "/:postId",
   authenticateWithJwt,
   upload.single("adoptionPostImage"),
-  updateAdoptionPost
+  updateRescuePost
 );
-router.get("/:postId", authenticateWithJwt, getSingleAdoptionPost);
+router.get("/:postId", authenticateWithJwt, getSingleRescuePost);
 
-export { router as adoptionPostRoute };
+export { router as rescuePostRoute };

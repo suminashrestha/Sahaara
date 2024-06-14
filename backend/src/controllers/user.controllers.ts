@@ -13,6 +13,12 @@ import {
 import { verifySchema } from "../validators/verify-code.validators";
 import asyncHandler from "../utils/asyncHandler";
 import { sendResetCode } from "../utils/sendResetCode";
+import { AuthRequest } from "./adoption-post.controllers";
+
+const options: CookieOptions = {
+  httpOnly: true,
+  secure: true,
+};
 
 const signUpHandler = asyncHandler(
   async (
@@ -159,24 +165,26 @@ const signInHandler = asyncHandler(
       });
     }
 
-    const loggedInUser = await User.findById(user._id).select(
-      "-password -refreshToken -verifyCode -verifyCodeExpiry"
-    );
+    // const loggedInUser = await User.findById(user._id).select(
+    //   "-password -refreshToken -verifyCode -verifyCodeExpiry"
+    // );
 
-    const refreshToken = await generateRefreshToken(
-      loggedInUser as TokenPropsUser
-    );
-    const accessToken = await generateAccessToken(
-      loggedInUser as TokenPropsUser
-    );
+    const refreshToken = await generateRefreshToken(user as TokenPropsUser);
+    const accessToken = await generateAccessToken(user as TokenPropsUser);
 
-    const options: CookieOptions = {
-      httpOnly: true,
-      secure: true,
-    };
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
 
     res.cookie("refreshToken", refreshToken, options);
     res.cookie("accessToken", accessToken, options);
+
+    const loggedInUser = {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      type: user.type,
+      isVerified: user.isVerified,
+    };
 
     return res.status(200).json({
       success: true,
@@ -320,10 +328,26 @@ const resetPassword = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
+const logoutUser = asyncHandler(async (req: AuthRequest, res: Response) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    user.refreshToken = undefined;
+    await user.save({ validateBeforeSave: false });
+  }
+
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json({});
+});
+
 export {
   signUpHandler,
   signInHandler,
   codeVerifier,
   getVerificationCode,
   resetPassword,
+  logoutUser,
 };

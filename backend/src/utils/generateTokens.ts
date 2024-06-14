@@ -50,5 +50,5 @@ const generateAccessAndRefreshTokens = async (
 export {
   generateAccessToken,
   generateRefreshToken,
-  generateAccessAndRefreshTokens,
+  // generateAccessAndRefreshTokens,
 };
