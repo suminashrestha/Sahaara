@@ -20,12 +20,12 @@ export default function App() {
               <Route path="/" element={<Homepage />}/>
               <Route path="about" element={<About />} />
               <Route path="contact" element={<Contact />} />
-              <Route path="otpverify" element={<OTPverificationPage />}/>
+              <Route path="otpverify/:username" element={<OTPverificationPage />}/>
+              <Route path="reset" element={<ResetPassword />} />
               <Route path="join" element={<LoginSignup />}>
                 <Route index element={<Navigate replace to="login" />} />
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<SignUp />} />
-                <Route path="reset" element={<ResetPassword />} />
               </Route>
               <Route path="*" element={<PageNotFound/>}/>
             </Routes>

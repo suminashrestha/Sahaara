@@ -41,7 +41,7 @@ function Signup() {
    try {
      const {data}= await API.post("/api/v1/user/sign-up", { username, email, password, type })
      console.log(data)
-     navigate("/otpverify")
+     navigate(`/otpverify/${username}`)
 
    } catch (error){
      console.log(error)

@@ -1,32 +1,55 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import Button from "./Button";
 import InputField from "./InputField";
 import { Link } from "react-router-dom";
-import { useDebounceValue } from "usehooks-ts";
+import API from "../../config/baseUrl";
+import { useNavigate } from "react-router-dom";
+// import { useDebounceValue } from "usehooks-ts";
 
 
-const Login=()=>{
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [usernameMessage,setusernameMessage] = useState("");
-  const [isCheckingUsername,setCheckingUsername]=useState(false);
-  const [isSubmitting,setIsSubmitting]=useState(false)
+const Login = () => {
+  const {
+    register,
+    reset,
+    handleSubmit,
+  } = useForm({
+    defaultValues: {
+      identifier: "",
+      password: "",
+    },
+  });
+
+  const submitData = async (data : {identifier: string, password: string}) => {
+    console.log(data)
+    const {identifier,password}= data
+    try {
+      const {data} = await API.post("/api/v1/user/sign-in", {identifier,password});
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+    reset()
+
+  };
 
   // const debouncedUsername = useDebounceValue(username,300)
 
   return (
-    <form className="flex flex-col h-full px-5 gap-6 justify-center">
-      <InputField
+    <form
+      onSubmit={handleSubmit(submitData)}
+      className="flex flex-col h-full px-5 gap-6 justify-center"
+    >
+      <input
         placeholder="Enter username/email"
         type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        {...register("identifier")}
+        className="${className} p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
       />
-      <InputField
+      <input
         placeholder="Enter Password"
         type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        {...register("password")}
+        className="${className} p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
       />
       <ul className="flex ">
         <li className="flex w-[50%] gap-2 items-center">
@@ -34,12 +57,12 @@ const Login=()=>{
           <span>Remember me?</span>
         </li>
         <li className="w-[50%] flex justify-end">
-          <Link to="/join/reset">Forgot password?</Link>
+          <Link to="/reset">Forgot password?</Link>
         </li>
       </ul>
       <Button>Login</Button>
     </form>
   );
-}
+};
 
 export default Login;
