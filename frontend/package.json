@@ -19,6 +19,7 @@
     "react-router": "^6.23.1",
     "react-router-dom": "^6.23.1",
     "react-slick": "^0.30.2",
+    "react-toastify": "^10.0.5",
     "slick-carousel": "^1.8.1",
     "usehooks-ts": "^3.1.0",
     "zod": "^3.23.8"
