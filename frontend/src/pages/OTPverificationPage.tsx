@@ -4,11 +4,13 @@ import Button from "../components/Button";
 import { Link } from "react-router-dom";
 import API from "../../config/baseUrl";
 import { useNavigate, useParams } from "react-router";
+import { toast } from "react-toastify";
 
 function OTPverificationPage() {
   const navigate = useNavigate();
   const { username } = useParams();
   const [otp, setOtp] = useState("");
+
 
   function handleOtpChange(e) {
     setOtp(e.target.value);
@@ -21,9 +23,11 @@ function OTPverificationPage() {
         verifyCode: otp,
       });
       console.log(data);
-      navigate("/");
-    } catch (error) {
-      console.log(error);
+      navigate("/join/login");
+      toast.success(data.message)
+      } catch (error: any) {
+        console.log(error);
+        toast.success(error.response.data.message)
     }
   }
   return (

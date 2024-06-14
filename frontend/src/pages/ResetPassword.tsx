@@ -9,7 +9,7 @@ import ResetForm from "../components/ResetForm";
 
 function ResetPassword() {
   const [email, setEmail] = useState("");
-  const [resetPassword, setResetPassword] = useState(true);
+  const [resetPassword, setResetPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -23,7 +23,7 @@ function ResetPassword() {
           <img src="/otpverify.jpg" className="h-full" />
         </div>
         {resetPassword ? (
-          <ResetForm resetPassword={setResetPassword}/>
+          <ResetForm setResetPassword={setResetPassword}/>
         ) : (
           <div className="flex h-full justify-center items-center gap-5">
             <IoArrowBackCircleSharp onClick={handleBack} size={30} />
@@ -37,12 +37,12 @@ function ResetPassword() {
             <Button
               onClick={async () => {
                 try {
-                  const { data } = await API.get("/api/v1/user/verify-code", {
-                    email,
+                  const { data } = await API.post("/api/v1/user/get-verification-code", {
+                    email
                   });
                   console.log(data);
                   setResetPassword(true);
-                  toast.success();
+                  toast.success(data.message);
                 } catch (e: any) {
                   toast.error(e.response.data.message);
                 }
@@ -53,8 +53,6 @@ function ResetPassword() {
           </div>
         )}
       </div>
-
-      <ToastContainer position="bottom-right" />
     </div>
   );
 }

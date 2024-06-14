@@ -2,8 +2,12 @@ import { useForm } from "react-hook-form";
 import API from "../../config/baseUrl";
 import Button from "./Button";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
-function ResetForm({setResetPassword}) {
+function ResetForm({setResetPassword}: {setResetPassword: (arg: boolean)=>void}) {
+    const navigate=useNavigate()
   const { register, reset, handleSubmit } = useForm({
     defaultValues: {
       username: "",
@@ -29,6 +33,8 @@ function ResetForm({setResetPassword}) {
         verifyCode,
       });
       console.log(data);
+      toast.success(data.message)
+      navigate("/join/login")
     } catch (error) {
       console.log(error);
     }

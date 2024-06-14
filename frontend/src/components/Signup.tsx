@@ -7,6 +7,7 @@ import Button from "./Button";
 import ErrorText from "./ErrorText";
 import API from "../../config/baseUrl"
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 function Signup() {
   const navigate= useNavigate();
@@ -42,9 +43,10 @@ function Signup() {
      const {data}= await API.post("/api/v1/user/sign-up", { username, email, password, type })
      console.log(data)
      navigate(`/otpverify/${username}`)
-
-   } catch (error){
+     toast.success(data.message)
+   } catch (error:any){
      console.log(error)
+     toast.error(error.response.data.message)
    }
     reset(); // Reset form after submission
   };
