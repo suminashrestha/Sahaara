@@ -6,6 +6,7 @@ import {
   getVerificationCode,
   resetPassword,
   logoutUser,
+  refreshAccessToken,
 } from "../controllers/user.controllers";
 
 const router = express.Router();
@@ -21,5 +22,7 @@ router.route("/get-verification-code").post(getVerificationCode);
 router.route("/reset-password").post(resetPassword);
 
 router.route("/logout").post(logoutUser);
+
+router.route("/refresh-token").post(refreshAccessToken);
 
 export { router as userRoute };

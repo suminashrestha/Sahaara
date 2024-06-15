@@ -1,5 +1,4 @@
 import express from "express";
-
 import {
   getAllAdoptionPosts,
   createAdoptionPost,
@@ -12,21 +11,24 @@ import { authenticateWithJwt, authorize } from "../middlewares/auth.middleware";
 
 const router = express.Router();
 
-router.get("/", getAllAdoptionPosts);
-router.post(
-  "/",
-  authenticateWithJwt,
-  authorize(["individual", "organization"]),
-  upload.single("adoptionPostImage"),
-  createAdoptionPost
-);
-router.delete("/:postId", authenticateWithJwt, deleteAdoptionPost);
-router.put(
-  "/:postId",
-  authenticateWithJwt,
-  upload.single("adoptionPostImage"),
-  updateAdoptionPost
-);
-router.get("/:postId", authenticateWithJwt, getSingleAdoptionPost);
+router
+  .route("/")
+  .get(getAllAdoptionPosts)
+  .post(
+    authenticateWithJwt,
+    authorize(["individual", "organization"]),
+    upload.single("adoptionPostImage"),
+    createAdoptionPost
+  );
+
+router
+  .route("/:postId")
+  .delete(authenticateWithJwt, deleteAdoptionPost)
+  .put(
+    authenticateWithJwt,
+    upload.single("adoptionPostImage"),
+    updateAdoptionPost
+  )
+  .get(authenticateWithJwt, getSingleAdoptionPost);
 
 export { router as adoptionPostRoute };
