@@ -14,6 +14,10 @@ import { verifySchema } from "../validators/verify-code.validators";
 import asyncHandler from "../utils/asyncHandler";
 import { sendResetCode } from "../utils/sendResetCode";
 import { AuthRequest } from "./adoption-post.controllers";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const options: CookieOptions = {
   httpOnly: true,
@@ -61,7 +65,7 @@ const signUpHandler = asyncHandler(
 
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
 
-    const verifyCode = Math.floor(1000 + Math.random() * 900000).toString();
+    const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
     const hashedPassword = await bcrypt.hash(password, 10);
 
     if (existingUser) {
@@ -261,7 +265,7 @@ const getVerificationCode = asyncHandler(
         message: "User Not Found",
       });
     }
-    const verifyCode = Math.floor(1000 + Math.random() * 900000).toString();
+    const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
 
     user.verifyCode = verifyCode;
     user.verifyCodeExpiry = new Date(Date.now() + 3600000);
@@ -340,7 +344,73 @@ const logoutUser = asyncHandler(async (req: AuthRequest, res: Response) => {
     .status(200)
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
-    .json({});
+    .json({ success: true, message: "User logged out successfully" });
+});
+
+const refreshAccessToken = asyncHandler(async (req: Request, res: Response) => {
+  const token = req.cookies.refreshToken;
+
+  if (!token) {
+    return res.status(404).json({
+      success: false,
+      message: "No Token Available",
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.REFRESH_TOKEN_SECRET as string
+    ) as jwt.JwtPayload & { _id: string };
+    const user = await User.findById(decoded._id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Invalid Token",
+      });
+    }
+
+    if (token !== user.refreshToken) {
+      return res.status(400).json({
+        success: false,
+        message: "Token has Expired",
+      });
+    }
+
+    const newRefreshToken = await generateRefreshToken(user as TokenPropsUser);
+    const accessToken = await generateAccessToken(user as TokenPropsUser);
+
+    user.refreshToken = newRefreshToken;
+    await user.save({ validateBeforeSave: false });
+
+    res.cookie("refreshToken", newRefreshToken, options);
+    res.cookie("accessToken", accessToken, options);
+
+    const loggedInUser = {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      type: user.type,
+      isVerified: user.isVerified,
+    };
+
+    return res.status(200).json({
+      success: true,
+      message: "User logged in successfully",
+      data: {
+        user: loggedInUser,
+        refreshToken: newRefreshToken,
+        accessToken,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
 });
 
 export {
@@ -350,4 +420,5 @@ export {
   getVerificationCode,
   resetPassword,
   logoutUser,
+  refreshAccessToken,
 };
