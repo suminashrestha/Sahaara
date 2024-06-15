@@ -35,8 +35,9 @@ function ResetForm({setResetPassword}: {setResetPassword: (arg: boolean)=>void})
       console.log(data);
       toast.success(data.message)
       navigate("/join/login")
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      toast.error(error.response.data.message)
     }
     reset();
   };
