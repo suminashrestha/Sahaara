@@ -37,8 +37,12 @@ const Login = () => {
   return (
     <form
       onSubmit={handleSubmit(submitData)}
-      className="flex flex-col h-full px-5 gap-6 justify-center"
+      className="flex flex-col h-full px-5 gap-6 justify-center text-zinc-600"
     >
+      <div>
+        <h2 className="text-3xl font-semibold">Welcome back</h2>
+        <p>Please enter your account details</p>
+      </div>
       <input
         placeholder="Enter username/email"
         type="text"

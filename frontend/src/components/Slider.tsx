@@ -66,11 +66,11 @@ const SliderComponent = () => {
             className="flex items-center justify-center w-full border-t-2"
           >
             <div className="flex flex-row w-full">
-              <div className="w-full md:w-1/3 flex items-center justify-center">
+              <div className="w-full flex items-center justify-center">
                 <img
                   src={slide.image}
                   alt={`Slide ${index}`}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-[100%] object-cover"
                 />
               </div>
               <div className="flex flex-col md:w-2/3 h-full p-4">

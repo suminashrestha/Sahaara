@@ -16,8 +16,8 @@ export default function App() {
   return (
     <>
       <ToastContainer position="bottom-right" />
-      <div className="bg-primary h-[100vh] flex justify-center items-center">
-        <div className="bg-white h-[90vh] w-[95vw] rounded-lg overflow-hidden shadow-floating-deep border-none">
+      {/* <div className="bg-white h-[100vh] flex justify-center items-center">
+        <div className="bg-white h-[90vh] w-[95vw] rounded-lg overflow-hidden shadow-floating-deep border-none"> */}
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Homepage />}/>
@@ -34,8 +34,8 @@ export default function App() {
               <Route path="*" element={<PageNotFound/>}/>
             </Routes>
           </BrowserRouter>
-        </div>
-      </div>
+        {/* </div>
+      </div> */}
     </>
   );
 }

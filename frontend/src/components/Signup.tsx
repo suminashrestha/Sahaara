@@ -55,7 +55,7 @@ function Signup() {
     <>
       {userMode === "" && (
         <div className="flex flex-col items-center justify-center gap-20 h-full p-9">
-          <p className="text-xl text-center">
+          <p className="text-xl text-center text-zinc-600">
             Before continuing, please specify a role according to the service
             you will be providing.
           </p>

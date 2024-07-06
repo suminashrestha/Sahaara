@@ -11,8 +11,8 @@ export default function Button({
 }) {
   return (
     <button
-      className={`bg-btnColor px-5 py-2 text-white rounded-lg ${className} hover:bg-btnHover`}
-      onClick={onClick} 
+      className={`bg-btnColor px-5 py-2 text-white rounded-lg ${className} hover:bg-slate-600`}
+      onClick={onClick}
     >
       {children}
     </button>

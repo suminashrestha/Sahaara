@@ -1,31 +1,66 @@
 import { NavLink } from "react-router-dom";
 import Button from "./Button";
-export default function LandingNav() {
-  return (
-    <nav>
-      <ul className="flex justify-between h-[10%] items-center px-5 py-2 w-[100%]">
-        <div className="w-[20%] flex items-center justify-center">
-          <li>
-            <NavLink to="/">
-              <img className="h-20 w-27" src="/Logo.png" alt="Sahaara" />
-            </NavLink>
-          </li>
-        </div>
+import { useEffect, useState } from "react";
+function LandingNav() {
 
-        <div className="flex justify-evenly w-[30%] items-center">
-          <li className="transition ease-in-out delay-60 hover:-translate-y-1 hover:scale-110 hover:text-btnColor duration-300">
-            <NavLink to="/about">About Us</NavLink>
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+
+  return (
+    <div className={`fixed top-0 h-20 w-full z-50 ${isScrolled ? 'bg-white bg-opacity-90' : 'bg-transparent'}`}>
+      <nav>
+        <ul className=" h-20 flex justify-between items-center px-5">
+          <li className="font-Oswald font-thin text-2xl h-[100%] flex items-center">
+            <img src="/logo.png" alt="sahaara" className="h-[90%]" />
           </li>
-          <li className="transition ease-in-out delay-60 hover:-translate-y-1 hover:scale-110 hover:text-btnColor duration-300">
-            <NavLink to="/contact">Contact</NavLink>
+          <div className=" w-[50%] h-[100%] flex justify-evenly items-center ">
+            <li>
+              <NavLink to="/" className={({ isActive }) =>
+              isActive
+                ? "text-slate-400"
+                : "text-black hover:text-slate-400"
+            }>Home</NavLink>
+            </li>
+            <li >
+              <NavLink to="/about" className={({ isActive }) =>
+              isActive
+                ? "text-slate-400"
+                : "text-black hover:text-slate-400"
+            }>About</NavLink>
+            </li>
+            <li>
+              <NavLink to="/contact"className={({ isActive }) =>
+              isActive
+                ? "text-slate-400"
+                : "text-black hover:text-slate-400"
+            }>Contact</NavLink>
+            </li>
+          </div>
+          <li>
+            <Button className="w-50 flex items-center"><NavLink to="/join">Get started</NavLink></Button>
           </li>
-          <li className="transition ease-in-out delay-60 hover:-translate-y-1 hover:scale-110 hover:text-btnColor duration-300">
-            <NavLink to="/join">
-              <Button>Get started</Button>
-            </NavLink>
-          </li>
-        </div>
-      </ul>
-    </nav>
+        </ul>
+      </nav>
+    </div>
   );
 }
+
+export default LandingNav;
+
+
