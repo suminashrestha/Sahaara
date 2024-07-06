@@ -1,10 +1,12 @@
 import mongoose, { Document, Schema, model } from "mongoose";
 
-interface IComment extends Document {
+export interface IComment extends Document {
   commenter: mongoose.Schema.Types.ObjectId;
+  name: string;
   content: string;
-  createdAt: Date;
-  updatedAt: Date;
+}
+export interface ILike extends Document {
+  user: mongoose.Schema.Types.ObjectId;
 }
 
 export interface IRescuePost extends Document {
@@ -13,14 +15,22 @@ export interface IRescuePost extends Document {
   description: string;
   location?: string;
   rescuePostImage?: string;
-  likes: mongoose.Schema.Types.ObjectId[];
+  likes: ILike[];
   comments: IComment[];
-  createdAt: Date;
-  updatedAt: Date;
 }
+
+const likeSchema: Schema<ILike> = new Schema({
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+});
 
 const commentSchema: Schema<IComment> = new Schema(
   {
+    name: {
+      type: String,
+    },
     commenter: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -52,12 +62,7 @@ const rescuePostSchema: Schema<IRescuePost> = new Schema(
       type: String,
       required: true,
     },
-    likes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    likes: [likeSchema],
 
     comments: [commentSchema],
   },

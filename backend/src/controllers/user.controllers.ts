@@ -169,10 +169,6 @@ const signInHandler = asyncHandler(
       });
     }
 
-    // const loggedInUser = await User.findById(user._id).select(
-    //   "-password -refreshToken -verifyCode -verifyCodeExpiry"
-    // );
-
     const refreshToken = await generateRefreshToken(user as TokenPropsUser);
     const accessToken = await generateAccessToken(user as TokenPropsUser);
 

@@ -6,8 +6,6 @@ export interface IIndividual extends Document {
   location: string;
   isVolunteer: boolean;
   profilePicture?: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 const individualSchema: Schema<IIndividual> = new Schema(

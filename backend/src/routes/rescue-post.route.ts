@@ -7,7 +7,12 @@ import {
   updateRescuePost,
   getAllRescuePosts,
   getSingleRescuePost,
-} from "../controllers/rescue-post.controllers";
+  addComment,
+  deleteComment,
+  updateComment,
+  addLike,
+  removeLike,
+} from "../controllers";
 
 const router = express.Router();
 
@@ -30,5 +35,16 @@ router
     updateRescuePost
   )
   .get(authenticateWithJwt, getSingleRescuePost);
+
+router.route("/:postId/comments").put(authenticateWithJwt, addComment);
+
+router
+  .route("/:postId/comments/:commentId")
+  .put(authenticateWithJwt, updateComment)
+  .delete(authenticateWithJwt, deleteComment);
+
+router.route("/:postId/like").put(addLike);
+
+router.route("/:postId/remove-like").put(removeLike);
 
 export { router as rescuePostRoute };

@@ -5,8 +5,6 @@ export interface IOrganization extends Document {
   name: string;
   location: string;
   profilePicture?: string;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 const organizationSchema: Schema<IOrganization> = new Schema(

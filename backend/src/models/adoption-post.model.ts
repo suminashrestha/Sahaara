@@ -8,13 +8,11 @@ export interface IAdoptionPost extends Document {
   category?: string;
   adoptionPostImage?: string;
   adoptersList?: IAdopter[];
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface IAdopter extends Document {
   adoptionPostId: mongoose.Schema.Types.ObjectId;
-  adoptor: mongoose.Schema.Types.ObjectId;
+  adopter: mongoose.Schema.Types.ObjectId;
 }
 
 const adopterSchema: Schema<IAdopter> = new Schema(
@@ -23,7 +21,7 @@ const adopterSchema: Schema<IAdopter> = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "AdoptionPost",
     },
-    adoptor: {
+    adopter: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },

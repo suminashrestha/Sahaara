@@ -1,13 +1,13 @@
 import express from "express";
-import {
-  getAllAdoptionPosts,
-  createAdoptionPost,
-  deleteAdoptionPost,
-  updateAdoptionPost,
-  getSingleAdoptionPost,
-} from "../controllers/adoption-post.controllers";
 import upload from "../middlewares/upload.middleware";
 import { authenticateWithJwt, authorize } from "../middlewares/auth.middleware";
+import {
+  createAdoptionPost,
+  deleteAdoptionPost,
+  getAllAdoptionPosts,
+  getSingleAdoptionPost,
+  updateAdoptionPost,
+} from "../controllers";
 
 const router = express.Router();
 

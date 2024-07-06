@@ -53,8 +53,8 @@ const authenticateWithJwt = (
 };
 
 const authorize = (types: string[]) => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    if (!types.includes((req as any).user.type)) {
+  return (req: AuthRequest, res: Response, next: NextFunction) => {
+    if (!types.includes(req.user.type)) {
       return res.status(500).json({
         message: "Invalid Role",
         success: false,
