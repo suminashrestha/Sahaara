@@ -10,8 +10,11 @@ import PageNotFound from "./pages/PageNotFound";
 import OTPverificationPage from "./pages/OTPverificationPage";
 import { ToastContainer } from "react-toastify";
 import Profile from "./pages/Landing";
-import CreateAdoptionPost from "./pages/CreateAdoptionPost"
-import Landing from "./pages/Landing"
+import CreateAdoptionPost from "./pages/CreateAdoptionPost";
+import Landing from "./pages/Landing";
+import Donation from "./pages/Donation";
+import Success from "./pages/Success";
+import Cancel from "./pages/Cancel";
 
 export default function App() {
   return (
@@ -22,6 +25,9 @@ export default function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="success" element={<Success />} />
+          <Route path="cancel" element={<Cancel />} />
+          <Route path="donate" element={<Donation />} />
           <Route path="otpverify/:username" element={<OTPverificationPage />} />
           <Route path="reset" element={<ResetPassword />} />
           <Route path="profile" element={<Landing />} />
