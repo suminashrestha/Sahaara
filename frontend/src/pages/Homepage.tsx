@@ -1,12 +1,14 @@
 import BottomContact from "../components/BottomContact";
 import Button from "../components/Button";
 import LandingNav from "../components/LandingNav";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GoOrganization } from "react-icons/go";
 import { CiUser } from "react-icons/ci";
 import Footer from "../components/Footer";
 import FlipCard from "../components/FlipCard";
+
 export default function Homepage() {
+  const navigate = useNavigate();
   return (
     <>
       <LandingNav />
@@ -16,7 +18,12 @@ export default function Homepage() {
             <p className="text-3xl font-Oswald font-normal text-zinc-600">
               Your donation reaches organizations and campaigns through us.
             </p>
-            <Button className="w-[50%] self-end">Donate</Button>
+            <Button
+              className="w-[50%] self-end"
+              onClick={() => navigate("/donate")}
+            >
+              Donate
+            </Button>
           </div>
         </div>
 
@@ -31,8 +38,8 @@ export default function Homepage() {
                 we believe every animal deserves a second chance at happiness.
                 Our mission is to rescue, rehabilitate, and rehome pets in need,
                 providing them with the care and compassion they deserve.
-                Whether you’re looking to adopt a furry friend, volunteer your
-                time, or support our cause, you’ll find a community of
+                Whether you're looking to adopt a furry friend, volunteer your
+                time, or support our cause, you'll find a community of
                 passionate individuals dedicated to making a difference. Join us
                 in our journey to transform lives—both theirs and yours.
                 Discover the joy of adoption and give a loving home to an animal

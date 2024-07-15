@@ -1,4 +1,3 @@
-import SliderComponent from "../components/Slider";
 import LandingNav from "../components/LandingNav";
 import Footer from "../components/Footer";
 import BottomContact from "../components/BottomContact";
@@ -7,7 +6,7 @@ const About = () => {
   return (
     <>
       <LandingNav />
-      <div className="flex justify-center items-center flex-col justify-around">
+      <div className="flex items-center flex-col justify-around">
         <div className="mt-20 h-[90vh] w-[90%] flex items-center p-10 justify-center ">
           <div className="w-[50%] h-[80%] p-10 text-zinc-600 flex flex-col gap-6">
             <h2 className="text-6xl font-bold text-btnColor">WHO WE ARE</h2>
