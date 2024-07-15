@@ -40,7 +40,6 @@ function reducer(state, action) {
         isAuthenticated: true,
       };
     case "logout":
-        console.log("shirshak gandu")
       localStorage.removeItem("userInfo");
       localStorage.removeItem("token");
       return {
@@ -65,7 +64,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       identifier,
       password,
     });
-
+    console.log("sumina", data)
     dispatch({
       type: "login",
       payload: { user: data.data.user, token: data.data.accessToken },
