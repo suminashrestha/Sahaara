@@ -8,6 +8,7 @@ import {
   logoutUser,
   refreshAccessToken,
 } from "../controllers";
+import { authenticateWithJwt } from "../middlewares/auth.middleware";
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ router.route("/get-verification-code").post(getVerificationCode);
 
 router.route("/reset-password").post(resetPassword);
 
-router.route("/logout").post(logoutUser);
+router.route("/logout").post(authenticateWithJwt, logoutUser);
 
 router.route("/refresh-token").post(refreshAccessToken);
 
