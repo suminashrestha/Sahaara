@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import UserNav from "../components/UserNav";
 
 function Profile() {
   const [user, setUser] = useState<any>();
@@ -10,11 +11,14 @@ function Profile() {
 
   return (
     <div>
-      {user ? (
+      <UserNav/>
+
+      
+      {/* {user ? (
         <h1 className="text-4xl">hi {user.username}</h1>
       ) : (
         <h1 className="text-4xl">Loading...</h1>
-      )}
+      )} */}
     </div>
   );
 }

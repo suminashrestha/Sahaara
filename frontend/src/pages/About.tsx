@@ -29,7 +29,7 @@ const About = () => {
             <img src="/aboutus2.jpg" alt="img" className="rounded-xl" />
           </div>
         </div>
-        <div className="h-[30vh] flex justify-center items-center text-zinc-600 w-[90%] shadow-md rounded-lg">
+        <div className="h-[30vh] flex justify-center items-center text-zinc-600 w-[90%] shadow-md rounded-lg bg-yellow-300">
           <h3 className="text-2xl font-medium font-Oswald">
             Our vision is to ensure every stray animal is rescued,
             rehabilitated, and rehomed by dedicated advocates.

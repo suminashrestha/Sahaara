@@ -31,7 +31,7 @@ function OTPverificationPage() {
     }
   }
   return (
-    <div className="flex h-full justify-center w-full items-center">
+    <div className="flex h-screen justify-center w-full items-center">
       <div className="h-[80%] w-[80%] shadow-lg rounded flex ">
         <div className="w-[50%] h-full">
           <img src="/otpverify.jpg" className="h-full " />
