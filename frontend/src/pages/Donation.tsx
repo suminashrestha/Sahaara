@@ -12,9 +12,7 @@ const Donation: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
     const stripe = await stripePromise;
-
     const validationResult = donationSchema.safeParse(amount);
 
     if (!validationResult.success) {
