@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 import errorHandler from "./middlewares/errorHandler";
 import {
   adoptionPostRoute,
-  esewaRoute,
   profileRoute,
   rescuePostRoute,
   stripeRoute,
@@ -24,7 +23,6 @@ app.use("/api/v1/rescue-posts", rescuePostRoute);
 app.use("/api/v1/adoption-posts", adoptionPostRoute);
 app.use("/api/v1/volunteer-posts", volunteerPostRoute);
 app.use("/create-checkout-session", stripeRoute);
-app.use("/esewa-payment", esewaRoute);
 
 app.use(errorHandler);
 

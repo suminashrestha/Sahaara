@@ -1,7 +1,5 @@
 import Stripe from "stripe";
-const stripe = new Stripe(
-  "sk_test_51PZTEMAdU86idx9wrKxEAzs7jIOHeq0jSqSGmLuID9cc4pi76XK4T9cIsx22wRNTKTjbCzvXzccTAZvWQvZnqygZ00k9CzR6Hc"
-);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 import express from "express";
 
