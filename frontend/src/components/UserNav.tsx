@@ -1,14 +1,17 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { useEffect, useState } from "react";
 import { PiMessengerLogoLight } from "react-icons/pi";
 import { IoSettings } from "react-icons/io5";
 import { IoLogOut } from "react-icons/io5";
+import { useAuth } from "../context/AuthContext";
 
 function LandingNav() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const navigate= useNavigate()
 
+  const {logout,user}= useAuth()
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -36,7 +39,7 @@ function LandingNav() {
       }`}
     >
       <nav className="flex justify-center">
-        <ul className=" h-[10vh] flex justify-between items-center w-full shadow-md p-2">
+        <ul className=" h-20 flex justify-between items-center w-full shadow-md px-2">
           <li className="font-Oswald font-thin text-2xl h-[100%] flex items-center">
             <img src="/logo.png" alt="sahaara" className="h-[90%]" />
           </li>
@@ -66,11 +69,14 @@ function LandingNav() {
                 alt="user"
                 className="rounded-[50%] w-[30px]"
               />
-              <h3 className="font-semibold">Username</h3>
+              <h3 className="font-semibold">{user.username}</h3>
             </div>
           </NavLink>
           <ul className="px-2">
-            <DropDownItem icon={<IoLogOut size={30} />} text="Log Out" />
+            <DropDownItem icon={<IoLogOut size={30} />} text="Log Out" onClick={()=>{
+              logout()
+              navigate("/")
+            }}/>
           </ul>
         </div>
       ) : (
@@ -80,9 +86,9 @@ function LandingNav() {
   );
 }
 
-function DropDownItem({ icon, text }: { icon: React.ReactNode; text: string }) {
+function DropDownItem({ icon, text , onClick}: { icon: React.ReactNode; text: string ,onClick?: ()=>void}) {
   return (
-    <li className="flex gap-2 items-center hover:text-gray-500 py-2 hover:cursor-pointer rounded-md">
+    <li className="flex gap-2 items-center hover:text-gray-500 py-2 hover:cursor-pointer rounded-md" onClick={onClick}>
       {icon}
       <h3>{text}</h3>
     </li>

@@ -25,7 +25,7 @@ function LandingNav() {
   return (
     <div className={`fixed top-0 h-20 w-full z-50 ${isScrolled ? 'bg-white bg-opacity-90' : 'bg-transparent'}`}>
       <nav>
-        <ul className=" h-20 flex justify-between items-center px-5">
+        <ul className="flex justify-between items-center px-5 h-20">
           <li className="font-Oswald font-thin text-2xl h-[100%] flex items-center">
             <img src="/logo.png" alt="sahaara" className="h-[90%]" />
           </li>

@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import API from "../../config/baseUrl";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
+  const {login}=useAuth(); 
   const navigate = useNavigate();
   const {
     register,
@@ -19,13 +21,10 @@ const Login = () => {
   });
 
   const submitData = async (data: { identifier: string, password: string }) => {
-    console.log(data);
+    // console.log(data);
     const { identifier, password } = data;
     try {
-      const {data} = await API.post("/api/v1/user/sign-in", { identifier, password });
-      console.log(data.data.user.username)
-      localStorage.setItem("userInfo", JSON.stringify(data.data.user));
-      toast.success("Login successful!");
+      login(identifier,password)
       navigate("/profile");
     } catch (error: any) {
       console.log(error);
