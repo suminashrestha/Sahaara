@@ -10,8 +10,8 @@ import PageNotFound from "./pages/PageNotFound";
 import OTPverificationPage from "./pages/OTPverificationPage";
 import { ToastContainer } from "react-toastify";
 import Profile from "./pages/Landing";
-import CreateAdoptionPost from "./pages/CreateAdoptionPost"
-import Landing from "./pages/Landing"
+import CreateAdoptionPost from "./pages/CreateAdoptionPosts";
+import Landing from "./pages/Landing";
 
 export default function App() {
   return (
