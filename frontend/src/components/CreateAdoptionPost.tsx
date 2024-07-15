@@ -34,7 +34,6 @@ const CreateAdoptionPost = () => {
 
   const formSubmit = async (data: AdoptionPostSchema) => {
     try {
-      hhhhhhhhhhhhhhhhhhhhhhhh;
       const formData = new FormData();
       formData.append("title", data.title);
       formData.append("description", data.description);
