@@ -8,10 +8,12 @@ import { useAuth } from "../context/AuthContext";
 
 function LandingNav() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const navigate= useNavigate()
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
-  const {logout,user}= useAuth()
+  const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
+
+  const { logout, user } = useAuth();
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -27,7 +29,9 @@ function LandingNav() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
+  function toggleDropdown() {
+    setIsDropdownVisible((isDropdownVisible) => !isDropdownVisible);
+  }
   function handleVisiblity() {
     setIsVisible((isVisible) => !isVisible);
   }
@@ -45,7 +49,19 @@ function LandingNav() {
           </li>
           <div className="flex items-center justify-end w-[30%] gap-6">
             <li>
-              <Button>Adoption Portal</Button>
+              <Button onClick={toggleDropdown}>Adoption Portal</Button>
+              {isDropdownVisible && (
+                <div className="absolute bg-white shadow-lg p-4 mt-2 w-48 rounded-lg">
+                  <ul className="space-y-2">
+                    <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer rounded-md">
+                      Create Adoption Posts
+                    </li>
+                    <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer rounded-md">
+                      View Adoption Posts
+                    </li>
+                  </ul>
+                </div>
+              )}
             </li>
             <li>
               <PiMessengerLogoLight size={30} />
@@ -73,10 +89,14 @@ function LandingNav() {
             </div>
           </NavLink>
           <ul className="px-2">
-            <DropDownItem icon={<IoLogOut size={30} />} text="Log Out" onClick={()=>{
-              logout()
-              navigate("/")
-            }}/>
+            <DropDownItem
+              icon={<IoLogOut size={30} />}
+              text="Log Out"
+              onClick={() => {
+                logout();
+                navigate("/");
+              }}
+            />
           </ul>
         </div>
       ) : (
@@ -86,9 +106,20 @@ function LandingNav() {
   );
 }
 
-function DropDownItem({ icon, text , onClick}: { icon: React.ReactNode; text: string ,onClick?: ()=>void}) {
+function DropDownItem({
+  icon,
+  text,
+  onClick,
+}: {
+  icon: React.ReactNode;
+  text: string;
+  onClick?: () => void;
+}) {
   return (
-    <li className="flex gap-2 items-center hover:text-gray-500 py-2 hover:cursor-pointer rounded-md" onClick={onClick}>
+    <li
+      className="flex gap-2 items-center hover:text-gray-500 py-2 hover:cursor-pointer rounded-md"
+      onClick={onClick}
+    >
       {icon}
       <h3>{text}</h3>
     </li>

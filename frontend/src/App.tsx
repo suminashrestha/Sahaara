@@ -9,8 +9,7 @@ import LoginSignup from "./pages/SignupLogin";
 import PageNotFound from "./pages/PageNotFound";
 import OTPverificationPage from "./pages/OTPverificationPage";
 import { ToastContainer } from "react-toastify";
-import Profile from "./pages/Landing";
-import CreateAdoptionPost from "./pages/CreateAdoptionPost";
+import CreateAdoptionPost from "./components/CreateAdoptionPost";
 import Landing from "./pages/Landing";
 import Donation from "./pages/Donation";
 import Success from "./pages/Success";
@@ -41,6 +40,14 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <Landing />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="adoption"
+              element={
+                <ProtectedRoute>
+                  <CreateAdoptionPost />
                 </ProtectedRoute>
               }
             />
