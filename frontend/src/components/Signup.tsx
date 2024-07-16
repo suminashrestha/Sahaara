@@ -5,7 +5,7 @@ import { IoArrowBackCircleSharp } from "react-icons/io5";
 import { signupSchema, Schema } from "../validators/signupValidators";
 import Button from "./Button";
 import ErrorText from "./ErrorText";
-import API from "../../config/baseUrl"
+import API from "../config/baseUrl"
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 

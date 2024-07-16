@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Button from "../components/Button";
 import ErrorText from "../components/ErrorText";
-import API from "../../config/baseUrl";
+import API from "../config/baseUrl";
 import { useNavigate } from "react-router";
 import UserNav from "../components/UserNav";
 
