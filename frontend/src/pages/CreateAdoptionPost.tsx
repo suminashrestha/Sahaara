@@ -13,7 +13,7 @@ interface AdoptionPostSchema {
   description: string;
   location: string;
   category: string;
-  adoptionPostImage: File | null; // Define image as FileList or null
+  adoptionPostImage: File | null;
 }
 
 const CreateAdoptionPost = () => {
