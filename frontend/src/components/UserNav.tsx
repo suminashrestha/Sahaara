@@ -6,7 +6,7 @@ import { IoSettings } from "react-icons/io5";
 import { IoLogOut } from "react-icons/io5";
 import { useAuth } from "../context/AuthContext";
 
-function LandingNav() {
+function UserNav() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const navigate= useNavigate()
@@ -61,7 +61,7 @@ function LandingNav() {
       </nav>
 
       {isVisible ? (
-        <div className="fixed right-10 w-[250px] h-[120px] flex p-5  flex-col shadow-md">
+        <div className="fixed right-10 w-[250px] h-[120px] flex p-5  flex-col shadow-md z-30 ">
           <NavLink to="">
             <div className="flex gap-2 items-center hover:bg-gray-100 px-2 py-2 rounded-md border-b-2">
               <img
@@ -94,4 +94,4 @@ function DropDownItem({ icon, text , onClick}: { icon: React.ReactNode; text: st
     </li>
   );
 }
-export default LandingNav;
+export default UserNav;

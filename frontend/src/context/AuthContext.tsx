@@ -14,12 +14,14 @@ const AuthContext = createContext<{
   isAuthenticated: boolean;
   login: (arg1: string, arg2: string) => Promise<void>;
   logout: () => Promise<void>;
+  dispatch: React.Dispatch<any>
 }>({
   user: null,
   token: null,
   isAuthenticated: false,
   login: async () => {},
   logout: async () => {},
+  dispatch: ()=>{}
 });
 
 const initialState = {
@@ -84,6 +86,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         token,
         isAuthenticated,
         login,
+        dispatch,
         logout,
       }}
     >
