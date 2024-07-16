@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import API from "../../config/baseUrl";
+import API from "../config/baseUrl";
 import Button from "./Button";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 import "react-toastify/dist/ReactToastify.css";

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-  const {login}=useAuth(); 
+  const { login, dispatch } = useAuth();
   const navigate = useNavigate();
   const {
     register,
@@ -20,12 +20,11 @@ const Login = () => {
     },
   });
 
-  const submitData = async (data: { identifier: string, password: string }) => {
+  const submitData = async (data: { identifier: string; password: string }) => {
     // console.log(data);
     const { identifier, password } = data;
     try {
-      login(identifier,password)
-
+      await dispatch(login(identifier, password));
       navigate("/profile");
     } catch (error: any) {
       console.log(error);
@@ -46,18 +45,22 @@ const Login = () => {
       <input
         placeholder="Enter username/email"
         type="text"
-        {...register("identifier",{required: "username/email is required"})}
+        {...register("identifier", { required: "username/email is required" })}
         className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
       />
-      {errors.identifier && <p className="text-red-600 text-sm">{errors.identifier.message}</p>}
+      {errors.identifier && (
+        <p className="text-red-600 text-sm">{errors.identifier.message}</p>
+      )}
 
       <input
         placeholder="Enter Password"
         type="password"
-         {...register("password", { required: "Password is required" })}
-          className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
+        {...register("password", { required: "Password is required" })}
+        className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
       />
-      {errors.password && <p className="text-red-600 text-sm">{errors.password.message}</p>}
+      {errors.password && (
+        <p className="text-red-600 text-sm">{errors.password.message}</p>
+      )}
       <ul className="flex ">
         <li className="flex w-[50%] gap-2 items-center">
           <input type="checkbox" className="rounded-lg h-5 w-5" />

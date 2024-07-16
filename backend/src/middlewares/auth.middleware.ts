@@ -26,6 +26,7 @@ const authenticateWithJwt = (
     process.env.ACCESS_TOKEN_SECRET as string,
     async (err: any, token: any) => {
       if (err) {
+        console.log("--error inside middleware", err);
         return res.status(400).json({
           message: "Something went wrong while verifying token",
           success: false,
