@@ -5,6 +5,7 @@ import { PiMessengerLogoLight } from "react-icons/pi";
 import { IoSettings } from "react-icons/io5";
 import { IoLogOut } from "react-icons/io5";
 import { useAuth } from "../context/AuthContext";
+import CreateAdoptionPost from "../pages/CreateAdoptionPost";
 
 function LandingNav() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -53,10 +54,21 @@ function LandingNav() {
               {isDropdownVisible && (
                 <div className="absolute bg-white shadow-lg p-4 mt-2 w-48 rounded-lg">
                   <ul className="space-y-2">
-                    <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer rounded-md">
+                    <li
+                      className="py-2 px-4 hover:bg-gray-100 cursor-pointer rounded-md"
+                      onClick={() => {
+                        navigate("/adoption");
+                      }}
+                    >
                       Create Adoption Posts
                     </li>
-                    <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer rounded-md">
+                    <li
+                      className="py-2 px-4 hover:bg-gray-100 cursor-pointer rounded-md
+                    "
+                      onClick={() => {
+                        navigate("/viewadoption");
+                      }}
+                    >
                       View Adoption Posts
                     </li>
                   </ul>

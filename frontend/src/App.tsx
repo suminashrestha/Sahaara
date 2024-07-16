@@ -9,14 +9,14 @@ import LoginSignup from "./pages/SignupLogin";
 import PageNotFound from "./pages/PageNotFound";
 import OTPverificationPage from "./pages/OTPverificationPage";
 import { ToastContainer } from "react-toastify";
-import CreateAdoptionPost from "./components/CreateAdoptionPost";
+import CreateAdoptionPost from "./pages/CreateAdoptionPost";
 import Landing from "./pages/Landing";
 import Donation from "./pages/Donation";
 import Success from "./pages/Success";
 import Cancel from "./pages/Cancel";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
-
+import ViewAdoptionPost from "./pages/ViewAdoptionPost";
 export default function App() {
   return (
     <>
@@ -48,6 +48,14 @@ export default function App() {
               element={
                 <ProtectedRoute>
                   <CreateAdoptionPost />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="viewadoption"
+              element={
+                <ProtectedRoute>
+                  <ViewAdoptionPost />
                 </ProtectedRoute>
               }
             />
