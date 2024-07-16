@@ -1,18 +1,19 @@
+import { Navigate, useLocation } from "react-router-dom";
 
-import { Navigate, useNavigate } from "react-router-dom";
-
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
-    const token= localStorage.getItem("token")
-    if (!token) {
-        return <Navigate
-        to={"/join"}
-        state={{ from: location.pathname }}
-        replace
-      />
-
-    }
-
-    return <>{children}</>;
+interface ProtectedProps {
+  children: React.ReactNode;
 }
 
-export default ProtectedRoute;
+const Protected = ({ children }: ProtectedProps) => {
+  const token = localStorage.getItem("token");
+
+  const location = useLocation();
+
+  if (!token) {
+    return <Navigate to="/join/login" state={{ from: location.pathname }} replace />;
+  }
+
+  return <>{children}</>;
+};
+
+export default Protected;

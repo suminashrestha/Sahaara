@@ -11,7 +11,6 @@ import Login from "./components/Login";
 import SignUp from "./components/Signup";
 import PageNotFound from "./pages/PageNotFound";
 import { ToastContainer } from "react-toastify";
-import Profile from "./pages/Landing";
 import CreateAdoptionPost from "./pages/CreateAdoptionPost";
 import Donation from "./pages/Donation";
 import Success from "./pages/Success";
@@ -21,6 +20,7 @@ import ProtectedRoute from "./pages/ProtectedRoute";
 import RescueForm from "./components/RescuePost/RescueForm";
 import ViewRescuePost from "./components/RescuePost/ViewRescuePost";
 
+import ViewAdoptionPost from "./pages/ViewAdoptionPost";
 export default function App() {
   return (
     <>
@@ -51,6 +51,23 @@ export default function App() {
                 <Route path="rescue" element={<ViewRescuePost/>}/>
                 <Route path="createrescue" element={<RescueForm/>}/>
             </Route>
+            
+            <Route
+              path="adoption"
+              element={
+                <ProtectedRoute>
+                  <CreateAdoptionPost />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="viewadoption"
+              element={
+                <ProtectedRoute>
+                  <ViewAdoptionPost />
+                </ProtectedRoute>
+              }
+            />
             <Route path="join" element={<LoginSignup />}>
               <Route index element={<Navigate replace to="login" />} />
               <Route path="login" element={<Login />} />

@@ -2,7 +2,7 @@ import Button from "../components/Button";
 import { useState } from "react";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 import { useNavigate } from "react-router";
-import API from "../../config/baseUrl";
+import API from "../config/baseUrl";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import ResetForm from "../components/ResetForm";

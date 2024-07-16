@@ -1,22 +1,23 @@
-import Button from "../components/Button";
+import React from "react";
 import { useForm } from "react-hook-form";
-import ErrorText from "../components/ErrorText";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Footer from "../components/Footer";
-import UserNav from "../components/UserNav"
-import BottomContact from "../components/BottomContact";
+import Button from "../components/Button";
+import ErrorText from "../components/ErrorText";
+import API from "../config/baseUrl";
+import { useNavigate } from "react-router";
+import UserNav from "../components/UserNav";
 
 interface AdoptionPostSchema {
-    adoptionPostAuthor: number,
-    title: string,
-    description: string,
-    location: string,
-    category: string,
-    adoptionPostImage: string,
-    adoptersList: Array<string>
+  title: string;
+  description: string;
+  location: string;
+  category: string;
+  adoptionPostImage: File | null; // Define image as FileList or null
 }
+
 const CreateAdoptionPost = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -24,77 +25,127 @@ const CreateAdoptionPost = () => {
     formState: { errors },
   } = useForm<AdoptionPostSchema>({
     defaultValues: {
-        adoptionPostAuthor: undefined,
-        title: "",
-        description: "",
-        location: "",
-        category: "",
-        adoptionPostImage: "",
-        adoptersList: []
+      title: "",
+      description: "",
+      location: "",
+      category: "",
+      adoptionPostImage: null, // Initialize image as null
     },
   });
 
-  function formSubmit(data: AdoptionPostSchema) {
-    console.log(data);
-    toast.success("Thank you for reaching us!");
-    reset();
-  }
+  const formSubmit = async (data: AdoptionPostSchema) => {
+    try {
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+      formData.append("location", data.location);
+      formData.append("category", data.category);
+
+      if (data.adoptionPostImage) {
+        formData.append("adoptionPostImage", data.adoptionPostImage);
+      }
+      const response = await API.post("/api/v1/adoption-posts", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log(response.data);
+      toast.success("Adoption post created successfully!");
+      reset(); // Reset form after submission
+      navigate("/"); // Navigate to view posts page
+    } catch (error) {
+      console.error("Error creating adoption post:", error);
+      toast.error("Failed to create adoption post.");
+    }
+  };
+
   return (
-      <>
-        <UserNav/>
-        <div className="w-[100vw] h-[90vh] mt-20 flex justify-center items-center gap-6">
-          <div className="flex h-[90vh] w-[50%] justify-center items-center">
+    <div>
+      <UserNav />
+
+      <div className="w-full h-screen flex flex-col items-center justify-center p-6 mt-20">
+        <div className="flex flex-col items-center justify-center bg-red p-6 rounded shadow-lg w-full ">
+          <h1 className="text-2xl font-bold mb-4">Create Adoption Post</h1>
           <form
             onSubmit={handleSubmit(formSubmit)}
-            className="flex flex-col h-[80%] p-10 gap-6 w-[80%] rounded-lg shadow-md text-zinc-600"
+            className="flex flex-col gap-4 w-full"
           >
             <input
               id="title"
-              className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
+              className="p-3 text-sm text-black rounded-lg bg-gray-100 focus:outline-none"
               placeholder="Enter title"
               type="text"
-              {...register("title")}
+              {...register("title", { required: "Title is required" })}
               autoComplete="off"
             />
+            {errors.title && (
+              <ErrorText message={errors.title.message as string} />
+            )}
 
             <input
               id="description"
-              className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
+              className="p-3 text-sm text-black rounded-lg bg-gray-100 focus:outline-none"
               placeholder="Enter description..."
               type="text"
-              {...register("description")}
+              {...register("description", {
+                required: "Description is required",
+              })}
               autoComplete="off"
             />
-
+            {errors.description && (
+              <ErrorText message={errors.description.message as string} />
+            )}
 
             <input
               id="location"
-              className="p-3 text-sm text-black rounded-xl bg-gray-100 focus:outline-none"
-              placeholder="location"
+              className="p-3 text-sm text-black rounded-lg bg-gray-100 focus:outline-none"
+              placeholder="Location"
               type="text"
-              {...register("location")}
+              {...register("location", { required: "Location is required" })}
               autoComplete="off"
             />
-           
-            <Button className="text-white font-bold px-3 py-2 bg-btnColor hover:bg-btnHover">
-              Submit
-            </Button>
+            {errors.location && (
+              <ErrorText message={errors.location.message as string} />
+            )}
+            <input
+              id="category"
+              className="p-3 text-sm text-black rounded-lg bg-gray-100 focus:outline-none"
+              placeholder="Category"
+              type="text"
+              {...register("category", { required: "Location is required" })}
+              autoComplete="off"
+            />
+            {errors.category && (
+              <ErrorText message={errors.category.message as string} />
+            )}
+
+            {/* Input for image upload */}
+            <label
+              htmlFor="image"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Image
+            </label>
+            <input
+              id="adoptionPostImage"
+              type="file"
+              className="p-3 text-sm text-black rounded-lg bg-gray-100 focus:outline-none"
+              {...register("adoptionPostImage", {
+                required: "Image is required",
+              })}
+            />
+
+            {errors.adoptionPostImage && (
+              <ErrorText message={errors.adoptionPostImage.message as string} />
+            )}
+
+            <Button type="submit">Post</Button>
           </form>
-          </div>
         </div>
-      </>
-  ) 
+      </div>
+    </div>
+  );
 };
 
 export default CreateAdoptionPost;
-
-
-
-
-
-// adoptionPostAuthor: number ,
-//     title: string,
-//     description: string,
-//     location: string,
-//     adoptionPostImage: string,
-//     adoptersList: Array<string>

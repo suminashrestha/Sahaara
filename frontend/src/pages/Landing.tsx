@@ -13,10 +13,10 @@ function Profile() {
 
   return (
     <div>
-      <UserNav/>
+      <UserNav />
       <div className="h-[90vh] w-full flex mt-20 ">
-            <RescuePostSideBar/>
-            <RescueMap/>
+        <RescuePostSideBar />
+        <RescueMap />
       </div>
       {/* {user ? (
         <h1 className="text-4xl">hi {user.username}</h1>

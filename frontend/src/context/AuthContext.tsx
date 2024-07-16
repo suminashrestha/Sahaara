@@ -1,5 +1,7 @@
 import { createContext, useContext, useReducer } from "react";
-import API from "../../config/baseUrl";
+import API from "../config/baseUrl";
+
+import { ActionTypes } from "../constants/action_types";
 
 interface User {
   email: string;
@@ -12,16 +14,20 @@ const AuthContext = createContext<{
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
+  error: any;
   login: (arg1: string, arg2: string) => Promise<void>;
   logout: () => Promise<void>;
-  dispatch: React.Dispatch<any>
+  dispatch: React.Dispatch<any>;
 }>({
   user: null,
   token: null,
   isAuthenticated: false,
   login: async () => {},
   logout: async () => {},
-  dispatch: ()=>{}
+  dispatch: () => {},
+  isLoading: false,
+  error: null,
 });
 
 const initialState = {
@@ -30,18 +36,35 @@ const initialState = {
   isAuthenticated: false,
 };
 
-function reducer(state, action) {
+function reducer(state: any, action: any  ) {
   switch (action.type) {
-    case "login":
+    case ActionTypes.LOGIN_REQUEST:
       localStorage.setItem("userInfo", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", JSON.stringify(action.payload.token));
+      localStorage.setItem("token", action.payload.token);
       return {
         ...state,
         user: action.payload.user,
         token: action.payload.token,
         isAuthenticated: true,
       };
-    case "logout":
+
+    case ActionTypes.LOGIN_SUCCESS:
+      localStorage.setItem("userInfo", JSON.stringify(action.payload.user));
+      localStorage.setItem("token", action.payload.token);
+      return {
+        ...state,
+        user: action.payload.user,
+        token: action.payload.token,
+        isAuthenticated: true,
+      };
+
+    case ActionTypes.LOGIN_FAILURE:
+      console.log(action.payload.error);
+      return {
+        ...state,
+        error: action.payload.error,
+      };
+    case ActionTypes.LOGOUT:
       localStorage.removeItem("userInfo");
       localStorage.removeItem("token");
       return {
@@ -62,20 +85,32 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 
   async function login(identifier: string, password: string) {
-    const { data } = await API.post("/api/v1/user/sign-in", {
-      identifier,
-      password,
-    });
-    console.log("sumina", data)
-    dispatch({
-      type: "login",
-      payload: { user: data.data.user, token: data.data.accessToken },
-    });
+    try {
+      dispatch({
+        type: ActionTypes.LOGIN_REQUEST,
+      });
+
+      const { data } = await API.post("/api/v1/user/sign-in", {
+        identifier,
+        password,
+      });
+      console.log("sumina", data);
+      dispatch({
+        type: ActionTypes.LOGIN_SUCCESS,
+        payload: { user: data.data.user, token: data.data.accessToken },
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.LOGIN_FAILURE,
+        payload: {
+          error: error.response.data.message,
+        },
+      });
+    }
   }
 
   async function logout() {
     const { data } = await API.post("/api/v1/user/logout");
-    if (!data.success) return;
     dispatch({ type: "logout" });
   }
 
@@ -88,6 +123,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         login,
         dispatch,
         logout,
+        dispatch,
       }}
     >
       {children}

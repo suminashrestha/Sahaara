@@ -2,7 +2,7 @@ import { useState } from "react";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
-import API from "../../config/baseUrl";
+import API from "../config/baseUrl";
 import { useNavigate, useParams } from "react-router";
 import { toast } from "react-toastify";
 
