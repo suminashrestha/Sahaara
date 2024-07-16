@@ -26,7 +26,6 @@ const authenticateWithJwt = (
     process.env.ACCESS_TOKEN_SECRET as string,
     async (err: any, token: any) => {
       if (err) {
-        console.log("--error inside middleware", err);
         return res.status(400).json({
           message: "Something went wrong while verifying token",
           success: false,
@@ -36,7 +35,6 @@ const authenticateWithJwt = (
         const user = await User.findById({ _id: token?._id }).select(
           "-password -refreshToken -verifyCode -verifyCodeExpiry"
         );
-        console.log("--user in middleware", user);
         if (!user) {
           return res.status(404).json({ message: "User not found." });
         }

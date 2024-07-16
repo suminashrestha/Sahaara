@@ -31,22 +31,22 @@ const AuthContext = createContext<{
 });
 
 const initialState = {
-  user: null,
-  token: null,
-  isAuthenticated: false,
+  user: JSON.parse(localStorage.getItem("userInfo") || "null"),
+  token: localStorage.getItem("token"),
+  isAuthenticated: !!localStorage.getItem("token"),
 };
 
-function reducer(state: any, action: any  ) {
+function reducer(state: any, action: any) {
   switch (action.type) {
-    case ActionTypes.LOGIN_REQUEST:
-      localStorage.setItem("userInfo", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", action.payload.token);
-      return {
-        ...state,
-        user: action.payload.user,
-        token: action.payload.token,
-        isAuthenticated: true,
-      };
+    // case ActionTypes.LOGIN_REQUEST:
+    //   localStorage.setItem("userInfo", JSON.stringify(action.payload.user));
+    //   localStorage.setItem("token", action.payload.token);
+    //   return {
+    //     ...state,
+    //     user: action.payload.user,
+    //     token: action.payload.token,
+    //     isAuthenticated: true,
+    //   };
 
     case ActionTypes.LOGIN_SUCCESS:
       localStorage.setItem("userInfo", JSON.stringify(action.payload.user));
@@ -59,7 +59,6 @@ function reducer(state: any, action: any  ) {
       };
 
     case ActionTypes.LOGIN_FAILURE:
-      console.log(action.payload.error);
       return {
         ...state,
         error: action.payload.error,
@@ -86,15 +85,14 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function login(identifier: string, password: string) {
     try {
-      dispatch({
-        type: ActionTypes.LOGIN_REQUEST,
-      });
+      // dispatch({
+      //   type: ActionTypes.LOGIN_REQUEST,
+      // });
 
       const { data } = await API.post("/api/v1/user/sign-in", {
         identifier,
         password,
       });
-      console.log("sumina", data);
       dispatch({
         type: ActionTypes.LOGIN_SUCCESS,
         payload: { user: data.data.user, token: data.data.accessToken },

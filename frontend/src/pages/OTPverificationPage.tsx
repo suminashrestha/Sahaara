@@ -11,23 +11,19 @@ function OTPverificationPage() {
   const { username } = useParams();
   const [otp, setOtp] = useState("");
 
-
   function handleOtpChange(e) {
     setOtp(e.target.value);
   }
   async function handleotp() {
-    console.log("data: ", otp, username);
     try {
       const { data } = await API.post("/api/v1/user/verify-code", {
         username,
         verifyCode: otp,
       });
-      console.log(data);
       navigate("/join/login");
-      toast.success(data.message)
-      } catch (error: any) {
-        console.log(error);
-        toast.success(error.response.data.message)
+      toast.success(data.message);
+    } catch (error: any) {
+      toast.success(error.response.data.message);
     }
   }
   return (

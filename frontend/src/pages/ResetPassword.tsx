@@ -30,10 +30,11 @@ function ResetPassword() {
             <IoArrowBackCircleSharp onClick={handleBack} size={40} />
             <div className="flex flex-col gap-5">
               <div className=" text-zinc-600">
-                <h1 className="text-3xl font-semibold">
-                  Forgot you password?
-                </h1>
-                <p>Please provide us with the email you used while registering and receive a OTP.</p>
+                <h1 className="text-3xl font-semibold">Forgot you password?</h1>
+                <p>
+                  Please provide us with the email you used while registering
+                  and receive a OTP.
+                </p>
               </div>
               <input
                 type="text"
@@ -51,7 +52,6 @@ function ResetPassword() {
                         email,
                       }
                     );
-                    console.log(data);
                     setResetPassword(true);
                     toast.success(data.message);
                   } catch (e: any) {
