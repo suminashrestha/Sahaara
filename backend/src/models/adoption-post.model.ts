@@ -48,7 +48,6 @@ const adoptionPostSchema: Schema<IAdoptionPost> = new Schema(
     category: String,
     adoptionPostImage: {
       type: String,
-      default: "",
     },
     adoptersList: [adopterSchema],
   },

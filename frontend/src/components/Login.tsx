@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-  const { login, dispatch } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const {
     register,
@@ -21,13 +21,11 @@ const Login = () => {
   });
 
   const submitData = async (data: { identifier: string; password: string }) => {
-    // console.log(data);
     const { identifier, password } = data;
     try {
-      await dispatch(login(identifier, password));
+      await login(identifier, password);
       navigate("/profile");
     } catch (error: any) {
-      console.log(error);
       toast.error(error.response.data.message);
     }
     reset();

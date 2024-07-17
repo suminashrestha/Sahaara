@@ -6,8 +6,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 
-function ResetForm({setResetPassword}: {setResetPassword: (arg: boolean)=>void}) {
-    const navigate=useNavigate()
+function ResetForm({
+  setResetPassword,
+}: {
+  setResetPassword: (arg: boolean) => void;
+}) {
+  const navigate = useNavigate();
   const { register, reset, handleSubmit } = useForm({
     defaultValues: {
       username: "",
@@ -23,7 +27,6 @@ function ResetForm({setResetPassword}: {setResetPassword: (arg: boolean)=>void})
     confirmNewPassword: string;
     verifyCode: string;
   }) => {
-    console.log(data);
     const { newPassword, username, confirmNewPassword, verifyCode } = data;
     try {
       const { data } = await API.post("/api/v1/user/reset-password", {
@@ -32,22 +35,20 @@ function ResetForm({setResetPassword}: {setResetPassword: (arg: boolean)=>void})
         confirmNewPassword,
         verifyCode,
       });
-      console.log(data);
-      toast.success(data.message)
-      navigate("/join/login")
+      toast.success(data.message);
+      navigate("/join/login");
     } catch (error: any) {
-      console.log(error);
-      toast.error(error.response.data.message)
+      toast.error(error.response.data.message);
     }
     reset();
   };
 
-  const handleBack=()=>{
-    setResetPassword(false)
-  }
+  const handleBack = () => {
+    setResetPassword(false);
+  };
   return (
     <div className="flex flex-col gap-6 justify-center items-center w-[40%]">
-            <IoArrowBackCircleSharp onClick={handleBack} size={30} />
+      <IoArrowBackCircleSharp onClick={handleBack} size={30} />
       <h2 className="text-3xl font-Oswald font-bold">Reset Password</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}

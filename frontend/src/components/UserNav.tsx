@@ -97,7 +97,7 @@ function LandingNav() {
                 alt="user"
                 className="rounded-[50%] w-[30px]"
               />
-              <h3 className="font-semibold">{user.username}</h3>
+              <h3 className="font-semibold">{user?.username}</h3>
             </div>
           </NavLink>
           <ul className="px-2">
