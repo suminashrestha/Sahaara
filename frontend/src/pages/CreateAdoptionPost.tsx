@@ -53,7 +53,7 @@ const CreateAdoptionPost = () => {
       console.log(response.data);
       toast.success("Adoption post created successfully!");
       reset(); // Reset form after submission
-      navigate("/"); // Navigate to view posts page
+      // navigate("/"); // Navigate to view posts page
     } catch (error) {
       console.error("Error creating adoption post:", error);
       toast.error("Failed to create adoption post.");
@@ -132,7 +132,7 @@ const CreateAdoptionPost = () => {
               type="file"
               className="p-3 text-sm text-black rounded-lg bg-gray-100 focus:outline-none"
               {...register("adoptionPostImage", {
-                required: "Image is required",
+                // required: "Image is required",
               })}
             />
 

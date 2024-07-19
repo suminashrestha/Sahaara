@@ -42,9 +42,9 @@ export default function App() {
             <Route
               path="profile"
               element={
-                <ProtectedRoute>
+
                   <Landing />
-                </ProtectedRoute>
+
               }
             >
                 <Route index element={<Navigate to="rescue"/>}/>

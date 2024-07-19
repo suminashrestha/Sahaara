@@ -60,7 +60,7 @@ const rescuePostSchema: Schema<IRescuePost> = new Schema(
     location: String,
     rescuePostImage: {
       type: String,
-      required: true,
+      // required: false,
     },
     likes: [likeSchema],
 

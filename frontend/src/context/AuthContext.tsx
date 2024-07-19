@@ -38,15 +38,15 @@ const initialState = {
 
 function reducer(state: any, action: any  ) {
   switch (action.type) {
-    case ActionTypes.LOGIN_REQUEST:
-      localStorage.setItem("userInfo", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", action.payload.token);
-      return {
-        ...state,
-        user: action.payload.user,
-        token: action.payload.token,
-        isAuthenticated: true,
-      };
+    // case ActionTypes.LOGIN_REQUEST:
+    //   localStorage.setItem("userInfo", JSON.stringify(action.payload.user));
+    //   localStorage.setItem("token", action.payload.token);
+    //   return {
+    //     ...state,
+    //     user: action.payload.user,
+    //     token: action.payload.token,
+    //     isAuthenticated: true,
+    //   };
 
     case ActionTypes.LOGIN_SUCCESS:
       localStorage.setItem("userInfo", JSON.stringify(action.payload.user));
@@ -86,9 +86,9 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
   async function login(identifier: string, password: string) {
     try {
-      dispatch({
-        type: ActionTypes.LOGIN_REQUEST,
-      });
+      // dispatch({
+      //   type: ActionTypes.LOGIN_REQUEST,
+      // });
 
       const { data } = await API.post("/api/v1/user/sign-in", {
         identifier,

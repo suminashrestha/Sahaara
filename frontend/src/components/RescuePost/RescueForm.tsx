@@ -1,6 +1,6 @@
 import { ChangeEvent, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import API from "../../../config/baseUrl";
+import API from "../../config/baseUrl";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
@@ -8,7 +8,7 @@ interface FormData {
   title: string;
   description: string;
   locationEnabled: boolean;
-  rescuePostImage: FileList;
+  rescuePostImage: File | null;
 }
 
 function RescueForm() {
@@ -19,7 +19,7 @@ function RescueForm() {
       title: "",
       description: "",
       locationEnabled: false,
-      rescuePostImage: {} as FileList,
+      rescuePostImage: null,
     },
   });
   const navigate=useNavigate()
@@ -46,12 +46,16 @@ function RescueForm() {
     formData.append("title",data.title)
     formData.append("description",data.description)
 
-    if (data.rescuePostImage.length > 0) {
-      formData.append("rescuePostImage", data.rescuePostImage[0]);
+    if (data.rescuePostImage) {
+      formData.append("rescuePostImage", data.rescuePostImage);
     }
 
     try {
-      const {data}= await API.post("/api/v1/rescue-posts", formData)
+      const {data}= await API.post("/api/v1/rescue-posts", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       console.log(data)
       // navigate()
       toast.success(data.message)
