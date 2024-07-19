@@ -1,22 +1,15 @@
-import { useForm } from "react-hook-form";
+import { Outlet } from "react-router";
+import RescueNav from "./RescueNav";
 
 function RescuePostSideBar() {
-  const { register, reset, handleSubmit } = useForm({
-    defaultValues: {
-      title: "",
-      description: "",
-      location: {
-        lat: 27.7172,
-        lng: 85.324,
-      },
-      rescuePostImage: "",
-    },
-  });
-
-  return <div className="h-[full] bg-red-500 w-[40%]">
-        <form></form>
-
-  </div>;
+  return (
+    <div className="h-[full] w-[40%] flex justify-center overflow-y-auto">
+      <div className="flex flex-col w-[90%]">
+        <RescueNav/>
+        <Outlet />
+      </div>
+    </div>
+  );
 }
 
 export default RescuePostSideBar;
