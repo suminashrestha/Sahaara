@@ -6,11 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-<<<<<<< HEAD
   const { login} = useAuth();
-=======
-  const { login } = useAuth();
->>>>>>> 634d36fe2c11fdcc6faa848c51f003cfe5eff445
   const navigate = useNavigate();
   const {
     register,
@@ -27,11 +23,7 @@ const Login = () => {
   const submitData = async (data: { identifier: string; password: string }) => {
     const { identifier, password } = data;
     try {
-<<<<<<< HEAD
-      login(identifier,password)
-=======
       await login(identifier, password);
->>>>>>> 634d36fe2c11fdcc6faa848c51f003cfe5eff445
       navigate("/profile");
     } catch (error: any) {
       toast.error(error.response.data.message);

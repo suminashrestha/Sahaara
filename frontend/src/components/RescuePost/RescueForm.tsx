@@ -88,7 +88,6 @@ function RescueForm() {
         ></textarea>
         <div className="flex justify-between items-center">
             Enable location:{" "}
-
             <input
               type="checkbox"
               {...register("locationEnabled")}
@@ -96,8 +95,8 @@ function RescueForm() {
             />
         </div>
 
-        <div onClick={handleClick} className="cursor-pointer bg-slate-200">
-          <h3>Choose images</h3>
+        <div onClick={handleClick} className="cursor-pointer bg-slate-200 p-9">
+          <h3 className="text-center">Please choose an image to upload</h3>
           <img src={img} alt="Uploaded" className="h-auto w-full" />
           <input
             type="file"

@@ -10,7 +10,6 @@ import CreateAdoptionPost from "../pages/CreateAdoptionPost";
 function UserNav() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
 
@@ -32,9 +31,11 @@ function UserNav() {
   }, []);
   function toggleDropdown() {
     setIsDropdownVisible((isDropdownVisible) => !isDropdownVisible);
+    setIsVisible(false)
   }
   function handleVisiblity() {
     setIsVisible((isVisible) => !isVisible);
+    setIsDropdownVisible(false)
   }
 
   return (
@@ -45,8 +46,8 @@ function UserNav() {
     >
       <nav className="flex justify-center">
         <ul className=" h-20 flex justify-between items-center w-full shadow-md px-2">
-          <li className="font-Oswald font-thin text-2xl h-[100%] flex items-center">
-            <img src="/logo.png" alt="sahaara" className="h-[90%]" />
+          <li className="font-Oswald font-thin text-2xl h-[100%] flex items-center" >
+            <img src="/logo.png" alt="sahaara" className="h-[90%]" onClick={()=>navigate("/profile/rescue")}/>
           </li>
           <div className="flex items-center justify-end w-[30%] gap-6">
             <li>

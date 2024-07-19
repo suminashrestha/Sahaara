@@ -54,7 +54,6 @@ const CreateAdoptionPost = () => {
 
       toast.success("Adoption post created successfully!");
       reset(); // Reset form after submission
-      navigate("/"); // Navigate to view posts page
     } catch (error) {
       toast.error("Failed to create adoption post.");
     }
