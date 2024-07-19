@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface AdoptionPost {
-  _id: string;
+  adoptionPostAuthor: string;
   title: string;
   description: string;
   location?: string;
