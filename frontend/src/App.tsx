@@ -14,13 +14,15 @@ import Landing from "./pages/Landing";
 import Donation from "./pages/Donation";
 import Success from "./pages/Success";
 import Cancel from "./pages/Cancel";
-import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import ViewAdoptionPost from "./pages/ViewAdoptionPost";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+
 export default function App() {
   return (
     <>
-      <AuthProvider>
+      <Provider store={store}>
         <ToastContainer position="top-right" />
         <BrowserRouter>
           <Routes>
@@ -67,7 +69,7 @@ export default function App() {
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>
-      </AuthProvider>
+      </Provider>
     </>
   );
 }

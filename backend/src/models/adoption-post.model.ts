@@ -6,6 +6,7 @@ export interface IAdoptionPost extends Document {
   description: string;
   location?: string;
   category?: string;
+  isAdopted: boolean;
   adoptionPostImage?: string;
   adoptersList?: IAdopter[];
 }
@@ -43,6 +44,10 @@ const adoptionPostSchema: Schema<IAdoptionPost> = new Schema(
     description: {
       type: String,
       required: true,
+    },
+    isAdopted: {
+      type: Boolean,
+      default: false,
     },
     location: String,
     category: String,

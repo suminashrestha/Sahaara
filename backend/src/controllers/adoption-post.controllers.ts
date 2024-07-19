@@ -162,23 +162,25 @@ const updateAdoptionPost = asyncHandler(
   }
 );
 
-const getSingleAdoptionPost = asyncHandler(async (req: Request, res: Response) => {
-  const { postId } = req.params;
+const getSingleAdoptionPost = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { postId } = req.params;
 
-  const post = await AdoptionPost.findById(postId);
-  if (!post) {
-    return res.status(404).json({
-      success: false,
-      error: "Post couldnot be fetched",
-      message: "Post not found",
+    const post = await AdoptionPost.findById(postId);
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        error: "Post couldnot be fetched",
+        message: "Post not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Post fetched",
+      data: post,
     });
   }
-  res.status(200).json({
-    success: true,
-    message: "Post fetched",
-    data: post,
-  });
-});
+);
 
 export {
   createAdoptionPost,

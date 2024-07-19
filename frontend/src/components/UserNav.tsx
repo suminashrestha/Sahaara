@@ -2,10 +2,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { useEffect, useState } from "react";
 import { PiMessengerLogoLight } from "react-icons/pi";
-import { IoSettings } from "react-icons/io5";
 import { IoLogOut } from "react-icons/io5";
-import { useAuth } from "../context/AuthContext";
-import CreateAdoptionPost from "../pages/CreateAdoptionPost";
+import { useAppDispatch, useAppSelector } from "../hooks/userRedux";
+import { logout } from "../redux/actions/authActions";
 
 function LandingNav() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -14,7 +13,17 @@ function LandingNav() {
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
 
-  const { logout, user } = useAuth();
+  const dispatch = useAppDispatch();
+  const { isLoginSuccessful, user } = useAppSelector(
+    (state) => state.authentication
+  );
+
+  useEffect(() => {
+    if (!isLoginSuccessful) {
+      navigate("/");
+    }
+  }, [isLoginSuccessful]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -105,8 +114,7 @@ function LandingNav() {
               icon={<IoLogOut size={30} />}
               text="Log Out"
               onClick={() => {
-                logout();
-                navigate("/");
+                dispatch(logout());
               }}
             />
           </ul>

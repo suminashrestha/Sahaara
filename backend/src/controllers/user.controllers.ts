@@ -277,8 +277,8 @@ const getVerificationCode = asyncHandler(
 );
 
 const resetPassword = asyncHandler(async (req: Request, res: Response) => {
-  const { username, verifyCode, newPassword, confirmNewPassword } = req.body;
-  if (!username || !verifyCode || !newPassword || !confirmNewPassword) {
+  const { username, verifyCode, newPassword } = req.body;
+  if (!username || !verifyCode || !newPassword) {
     return res.status(400).json({
       success: false,
       message: "All fields are required",
@@ -300,12 +300,6 @@ const resetPassword = asyncHandler(async (req: Request, res: Response) => {
   const isVerifyCodeNotExpired = new Date(user.verifyCodeExpiry) > new Date();
 
   if (isVerifyCodeCorrect && isVerifyCodeNotExpired) {
-    if (newPassword !== confirmNewPassword) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Passwords donot match" });
-    }
-
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
     await user.save();
