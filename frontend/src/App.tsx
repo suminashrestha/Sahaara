@@ -21,6 +21,8 @@ import RescueForm from "./components/RescuePost/RescueForm";
 import ViewRescuePost from "./components/RescuePost/ViewRescuePost";
 
 import ViewAdoptionPost from "./pages/ViewAdoptionPost";
+import AdoptCat from "./components/AdoptionPost/AdoptCat";
+import AdoptDog from "./components/AdoptionPost/AdoptDog";
 export default function App() {
   return (
     <>
@@ -39,19 +41,12 @@ export default function App() {
               element={<OTPverificationPage />}
             />
             <Route path="reset" element={<ResetPassword />} />
-            <Route
-              path="profile"
-              element={
-
-                  <Landing />
-
-              }
-            >
-                <Route index element={<Navigate to="rescue"/>}/>
-                <Route path="rescue" element={<ViewRescuePost/>}/>
-                <Route path="createrescue" element={<RescueForm/>}/>
+            <Route path="profile" element={<Landing />}>
+              <Route index element={<Navigate to="rescue" />} />
+              <Route path="rescue" element={<ViewRescuePost />} />
+              <Route path="createrescue" element={<RescueForm />} />
             </Route>
-            
+
             <Route
               path="adoption"
               element={
@@ -68,6 +63,9 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/adoptcats" element={<AdoptCat />} />
+            <Route path="/adoptdogs" element={<AdoptDog />} />
+
             <Route path="join" element={<LoginSignup />}>
               <Route index element={<Navigate replace to="login" />} />
               <Route path="login" element={<Login />} />
