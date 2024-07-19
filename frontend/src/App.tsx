@@ -3,19 +3,23 @@ import Homepage from "./pages/Homepage";
 import About from "./pages/About";
 import ResetPassword from "./pages/ResetPassword";
 import Contact from "./pages/Contact";
+import LoginSignup from "./pages/SignupLogin";
+import OTPverificationPage from "./pages/OTPverificationPage";
+import Landing from "./pages/Landing";
+
 import Login from "./components/Login";
 import SignUp from "./components/Signup";
-import LoginSignup from "./pages/SignupLogin";
 import PageNotFound from "./pages/PageNotFound";
-import OTPverificationPage from "./pages/OTPverificationPage";
 import { ToastContainer } from "react-toastify";
 import CreateAdoptionPost from "./pages/CreateAdoptionPost";
-import Landing from "./pages/Landing";
 import Donation from "./pages/Donation";
 import Success from "./pages/Success";
 import Cancel from "./pages/Cancel";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import RescueForm from "./components/RescuePost/RescueForm";
+import ViewRescuePost from "./components/RescuePost/ViewRescuePost";
+
 import ViewAdoptionPost from "./pages/ViewAdoptionPost";
 export default function App() {
   return (
@@ -38,11 +42,16 @@ export default function App() {
             <Route
               path="profile"
               element={
-                <ProtectedRoute>
+
                   <Landing />
-                </ProtectedRoute>
+
               }
-            />
+            >
+                <Route index element={<Navigate to="rescue"/>}/>
+                <Route path="rescue" element={<ViewRescuePost/>}/>
+                <Route path="createrescue" element={<RescueForm/>}/>
+            </Route>
+            
             <Route
               path="adoption"
               element={

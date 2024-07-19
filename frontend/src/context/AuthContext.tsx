@@ -119,6 +119,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         token,
         isAuthenticated,
         login,
+        dispatch,
         logout,
         dispatch,
       }}
