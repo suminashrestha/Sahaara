@@ -31,12 +31,12 @@ const AuthContext = createContext<{
 });
 
 const initialState = {
-  user: null,
-  token: null,
-  isAuthenticated: false,
+  user: JSON.parse(localStorage.getItem("userInfo") || "null"),
+  token: localStorage.getItem("token"),
+  isAuthenticated: !!localStorage.getItem("token"),
 };
 
-function reducer(state: any, action: any  ) {
+function reducer(state: any, action: any) {
   switch (action.type) {
     // case ActionTypes.LOGIN_REQUEST:
     //   localStorage.setItem("userInfo", JSON.stringify(action.payload.user));
@@ -59,7 +59,6 @@ function reducer(state: any, action: any  ) {
       };
 
     case ActionTypes.LOGIN_FAILURE:
-      console.log(action.payload.error);
       return {
         ...state,
         error: action.payload.error,
@@ -94,7 +93,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         identifier,
         password,
       });
-      console.log("sumina", data);
       dispatch({
         type: ActionTypes.LOGIN_SUCCESS,
         payload: { user: data.data.user, token: data.data.accessToken },

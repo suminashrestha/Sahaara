@@ -37,14 +37,11 @@ function Signup() {
   const submitData = async(data: FieldValues) => {
     data.type = userMode;
     const { username, email, password, type }=data;
-    // console.log({ username, email, password, type })  
    try {
      const {data}= await API.post("/api/v1/user/sign-up", { username, email, password, type })
-     console.log(data)
      navigate(`/otpverify/${username}`)
      toast.success(data.message)
    } catch (error:any){
-     console.log(error)
      toast.error(error.response.data.message)
    }
     reset(); // Reset form after submission

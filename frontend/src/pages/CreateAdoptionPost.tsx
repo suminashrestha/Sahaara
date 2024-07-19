@@ -13,7 +13,7 @@ interface AdoptionPostSchema {
   description: string;
   location: string;
   category: string;
-  adoptionPostImage: File | null; // Define image as FileList or null
+  adoptionPostImage?: File | null;
 }
 
 const CreateAdoptionPost = () => {
@@ -23,13 +23,14 @@ const CreateAdoptionPost = () => {
     handleSubmit,
     reset,
     formState: { errors },
+    setValue,
   } = useForm<AdoptionPostSchema>({
     defaultValues: {
       title: "",
       description: "",
       location: "",
       category: "",
-      adoptionPostImage: null, // Initialize image as null
+      adoptionPostImage: null,
     },
   });
 
@@ -44,19 +45,24 @@ const CreateAdoptionPost = () => {
       if (data.adoptionPostImage) {
         formData.append("adoptionPostImage", data.adoptionPostImage);
       }
+
       const response = await API.post("/api/v1/adoption-posts", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
-      console.log(response.data);
       toast.success("Adoption post created successfully!");
       reset(); // Reset form after submission
-      // navigate("/"); // Navigate to view posts page
+      navigate("/"); // Navigate to view posts page
     } catch (error) {
-      console.error("Error creating adoption post:", error);
       toast.error("Failed to create adoption post.");
+    }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setValue("adoptionPostImage", e.target.files[0]);
     }
   };
 
@@ -113,16 +119,15 @@ const CreateAdoptionPost = () => {
               className="p-3 text-sm text-black rounded-lg bg-gray-100 focus:outline-none"
               placeholder="Category"
               type="text"
-              {...register("category", { required: "Location is required" })}
+              {...register("category", { required: "Category is required" })}
               autoComplete="off"
             />
             {errors.category && (
               <ErrorText message={errors.category.message as string} />
             )}
 
-            {/* Input for image upload */}
             <label
-              htmlFor="image"
+              htmlFor="adoptionPostImage"
               className="block text-sm font-medium text-gray-700"
             >
               Image
@@ -132,7 +137,7 @@ const CreateAdoptionPost = () => {
               type="file"
               className="p-3 text-sm text-black rounded-lg bg-gray-100 focus:outline-none"
               {...register("adoptionPostImage", {
-                // required: "Image is required",
+                required: "Image is required",
               })}
             />
 

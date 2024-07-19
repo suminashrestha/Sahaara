@@ -201,7 +201,6 @@ const codeVerifier = asyncHandler(
     const verifyCodeValidation = verifySchema.safeParse({ code: verifyCode });
 
     if (!verifyCodeValidation.success) {
-      console.log("verifyCodeValidation");
       return res.status(400).json({
         success: false,
         message: verifyCodeValidation.error.errors[0].message,
