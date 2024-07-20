@@ -3,7 +3,7 @@ import Button from "./Button";
 import { useEffect, useState } from "react";
 import { PiMessengerLogoLight } from "react-icons/pi";
 import { IoLogOut } from "react-icons/io5";
-import { useAppDispatch, useAppSelector } from "../hooks/userRedux";
+import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { logout } from "../redux/actions/authActions";
 
 function UserNav() {
@@ -67,7 +67,7 @@ function UserNav() {
                     <li
                       className="py-2 px-4 hover:bg-gray-100 cursor-pointer rounded-md"
                       onClick={() => {
-                        navigate("/adoption");
+                        navigate("/createadoption");
                       }}
                     >
                       Create Adoption Posts

@@ -13,14 +13,14 @@ const reducer = (
   action: any
 ): AdoptionReducerInterface => {
   switch (action.type) {
-    case ActionTypes.GET_ALL_POSTS_REQUEST:
+    case ActionTypes.GET_ALL_ADOPTION_POSTS_REQUEST:
       return {
         ...state,
         error: null,
         isLoading: true,
       };
 
-    case ActionTypes.GET_ALL_POSTS_SUCCESS:
+    case ActionTypes.GET_ALL_ADOPTION_POSTS_SUCCESS:
       return {
         ...state,
         posts: action.payload.posts,
@@ -28,7 +28,7 @@ const reducer = (
         error: null,
       };
 
-    case ActionTypes.GET_ALL_POSTS_FAILURE:
+    case ActionTypes.GET_ALL_ADOPTION_POSTS_FAILURE:
       return {
         ...state,
         isLoading: false,
@@ -36,14 +36,14 @@ const reducer = (
         error: action.payload.error,
       };
 
-    case ActionTypes.GET_SINGLE_POST_REQUEST:
+    case ActionTypes.GET_SINGLE_ADOPTION_POST_REQUEST:
       return {
         ...state,
         error: null,
         isLoading: true,
       };
 
-    case ActionTypes.GET_SINGLE_POST_SUCCESS:
+    case ActionTypes.GET_SINGLE_ADOPTION_POST_SUCCESS:
       return {
         ...state,
         post: action.payload.post,
@@ -51,7 +51,7 @@ const reducer = (
         error: null,
       };
 
-    case ActionTypes.GET_SINGLE_POST_FAILURE:
+    case ActionTypes.GET_SINGLE_ADOPTION_POST_FAILURE:
       return {
         ...state,
         isLoading: false,

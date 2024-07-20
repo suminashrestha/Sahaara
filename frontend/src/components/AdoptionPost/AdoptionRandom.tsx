@@ -1,32 +1,46 @@
-import React, { useEffect, useState } from "react";
-import API from "../../config/baseUrl";
+import React from "react";
 import DisplayCards from "./DisplayCards";
-import { AdoptionPost } from "../../types/AdoptionPost";
 
 const AdoptionRandom: React.FC = () => {
-  const [posts, setPosts] = useState<AdoptionPost[]>([]);
+  const dummyPosts = [
+    {
+      adoptionImage: "https://via.placeholder.com/150",
+      title: "Lovely Cat",
+      description: "A lovely cat looking for a home.",
+      location: "New York",
+      author: "John Doe",
+    },
+    {
+      adoptionImage: "https://via.placeholder.com/150",
+      title: "Friendly Dog",
+      description: "A friendly dog looking for a home.",
+      location: "Los Angeles",
+      author: "Jane Smith",
+    },
+    {
+      adoptionImage: "https://via.placeholder.com/150",
+      title: "Friendly Dog",
+      description: "A friendly dog looking for a home.",
+      location: "Los Angeles",
+      author: "Jane Smith",
+    },
+    {
+      adoptionImage: "https://via.placeholder.com/150",
+      title: "Friendly Dog",
+      description: "A friendly dog looking for a home.",
+      location: "Los Angeles",
+      author: "Jane Smith",
+    },
+    {
+      adoptionImage: "https://via.placeholder.com/150",
+      title: "Friendly Dog",
+      description: "A friendly dog looking for a home.",
+      location: "Los Angeles",
+      author: "Jane Smith",
+    }
+  ];
 
-  useEffect(() => {
-    const fetchRandomPosts = async () => {
-      try {
-        const response = await API.get("/api/v1/adoption-posts");
-        console.log(response.data);
-        setPosts(response.data);
-      } catch (error) {
-        console.error("Failed to fetch random adoption posts", error);
-      }
-    };
-
-    fetchRandomPosts();
-  }, []);
-
-  return (
-    <div className="mt-20 p-2">
-      {posts.map((post) => (
-        <DisplayCards key={post._id} post={post} />
-      ))}
-    </div>
-  );
+  return <DisplayCards posts={dummyPosts} />;
 };
 
 export default AdoptionRandom;

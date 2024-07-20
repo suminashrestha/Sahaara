@@ -22,7 +22,7 @@ router
   .post(
     authenticateWithJwt,
     authorize(["individual", "organization"]),
-    upload.single("adoptionPostImage"),
+    upload.single("rescuePostImage"),
     createRescuePost
   );
 
@@ -31,7 +31,7 @@ router
   .delete(authenticateWithJwt, deleteRescuePost)
   .put(
     authenticateWithJwt,
-    upload.single("adoptionPostImage"),
+    upload.single("rescuePostImage"),
     updateRescuePost
   )
   .get(authenticateWithJwt, getSingleRescuePost);

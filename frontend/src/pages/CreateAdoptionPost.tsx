@@ -17,7 +17,6 @@ interface AdoptionPostSchema {
 }
 
 const CreateAdoptionPost = () => {
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -53,6 +52,7 @@ const CreateAdoptionPost = () => {
       });
 
       toast.success("Adoption post created successfully!");
+      
       reset();
       // navigate("/");
     } catch (error) {

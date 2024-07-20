@@ -9,25 +9,17 @@ interface FormData {
   description: string;
   locationEnabled: boolean;
   rescuePostImage: File | null;
-  position : {
-    lat: string,
-    lng: string
-  }
 }
 
 function RescueForm() {
   const [img, setImg] = useState<string>("/upload.png");
   const imgRef = useRef<HTMLInputElement>(null);
-  const { register, handleSubmit, reset, watch } = useForm<FormData>({
+  const { register, handleSubmit, reset, watch, setValue } = useForm<FormData>({
     defaultValues: {
       title: "",
       description: "",
       locationEnabled: false,
       rescuePostImage: null,
-      position : {
-        lat: "" ,
-        lng: ""
-      }
     },
   });
   const { isLoading, position, error, getPosition } = useGeolocation();
@@ -39,7 +31,9 @@ function RescueForm() {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setImg(reader.result as string);
+        setValue("rescuePostImage", file);
+      setImg(reader.result as string);
+
       };
       reader.readAsDataURL(file);
     }
@@ -77,6 +71,7 @@ function RescueForm() {
       });
       console.log(data);
       toast.success(data.message);
+      setImg('/upload.png')
       reset(); // Reset form after submission
     } catch (error: any) {
       console.log(error);
@@ -85,7 +80,7 @@ function RescueForm() {
   };
 
   return (
-    <div className="w-full h-[80%] p-5 rounded-lg shadow-md overflow-y-auto">
+    <div className="w-full h-[80%] p-5 rounded-lg shadow-md overflow-y-auto bg-white">
       <form
         className="flex flex-col gap-6 text-zinc-600"
         onSubmit={handleSubmit(onSubmit)}
@@ -124,7 +119,7 @@ function RescueForm() {
           onClick={handleClick}
           className="cursor-pointer bg-white shadow-md p-9"
         >
-          <h3 className="text-center">Please choose an image to upload</h3>
+          <h3 className="text-center mt-8">Please choose an image to upload</h3>
           <img src={img} alt="Uploaded" className="h-auto w-full" />
           <input
             type="file"

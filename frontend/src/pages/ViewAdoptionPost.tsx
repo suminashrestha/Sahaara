@@ -5,7 +5,7 @@ const ViewAdoptionPost = () => {
   return (
     <div>
       <UserNav />
-      <div className="mt-20 p-10">
+      <div className="mt-20 p-10 bg-slate-100">
         <div className="flex">
           <label htmlFor="filter">
             <FaFilter size={25} />
