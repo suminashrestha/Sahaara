@@ -46,7 +46,7 @@ const getAllRescuePosts = asyncHandler(async (req: Request, res: Response) => {
 
 const createRescuePost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const { title, description, location } = req.body;
+    const { title, description, lat,lng } = req.body;
     let rescuePostImage = "";
     if (req.file?.path) {
       rescuePostImage = req.file.path;
@@ -56,7 +56,10 @@ const createRescuePost = asyncHandler(
       rescuePostAuthor: req.user._id,
       title,
       description,
-      location: location ?? "",
+      location: {
+        lng: Number(lng),
+        lat: Number(lat)
+      },
       rescuePostImage,
       likes: [],
       comments: [],

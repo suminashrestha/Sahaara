@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema, model } from "mongoose";
+import { string } from "zod";
 
 export interface IComment extends Document {
   commenter: mongoose.Schema.Types.ObjectId;
@@ -13,17 +14,25 @@ export interface IRescuePost extends Document {
   rescuePostAuthor: mongoose.Schema.Types.ObjectId;
   title: string;
   description: string;
-  location?: string;
+  location?: ILocation;
   rescuePostImage?: string;
   likes: ILike[];
   comments: IComment[];
 }
 
+interface ILocation extends Document{
+  lng: number,
+  lat: number
+}
 const likeSchema: Schema<ILike> = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+});
+const locationSchema: Schema<ILocation> = new Schema({
+  lng: Number,
+  lat: Number
 });
 
 const commentSchema: Schema<IComment> = new Schema(
@@ -57,7 +66,7 @@ const rescuePostSchema: Schema<IRescuePost> = new Schema(
       type: String,
       required: true,
     },
-    location: String,
+    location: locationSchema,
     rescuePostImage: {
       type: String,
     },

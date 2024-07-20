@@ -10,11 +10,11 @@ function RescueMap() {
     <div className="h-full w-[60%] bg-yellow-300 z-10">
       <MapContainer
         className="h-full"
-        center={[40, 0]}
+        center={[27.6690659,85.4479547]}
         zoom={13}
         scrollWheelZoom={true}
       >
-        <Marker position={[40, 0]}>
+        <Marker position={[27.6690659,85.4479547]}>
           <Popup>
             A popup for your marker.
           </Popup>
