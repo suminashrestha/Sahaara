@@ -20,7 +20,7 @@ const sendVerificationCode = (email: string, code: string) => {
   const main = async () => {
     try {
       const info = await transporter.sendMail({
-        from: '"Sahaara 👻" <royalshirshak000@gmail.com>',
+        from: '"Sahaara 🐶" <sahaara201@gmail.com>',
         to: email,
         subject: "Your Verification Code",
         text: `Your verification code is ${code}`,
