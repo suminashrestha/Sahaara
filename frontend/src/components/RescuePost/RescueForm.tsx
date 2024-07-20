@@ -1,7 +1,6 @@
 import { ChangeEvent, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import API from "../../config/baseUrl";
-import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import useGeolocation from "../../hooks/useGeolocation"; // Adjust the path to your useGeolocation hook
 

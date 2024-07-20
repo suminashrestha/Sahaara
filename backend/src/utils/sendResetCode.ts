@@ -20,7 +20,7 @@ const sendResetCode = (email: string, code: string) => {
   const main = async () => {
     try {
       const info = await transporter.sendMail({
-        from: '"Sahaara 👻" <royalshirshak000@gmail.com>',
+        from: '"Sahaara 🐶" <sahaara201@gmail.com>',
         to: email,
         subject: "Your Reset Otp Code",
         text: `Your reset otp code is ${code}`,
