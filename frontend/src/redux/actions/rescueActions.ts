@@ -26,4 +26,6 @@ function getAllRescuePosts(): Actiontype {
   };
 }
 
+
+
 export { getAllRescuePosts };

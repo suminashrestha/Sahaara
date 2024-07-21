@@ -2,15 +2,24 @@ import { useState } from "react";
 import { AiOutlineLike } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
 import { AiFillLike } from "react-icons/ai";
-import { DiVim } from "react-icons/di";
 import Button from "../Button";
+import { RescuePostSchema } from "../../redux/reducers/RescueReducer/RescueReducerInterface";
+import API from "../../config/baseUrl";
 
-function RescueCard({ post }) {
+
+function RescueCard({ post }: {post: RescuePostSchema}) {
   const [isLiked, setIsliked] = useState(false);
   const [openComment, setOpenComment] = useState(false);
 
-  const handleLike = () => {
-    setIsliked((isLiked) => !isLiked);
+  const handleLike = async() => {
+    // setIsliked((isLiked) => !isLiked);
+
+    try{
+      const response = await API.put(`/api/v1/rescue-posts/${post._id}/like`)
+      console.log(response)
+    }catch(e){
+      console.log("hello bello cello")
+    }
   };
 
   const handleComment = () => {

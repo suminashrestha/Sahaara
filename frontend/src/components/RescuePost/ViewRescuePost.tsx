@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import RescueCard from "./RescueCard";
-import API from "../../config/baseUrl";
 import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { getAllRescuePosts } from "../../redux/actions/rescueActions";
 import { toast } from "react-toastify";

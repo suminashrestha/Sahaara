@@ -1,10 +1,10 @@
 export default interface RescueReducerInterface {
   isLoading: boolean;
   error?: string | null;
-  posts: Post[];
+  posts: RescuePostSchema[];
 }
 
-interface Post {
+export interface RescuePostSchema {
   _id: string;
   authorUserName: string;
   title: string;

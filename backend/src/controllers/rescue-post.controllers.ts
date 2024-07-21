@@ -4,6 +4,7 @@ import asyncHandler from "../utils/asyncHandler";
 import { AuthRequest } from "./adoption-post.controllers";
 import { Individual } from "../models/individual.model";
 import { Organization } from "../models/organization.model";
+import mongoose from "mongoose";
 
 const getAllRescuePosts = asyncHandler(async (req: Request, res: Response) => {
   const rescuePosts = await RescuePost.aggregate([
