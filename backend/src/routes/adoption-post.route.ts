@@ -13,7 +13,7 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(getAllAdoptionPosts)
+  .get(authenticateWithJwt, getAllAdoptionPosts)
   .post(
     authenticateWithJwt,
     authorize(["individual", "organization"]),

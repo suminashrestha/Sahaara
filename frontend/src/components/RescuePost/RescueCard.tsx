@@ -2,10 +2,20 @@ import { useState } from "react";
 import { AiOutlineLike } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
 import { AiFillLike } from "react-icons/ai";
-import { DiVim } from "react-icons/di";
 import Button from "../Button";
 
-function RescueCard({ post }) {
+interface RescueCardProps {
+  post: {
+    authorUserName: string;
+    title: string;
+    description: string;
+    rescuePostImage?: string;
+    likes: Array<any>;
+    comments: Array<any>;
+  };
+}
+
+const RescueCard: React.FC<RescueCardProps> = ({ post }) => {
   const [isLiked, setIsliked] = useState(false);
   const [openComment, setOpenComment] = useState(false);
 
@@ -21,30 +31,30 @@ function RescueCard({ post }) {
     <div className="flex flex-col w-full shadow-md rounded-lg bg-white overflow-y-auto text-zinc-600">
       <div className="h-[60px] w-full flex items-center px-4 gap-4">
         <div className="rounded-[50%] bg-black w-11 h-11 text-white flex justify-center items-center">
-          {
-            post.authorUserName.charAt(0).toUpperCase()
-          }
-          {/* <img src="" alt="userImage" /> */}
+          {post.authorUserName.charAt(0).toUpperCase()}
         </div>
         <div className="flex flex-col">
           <h3 className="text-md">{post?.authorUserName}</h3>
           <h3 className="text-sm"> eta chai date </h3>
         </div>
       </div>
-      {/* description */}
       <div className="p-2 flex flex-col">
         <h2 className="font-bold">{post?.title}</h2>
         <p>{post?.description}</p>
       </div>
       <div className="h-[360px] w-full flex items-center justify-center">
-        <img src={`/Users/somash/Desktop/Sahaara/backend/${post?.rescuePostImage}`} alt="" className="h-[100%] w-[100%]" />
+        {post.rescuePostImage && (
+          <img
+            src={post.rescuePostImage}
+            alt=""
+            className="h-[100%] w-[100%]"
+          />
+        )}
       </div>
-
       <div className="h-[30px] w-full flex px-5 gap-4 border-b-2 justify-between">
         <h3>{post?.likes.length} likes</h3>
         <h3>{post?.comments.length} comments</h3>
       </div>
-
       <div className="h-[50px] w-full flex items-center border-b-2">
         <button
           className="w-[50%] text-center flex justify-center gap-2 items-center hover:bg-slate-100"
@@ -73,11 +83,9 @@ function RescueCard({ post }) {
           </form>
           comments appear here
         </div>
-      ) : (
-        ""
-      )}
+      ) : null}
     </div>
   );
-}
+};
 
 export default RescueCard;

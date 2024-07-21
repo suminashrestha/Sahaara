@@ -40,11 +40,11 @@ function UserNav() {
   }, []);
   function toggleDropdown() {
     setIsDropdownVisible((isDropdownVisible) => !isDropdownVisible);
-    setIsVisible(false)
+    setIsVisible(false);
   }
   function handleVisiblity() {
     setIsVisible((isVisible) => !isVisible);
-    setIsDropdownVisible(false)
+    setIsDropdownVisible(false);
   }
 
   return (
@@ -55,10 +55,17 @@ function UserNav() {
     >
       <nav className="flex justify-center backdrop-blur-xl">
         <ul className=" h-20 flex justify-between items-center w-full shadow-md px-2 ">
-          <li className="font-Oswald font-thin text-2xl h-[100%] flex items-center" >
-            <img src="/logo.png" alt="sahaara" className="h-[90%]" onClick={()=>navigate("/profile/rescue")}/>
+          <li className="font-Oswald font-thin text-2xl h-[100%] flex items-center">
+            <img
+              src="/logo.png"
+              alt="sahaara"
+              className="h-[90%]"
+              onClick={() => navigate("/profile/rescue")}
+            />
           </li>
+
           <div className="flex items-center justify-end w-[30%] gap-6">
+            {<li></li>}
             <li>
               <Button onClick={toggleDropdown}>Adoption Portal</Button>
               {isDropdownVisible && (
