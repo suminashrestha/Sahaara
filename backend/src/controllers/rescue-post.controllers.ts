@@ -2,39 +2,21 @@ import { Request, Response } from "express";
 import { IComment, ILike, RescuePost } from "../models/rescue-post.model";
 import asyncHandler from "../utils/asyncHandler";
 import { AuthRequest } from "./adoption-post.controllers";
-import { Individual } from "../models/individual.model";
-import { Organization } from "../models/organization.model";
-import mongoose from "mongoose";
+import { User } from "../models/user.model";
 
 const getAllRescuePosts = asyncHandler(async (req: Request, res: Response) => {
-  const rescuePosts = await RescuePost.aggregate([
-    {
-      $lookup: {
-        from: "users",
-        localField: "rescuePostAuthor",
-        foreignField: "_id",
-        as: "authorInfo",
-      },
-    },
-    { $unwind: "$authorInfo" },
-    {
-      $project: {
-        title: 1,
-        description: 1,
-        location: 1,
-        rescuePostImage: 1,
-        likes: 1,
-        comments: 1,
-        authorUserName: "$authorInfo.username",
-      },
-    },
-  ]).exec();
+  console.log("Fetching all rescue posts");
+  const rescuePosts = await RescuePost.find({}).populate({
+    path: "rescuePostAuthor",
+    select: "username type profile",
+    populate: { path: "profile", select: "profilePicture" },
+  });
 
-  if (!rescuePosts) {
+  if (!rescuePosts.length) {
     return res.status(404).json({
-      succses: false,
+      success: false,
       message: "No Posts found",
-      error: "Something went wrong while fetching datas",
+      error: "Something went wrong while fetching data",
     });
   }
 
@@ -47,10 +29,13 @@ const getAllRescuePosts = asyncHandler(async (req: Request, res: Response) => {
 
 const createRescuePost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const { title, description, lat,lng } = req.body;
+    const { title, description, lat, lng } = req.body;
+
     let rescuePostImage = "";
-    if (req.file?.path) {
-      rescuePostImage = req.file.path;
+    if (req.file?.filename) {
+      rescuePostImage = ` ${req.protocol}://${req.get("host")}/images/${
+        req.file?.filename
+      }`;
     }
 
     const rescuePost = new RescuePost({
@@ -59,7 +44,7 @@ const createRescuePost = asyncHandler(
       description,
       location: {
         lng: Number(lng),
-        lat: Number(lat)
+        lat: Number(lat),
       },
       rescuePostImage,
       likes: [],
@@ -134,8 +119,11 @@ const updateRescuePost = asyncHandler(
     }
 
     if (req.file) {
-      updates.rescuePostImage = req.file.path;
+      updates.rescuePostImage = ` ${req.protocol}://${req.get("host")}/images/${
+        req.file?.filename
+      }`;
     }
+
     const updatedPost = await RescuePost.findByIdAndUpdate(postId, updates, {
       new: true,
     });
@@ -154,7 +142,12 @@ const getSingleRescuePost = asyncHandler(
   async (req: Request, res: Response) => {
     const { postId } = req.params;
 
-    const post = await RescuePost.findById(postId);
+    const post = await RescuePost.findById(postId).populate({
+      path: "rescuePostAuthor",
+      select: "username type profile",
+      populate: { path: "profile", select: "profilePicture" },
+    });
+
     if (!post) {
       return res.status(404).json({
         success: false,
@@ -173,26 +166,17 @@ const getSingleRescuePost = asyncHandler(
 const addComment = asyncHandler(async (req: AuthRequest, res: Response) => {
   const { postId } = req.params;
 
-  const post = await RescuePost.findOne({ _id: postId });
+  const post = await RescuePost.findById(postId);
   if (!post) {
     return res
       .status(404)
       .json({ message: `No post with id ${postId} found`, success: false });
   }
 
-  let user;
-  user = await Individual.findOne({
-    user: req.user._id,
-  });
-
-  if (!user) {
-    user = await Organization.findOne({
-      user: req.user._id,
-    });
-  }
+  let user = await User.findById(req.user._id);
 
   const newComment = {
-    name: user?.name,
+    name: user?.username,
     commenter: req.user._id,
     content: req.body.content,
   };

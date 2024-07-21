@@ -2,13 +2,23 @@ import { Response } from "express";
 import { VolunteerPost } from "../models/volunteer-post.model";
 import asyncHandler from "../utils/asyncHandler";
 import { AuthRequest } from "./adoption-post.controllers";
-import { Individual } from "../models/individual.model";
+import { User, UserType } from "../models/user.model";
+import { Profile } from "../models/profile.model";
 
 const getAllVolunteerPosts = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const user = await Individual.findOne({
-      user: req.user._id,
+    const user = await User.findOne({
+      _id: req.user._id,
+      isVolunteer: true,
+      type: UserType.Individual,
     });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "No user found",
+      });
+    }
 
     if (user && !user.isVolunteer) {
       return res.status(400).json({
@@ -17,24 +27,12 @@ const getAllVolunteerPosts = asyncHandler(
       });
     }
 
-    const volunteerPosts = await VolunteerPost.aggregate([
-      {
-        $lookup: {
-          from: "users",
-          localField: "userId",
-          foreignField: "_id",
-          as: "organizationInfo",
-        },
-      },
-      { $unwind: "$organizationInfo" },
-      {
-        $project: {
-          title: 1,
-          description: 1,
-          authorUserName: "$organizationInfo.username",
-        },
-      },
-    ]).exec();
+    const volunteerPosts = await VolunteerPost.find()
+      .populate({
+        path: "user",
+        select: "username type",
+      })
+      .exec();
 
     if (!volunteerPosts) {
       return res.status(404).json({
@@ -54,15 +52,24 @@ const getAllVolunteerPosts = asyncHandler(
 
 const createVolunteerPost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const { title, description } = req.body;
+    const { title, location, date, eventTime } = req.body;
+
+    const [hoursStr, minutesStr] = eventTime.split(":");
+    const hours = String(parseInt(hoursStr, 10)).padStart(2, "0");
+    const minutes = String(parseInt(minutesStr, 10)).padStart(2, "0");
+
+    const formattedTime = `${hours}:${minutes}`;
 
     const volunteerPost = new VolunteerPost({
-      userId: req.user._id,
+      user: req.user._id,
       title,
-      description,
+      location,
+      date,
+      eventTime: formattedTime,
     });
 
     const savedPost = await volunteerPost.save();
+
     res.status(201).json({
       success: true,
       message: "New post added",
@@ -84,7 +91,7 @@ const deleteVolunteerPost = asyncHandler(
       });
     }
 
-    if (!req.user._id.equals(post.userId)) {
+    if (!req.user._id.equals(post.user)) {
       return res.status(403).json({
         success: false,
         message: "You are not eligible to delete this post",
@@ -122,7 +129,7 @@ const updateVolunteerPost = asyncHandler(
       });
     }
 
-    if (!req.user._id.equals(post.userId)) {
+    if (!req.user._id.equals(post.user)) {
       return res.status(403).json({
         success: false,
         message: "You are not eligible to update this post",
@@ -146,17 +153,6 @@ const updateVolunteerPost = asyncHandler(
 const getSingleVolunteerPost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const { postId } = req.params;
-
-    const user = await Individual.findOne({
-      user: req.user._id,
-    });
-
-    if (user && !user.isVolunteer) {
-      return res.status(400).json({
-        success: false,
-        message: "Since Volunteer mode is off,ACCESS DENIED",
-      });
-    }
 
     const post = await VolunteerPost.findById(postId);
     if (!post) {

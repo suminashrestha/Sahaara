@@ -2,12 +2,7 @@ import express from "express";
 import upload from "../middlewares/upload.middleware";
 import { authenticateWithJwt, authorize } from "../middlewares/auth.middleware";
 
-import {
-  createProfile,
-  getProfile,
-  getMyProfile,
-  toggleVolunteerMode,
-} from "../controllers";
+import { createProfile, getProfile, getMyProfile } from "../controllers";
 
 const router = express.Router();
 
@@ -31,13 +26,6 @@ router.get(
   authenticateWithJwt,
   authorize(["individual", "organization"]),
   getMyProfile
-);
-
-router.put(
-  "/toggle-volunteer-mode",
-  authenticateWithJwt,
-  authorize(["individual", "organization"]),
-  toggleVolunteerMode
 );
 
 export { router as profileRoute };

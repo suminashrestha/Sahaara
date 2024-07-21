@@ -1,31 +1,33 @@
 import mongoose, { Document, Schema, model } from "mongoose";
 
-export interface IOrganization extends Document {
+export interface IProfile extends Document {
   user: mongoose.Schema.Types.ObjectId;
   name: string;
-  location: string;
+  location?: string;
   profilePicture?: string;
 }
 
-const organizationSchema: Schema<IOrganization> = new Schema(
+const profileSchema: Schema<IProfile> = new Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     name: {
       type: String,
       required: true,
     },
-    location: String,
-    profilePicture: String,
+    location: {
+      type: String,
+    },
+    profilePicture: {
+      type: String,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-export const Organization = model<IOrganization>(
-  "Organization",
-  organizationSchema
-);
+export const Profile = model<IProfile>("Profile", profileSchema);

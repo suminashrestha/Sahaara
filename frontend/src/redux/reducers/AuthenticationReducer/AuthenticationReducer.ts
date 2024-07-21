@@ -22,6 +22,7 @@ const reducer = (
       };
 
     case ActionTypes.LOGIN_SUCCESS:
+      console.log(action.payload.user);
       localStorage.setItem("userInfo", JSON.stringify(action.payload.user));
       localStorage.setItem("token", action.payload.token);
       return {
