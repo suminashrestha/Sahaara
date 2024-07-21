@@ -3,27 +3,25 @@ import { AiOutlineLike } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
 import { AiFillLike } from "react-icons/ai";
 import Button from "../Button";
-import { RescuePostSchema } from "../../redux/reducers/RescueReducer/RescueReducerInterface";
 import API from "../../config/baseUrl";
 
-interface RescueCardProps {
-  post: {
-    authorUserName: string;
-    title: string;
-    description: string;
-    rescuePostImage?: string;
-    likes: Array<any>;
-    comments: Array<any>;
-  };
-}
+// interface RescueCardProps {
+//   post: {
+//     authorUserName: string;
+//     title: string;
+//     description: string;
+//     rescuePostImage?: string;
+//     likes: Array<any>;
+//     comments: Array<any>;
+//     _id: string;
+//   };
+// }
 
-const RescueCard: React.FC<RescueCardProps> = ({ post }) => {
+const RescueCard: React.FC<{post: any}> = ({ post }) => {
   const [isLiked, setIsliked] = useState(false);
   const [openComment, setOpenComment] = useState(false);
 
   const handleLike = async() => {
-    // setIsliked((isLiked) => !isLiked);
-
     try{
       const response = await API.put(`/api/v1/rescue-posts/${post._id}/like`)
       console.log(response)
@@ -40,10 +38,10 @@ const RescueCard: React.FC<RescueCardProps> = ({ post }) => {
     <div className="flex flex-col w-full shadow-md rounded-lg bg-white overflow-y-auto text-zinc-600">
       <div className="h-[60px] w-full flex items-center px-4 gap-4">
         <div className="rounded-[50%] bg-black w-11 h-11 text-white flex justify-center items-center">
-          {post.authorUserName.charAt(0).toUpperCase()}
+          {post.rescuePostAuthor.username.charAt(0).toUpperCase()}
         </div>
         <div className="flex flex-col">
-          <h3 className="text-md">{post?.authorUserName}</h3>
+          <h3 className="text-md">{post?.rescuePostAuthor.username}</h3>
           <h3 className="text-sm"> eta chai date </h3>
         </div>
       </div>

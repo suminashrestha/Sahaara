@@ -10,6 +10,7 @@ function getAllRescuePosts(): Actiontype {
     });
     try {
       const { data } = await API.get("/api/v1/rescue-posts");
+      console.log(data.data)
       dispatch({
         type: ActionTypes.GET_ALL_RESCUE_POSTS_SUCCESS,
         payload: { posts: data.data },

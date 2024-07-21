@@ -14,9 +14,9 @@ function ViewRescuePost() {
     dispatch(getAllRescuePosts());
   }, [dispatch]);
 
-  useEffect(()=>{
-    console.log(posts)
-  },[posts])
+  useEffect(() => {
+    console.log(posts);
+  }, [posts]);
 
   useEffect(() => {
     if (error) toast(error);
