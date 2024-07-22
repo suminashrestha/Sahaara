@@ -7,11 +7,26 @@ export default interface AdoptionReducerInterface {
 
 export interface AdoptionPostSchema {
   _id: string;
-  title: string;
-  description: string;
+  name: string;
+  age: string;
+  breed: string;
+  gender: string;
+  size: string;
+  color: string;
+  coatLength: string;
+  characterstics: string;
+  health: string;
+  contact: {
+    email: string;
+    phone: string;
+    name: string;
+    address: string;
+  };
+  myStory: string;
   category: string;
   adoptionImage?: string;
-  location?: string;
   authorUserName: string;
   createdAt: string;
+  adoptionPostImage?: File | null;
 }
+

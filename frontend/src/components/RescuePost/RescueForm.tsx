@@ -44,7 +44,7 @@ function RescueForm() {
   };
 
   const onSubmit = async (data: FormData) => {
-    if (locationEnabled && !position.position) {
+    if (locationEnabled && !position) {
       toast.error("Location is enabled, but no position data is available.");
       return;
     }
@@ -57,10 +57,10 @@ function RescueForm() {
       formData.append("rescuePostImage", data.rescuePostImage);
     }
 
-    if (locationEnabled && position.position) {
-      formData.append("lat", position.position.lat.toString());
-      formData.append("lng", position.position.lng.toString());
-      console.log(position.position);
+    if (locationEnabled && position) {
+      formData.append("lat", position.lat.toString());
+      formData.append("lng", position.lng.toString());
+      console.log(position);
     }
     try {
       console.log(formData);

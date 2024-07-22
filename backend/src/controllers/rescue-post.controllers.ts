@@ -2,37 +2,21 @@ import { Request, Response } from "express";
 import { IComment, ILike, RescuePost } from "../models/rescue-post.model";
 import asyncHandler from "../utils/asyncHandler";
 import { AuthRequest } from "./adoption-post.controllers";
+import { User } from "../models/user.model";
 import mongoose from "mongoose";
 
 const getAllRescuePosts = asyncHandler(async (req: Request, res: Response) => {
-  const rescuePosts = await RescuePost.aggregate([
-    {
-      $lookup: {
-        from: "users",
-        localField: "rescuePostAuthor",
-        foreignField: "_id",
-        as: "authorInfo",
-      },
-    },
-    { $unwind: "$authorInfo" },
-    {
-      $project: {
-        title: 1,
-        description: 1,
-        location: 1,
-        rescuePostImage: 1,
-        likes: 1,
-        comments: 1,
-        authorUserName: "$authorInfo.username",
-      },
-    },
-  ]).exec();
+  const rescuePosts = await RescuePost.find({}).populate({
+    path: "rescuePostAuthor",
+    select: "username type profile",
+    populate: { path: "profile", select: "profilePicture" },
+  });
 
-  if (!rescuePosts) {
+  if (!rescuePosts.length) {
     return res.status(404).json({
-      succses: false,
+      success: false,
       message: "No Posts found",
-      error: "Something went wrong while fetching datas",
+      error: "Something went wrong while fetching data",
     });
   }
 
@@ -45,10 +29,13 @@ const getAllRescuePosts = asyncHandler(async (req: Request, res: Response) => {
 
 const createRescuePost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const { title, description, lat,lng } = req.body;
+    const { title, description, lat, lng } = req.body;
+
     let rescuePostImage = "";
-    if (req.file?.path) {
-      rescuePostImage = req.file.path;
+    if (req.file?.filename) {
+      rescuePostImage = ` ${req.protocol}://${req.get("host")}/images/${
+        req.file?.filename
+      }`;
     }
 
     const rescuePost = new RescuePost({
@@ -57,7 +44,7 @@ const createRescuePost = asyncHandler(
       description,
       location: {
         lng: Number(lng),
-        lat: Number(lat)
+        lat: Number(lat),
       },
       rescuePostImage,
       likes: [],
@@ -132,8 +119,11 @@ const updateRescuePost = asyncHandler(
     }
 
     if (req.file) {
-      updates.rescuePostImage = req.file.path;
+      updates.rescuePostImage = ` ${req.protocol}://${req.get("host")}/images/${
+        req.file?.filename
+      }`;
     }
+
     const updatedPost = await RescuePost.findByIdAndUpdate(postId, updates, {
       new: true,
     });
@@ -152,7 +142,12 @@ const getSingleRescuePost = asyncHandler(
   async (req: Request, res: Response) => {
     const { postId } = req.params;
 
-    const post = await RescuePost.findById(postId);
+    const post = await RescuePost.findById(postId).populate({
+      path: "rescuePostAuthor",
+      select: "username type profile",
+      populate: { path: "profile", select: "profilePicture" },
+    });
+
     if (!post) {
       return res.status(404).json({
         success: false,
@@ -171,28 +166,20 @@ const getSingleRescuePost = asyncHandler(
 const addComment = asyncHandler(async (req: AuthRequest, res: Response) => {
   const { postId } = req.params;
 
-  const post = await RescuePost.findOne({ _id: postId });
+  const post = await RescuePost.findById(postId);
   if (!post) {
     return res
       .status(404)
       .json({ message: `No post with id ${postId} found`, success: false });
   }
 
-  let user;
-  user = await Individual.findOne({
-    user: req.user._id,
-  });
-
-  if (!user) {
-    user = await Organization.findOne({
-      user: req.user._id,
-    });
-  }
+  let user = await User.findById(req.user._id);
 
   const newComment = {
-    name: user?.name,
+    _id: new mongoose.Types.ObjectId(),
+    name: user?.username,
     commenter: req.user._id,
-    content: req.body.content,
+    comment: String(req.body.comment),
   };
 
   post.comments.push(newComment as IComment);
@@ -274,8 +261,8 @@ const updateComment = asyncHandler(async (req: AuthRequest, res: Response) => {
       .json({ message: "Invalid Credentials", success: false });
   }
 
-  post.comments[commentIndex].content =
-    req.body.content || post.comments[commentIndex].content;
+  post.comments[commentIndex].comment =
+    req.body.comment || post.comments[commentIndex].comment;
 
   const updatedPost = await post.save();
 
@@ -287,37 +274,59 @@ const updateComment = asyncHandler(async (req: AuthRequest, res: Response) => {
 });
 
 const addLike = asyncHandler(async (req: AuthRequest, res: Response) => {
-  const rescuePost = await RescuePost.findById(req.params.postId);
+  try {
+    const rescuePost = await RescuePost.findById(req.params.postId);
 
-  if (!rescuePost) {
-    return res.status(404).json({
+    if (!rescuePost) {
+      return res.status(404).json({
+        success: false,
+        message: "No post with this ID found",
+      });
+    }
+
+    if (!req.user || !req.user._id) {
+      return res
+        .status(400)
+        .json({ message: "User information is missing", success: false });
+    }
+
+    const userIdStr = req.user._id.toString();
+
+    if (
+      rescuePost.likes.filter((like: ILike) => {
+        if (!like.user) {
+          return false;
+        }
+
+        return like.user.toString() === userIdStr;
+      }).length > 0
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "The post has already been upvoted",
+      });
+    }
+
+    rescuePost.likes.push({
+      user: new mongoose.Types.ObjectId(req.user._id),
+    });
+    await rescuePost.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Upvoted this post",
+      data: {
+        likes: rescuePost.likes,
+        likesCount: rescuePost.likes.length,
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({
       success: false,
-      message: "No post with this found",
+      message: "An error occurred",
+      error: error.message,
     });
   }
-
-  if (
-    rescuePost.likes.filter(
-      (like: ILike) => like.user.toString() === req.user._id.toString()
-    ).length > 0
-  ) {
-    return res.status(404).json({
-      success: false,
-      message: "The post has already been upvoted",
-    });
-  }
-
-  rescuePost.likes.push(req.user._id);
-  await rescuePost.save();
-
-  res.status(200).json({
-    success: true,
-    message: "Upvoted this post",
-    data: {
-      likes: rescuePost.likes,
-      likesCount: rescuePost.likes.length,
-    },
-  });
 });
 
 const removeLike = asyncHandler(async (req: AuthRequest, res: Response) => {

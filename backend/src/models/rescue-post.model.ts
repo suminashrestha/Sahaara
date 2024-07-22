@@ -3,14 +3,14 @@ import mongoose, { Document, Schema, model } from "mongoose";
 export interface IComment extends Document {
   commenter: mongoose.Schema.Types.ObjectId;
   name: string;
-  content: string;
+  comment: string;
 }
-export interface ILike extends Document {
-  user: mongoose.Schema.Types.ObjectId;
+export interface ILike {
+  user: mongoose.Types.ObjectId;
 }
 
 export interface IRescuePost extends Document {
-  rescuePostAuthor: mongoose.Schema.Types.ObjectId;
+  rescuePostAuthor: mongoose.Types.ObjectId;
   title: string;
   description: string;
   location?: ILocation;
@@ -19,19 +19,14 @@ export interface IRescuePost extends Document {
   comments: IComment[];
 }
 
-interface ILocation extends Document{
-  lng: number,
-  lat: number
+interface ILocation extends Document {
+  lng: number;
+  lat: number;
 }
-const likeSchema: Schema<ILike> = new Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-});
+
 const locationSchema: Schema<ILocation> = new Schema({
   lng: Number,
-  lat: Number
+  lat: Number,
 });
 
 const commentSchema: Schema<IComment> = new Schema(
@@ -43,7 +38,7 @@ const commentSchema: Schema<IComment> = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    content: String,
+    comment: { type: String, required: true },
   },
   {
     timestamps: true,
@@ -69,8 +64,14 @@ const rescuePostSchema: Schema<IRescuePost> = new Schema(
     rescuePostImage: {
       type: String,
     },
-    likes: [likeSchema],
-
+    likes: [
+      {
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+      },
+    ],
     comments: [commentSchema],
   },
   {

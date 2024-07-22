@@ -12,7 +12,9 @@ interface GeolocationHook {
   getPosition: () => void;
 }
 
-export default function useGeolocation(defaultPosition: Coordinates | null = null): GeolocationHook {
+export default function useGeolocation(
+  defaultPosition: Coordinates | null = null
+): GeolocationHook {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [position, setPosition] = useState<Coordinates | null>(defaultPosition);
   const [error, setError] = useState<string | null>(null);
@@ -30,9 +32,10 @@ export default function useGeolocation(defaultPosition: Coordinates | null = nul
           lng: pos.coords.longitude,
         });
         setIsLoading(false);
+        setError(null); // Reset the error when the position is successfully fetched
       },
-      (error) => {
-        setError(error.message);
+      (err) => {
+        setError(err.message);
         setIsLoading(false);
       }
     );

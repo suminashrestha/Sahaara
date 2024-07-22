@@ -1,6 +1,6 @@
 import express from "express";
 import upload from "../middlewares/upload.middleware";
-import { authenticateWithJwt, authorize } from "../middlewares/auth.middleware";
+import { authorize } from "../middlewares/auth.middleware";
 import {
   createAdoptionPost,
   deleteAdoptionPost,
@@ -13,9 +13,8 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(authenticateWithJwt, getAllAdoptionPosts)
+  .get(getAllAdoptionPosts)
   .post(
-    authenticateWithJwt,
     authorize(["individual", "organization"]),
     upload.single("adoptionPostImage"),
     createAdoptionPost
@@ -23,12 +22,8 @@ router
 
 router
   .route("/:postId")
-  .delete(authenticateWithJwt, deleteAdoptionPost)
-  .put(
-    authenticateWithJwt,
-    upload.single("adoptionPostImage"),
-    updateAdoptionPost
-  )
-  .get(authenticateWithJwt, getSingleAdoptionPost);
+  .delete(deleteAdoptionPost)
+  .put(upload.single("adoptionPostImage"), updateAdoptionPost)
+  .get(getSingleAdoptionPost);
 
 export { router as adoptionPostRoute };
