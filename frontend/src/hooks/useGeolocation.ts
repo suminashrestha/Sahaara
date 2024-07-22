@@ -5,20 +5,16 @@ interface Coordinates {
   lng: number;
 }
 
-interface Location {
-  position: null | Coordinates;
-}
-
 interface GeolocationHook {
   isLoading: boolean;
-  position: Location;
+  position: Coordinates | null;
   error: string | null;
   getPosition: () => void;
 }
 
-export default function useGeolocation(defaultPosition: Location = { position: null }): GeolocationHook {
+export default function useGeolocation(defaultPosition: Coordinates | null = null): GeolocationHook {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [position, setPosition] = useState<Location>(defaultPosition);
+  const [position, setPosition] = useState<Coordinates | null>(defaultPosition);
   const [error, setError] = useState<string | null>(null);
 
   function getPosition(): void {
@@ -30,10 +26,8 @@ export default function useGeolocation(defaultPosition: Location = { position: n
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setPosition({
-          position: {
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
-          },
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
         });
         setIsLoading(false);
       },

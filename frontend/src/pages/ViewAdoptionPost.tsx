@@ -6,6 +6,7 @@ import { getAllAdoptionPosts } from "../redux/actions/adoptionActions";
 import { toast } from "react-toastify";
 import DisplayCards from "../components/AdoptionPost/DisplayCards";
 import { AdoptionPostSchema } from "../redux/reducers/AdoptionReducer/AdoptionReducerInterface";
+import Loader from "../components/Loader";
 const ViewAdoptionPost = () => {
   const dispatch = useAppDispatch();
   const { isLoading, error, posts } = useAppSelector(
@@ -26,7 +27,7 @@ const ViewAdoptionPost = () => {
   }, [error]);
 
   if (isLoading) {
-    return <h1 className="text-6xl">loading.....</h1>;
+    return <Loader/>;
   }
 
   let sortedPosts: AdoptionPostSchema[] = [];

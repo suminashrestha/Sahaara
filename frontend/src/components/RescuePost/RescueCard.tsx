@@ -23,6 +23,7 @@ const RescueCard: React.FC<{post: any}> = ({ post }) => {
 
   const handleLike = async() => {
     try{
+      setIsliked((isLiked)=>!isLiked)
       const response = await API.put(`/api/v1/rescue-posts/${post._id}/like`)
       console.log(response)
     }catch(e){

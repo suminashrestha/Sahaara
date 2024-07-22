@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import RescueCard from "./RescueCard";
 import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { getAllRescuePosts } from "../../redux/actions/rescueActions";
+import Loader from "../Loader"
 import { toast } from "react-toastify";
 
 function ViewRescuePost() {
@@ -22,10 +23,10 @@ function ViewRescuePost() {
     if (error) toast(error);
   }, [error]);
 
-  if (isLoading) {
-    return <h1 className="text-6xl">loading.....</h1>;
-  }
 
+  if(isLoading){
+    return <Loader/>
+  }
   return (
     <div className="flex flex-col gap-7">
       {posts &&
