@@ -1,6 +1,7 @@
 // import React from "react";
 // import Button from "../Button";
 // import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks/useRedux";
 import { AdoptionPostSchema } from "../../redux/reducers/AdoptionReducer/AdoptionReducerInterface";
 
 // Define the props type for the DisplayCards component
@@ -31,6 +32,7 @@ interface DisplayCardsProps {
 //   );
 // };
 
+
 // export default DisplayCards;
 
 const DisplayCards: React.FC<DisplayCardsProps> = ({ post }) => {
@@ -38,18 +40,17 @@ const DisplayCards: React.FC<DisplayCardsProps> = ({ post }) => {
     <div className="max-w-xs rounded-2xl overflow-hidden shadow-lg bg-white">
       <img
         className="w-full h-64 object-cover"
-        src="/aboutus2.jpg"
+        src={`${post.adoptionPostImage? post.adoptionPostImage : "/upload.png"}`}
         alt="Pet Name"
       />
       <div className="p-4 text-center">
-        //eta gender
-        <h2 className="text-2xl font-bold mb-2">Pet Name</h2>
+        <h2 className="text-2xl font-bold mb-2">{post.name}</h2>
         <div className="flex justify-center space-x-2">
           <span className="px-2 py-1 bg-gray-200 rounded-full text-sm">
-            Large
+            {post.size}
           </span>
           <span className="px-2 py-1 bg-gray-200 rounded-full text-sm">
-            Adult
+            {post.breed}
           </span>
         </div>
       </div>

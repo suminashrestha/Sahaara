@@ -8,6 +8,7 @@ const initialState: AdoptionReducerInterface = {
   error: null,
 };
 
+
 const reducer = (
   state = initialState,
   action: any

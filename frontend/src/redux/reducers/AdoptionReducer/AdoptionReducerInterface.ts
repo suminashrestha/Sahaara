@@ -25,7 +25,6 @@ export interface AdoptionPostSchema {
   myStory: string;
   category: string;
   adoptionImage?: string;
-  authorUserName: string;
   createdAt: string;
   adoptionPostImage?: File | null;
 }

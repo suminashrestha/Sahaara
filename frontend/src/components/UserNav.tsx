@@ -38,10 +38,10 @@ function UserNav() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  function toggleDropdown() {
-    setIsDropdownVisible((isDropdownVisible) => !isDropdownVisible);
-    setIsVisible(false);
-  }
+  // function toggleDropdown() {
+  //   setIsDropdownVisible((isDropdownVisible) => !isDropdownVisible);
+  //   setIsVisible(false);
+  // }
   function handleVisiblity() {
     setIsVisible((isVisible) => !isVisible);
     setIsDropdownVisible(false);
@@ -67,30 +67,7 @@ function UserNav() {
           <div className="flex items-center justify-end w-[30%] gap-6">
             {<li></li>}
             <li>
-              <Button onClick={toggleDropdown}>Adoption Portal</Button>
-              {isDropdownVisible && (
-                <div className="absolute bg-white shadow-lg p-4 mt-2 w-48 rounded-lg">
-                  <ul className="space-y-2">
-                    <li
-                      className="py-2 px-4 hover:bg-gray-100 cursor-pointer rounded-md"
-                      onClick={() => {
-                        navigate("/createadoption");
-                      }}
-                    >
-                      Create Adoption Posts
-                    </li>
-                    <li
-                      className="py-2 px-4 hover:bg-gray-100 cursor-pointer rounded-md
-                    "
-                      onClick={() => {
-                        navigate("/viewadoption");
-                      }}
-                    >
-                      View Adoption Posts
-                    </li>
-                  </ul>
-                </div>
-              )}
+              <Button onClick={()=>navigate("/adoption")}>Adoption Portal</Button>
             </li>
             <li>
               <PiMessengerLogoLight size={30} />

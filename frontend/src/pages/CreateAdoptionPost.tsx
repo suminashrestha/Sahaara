@@ -36,6 +36,7 @@ const CreateAdoptionPost = () => {
       myStory: "",
       category: "", //
       adoptionPostImage: null,
+
     },
   });
 
@@ -50,11 +51,13 @@ const CreateAdoptionPost = () => {
       formData.append("color", data.color);
       formData.append("coatLength", data.coatLength);
       formData.append("myStory", data.myStory);
-      formData.append("email", data.contact.email);
-      formData.append("phone", data.contact.phone);
-      formData.append("address", data.contact.address);
-      formData.append("name", data.contact.name);
+      formData.append("characterstics", data.characterstics);
+      formData.append("contact.email", data.contact.email);
+      formData.append("contact.phone", data.contact.phone);
+      formData.append("contact.address", data.contact.address);
+      formData.append("contact.name", data.contact.name);
       formData.append("health", data.health);
+      formData.append("contact", JSON.stringify(data.contact));
 
       if (data.adoptionPostImage) {
         formData.append("adoptionPostImage", data.adoptionPostImage);
@@ -237,21 +240,7 @@ const CreateAdoptionPost = () => {
                   />
                   {errors.color && toast.error(errors.color.message)}
                 </div>
-                <div className="flex gap-3 text-sm items-center">
-                  <label htmlFor="location">
-                    Location<span className="text-red-500">* </span>:{" "}
-                  </label>
-                  <input
-                    id="location"
-                    className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
-                    type="text"
-                    {...register("location", {
-                      required: "location is required",
-                    })}
-                    autoComplete="off"
-                  />
-                  {errors.location && toast.error(errors.location.message)}
-                </div>
+               
                 <div className="flex gap-3 text-sm items-center">
                   <label htmlFor="health">
                     Health<span className="text-red-500">* </span>:{" "}

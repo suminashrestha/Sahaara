@@ -23,6 +23,7 @@ import ViewAdoptionPost from "./pages/ViewAdoptionPost";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import SingleAdoptionPost from "./components/AdoptionPost/SingleAdoptionPost";
+import AdoptionLanding from "./pages/AdoptionLanding";
 
 export default function App() {
   return (
@@ -73,7 +74,14 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-
+            <Route
+              path="adoption"
+              element={
+                <ProtectedRoute>
+                  <AdoptionLanding/>
+                </ProtectedRoute>
+              }
+            />
             
             <Route path="join" element={<LoginSignup />}>
               <Route index element={<Navigate replace to="login" />} />
