@@ -104,7 +104,6 @@ function UserNav() {
           </div>
         </ul>
       </nav>
-
       {isVisible ? (
         <div className="fixed right-10 w-[250px] h-[120px] flex p-5  flex-col shadow-md z-30 ">
           <NavLink to="">
