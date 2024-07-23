@@ -1,9 +1,4 @@
-import {
-  ChangeEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -102,11 +97,17 @@ const CreateAdoptionPost = () => {
   const sections = ["photo", "description", "keyFacts", "petStory", "contact"];
   const [activeSection, setActiveSection] = useState<string>("");
 
-  const { ref: photoRef, inView: photoInView } = useInView({ threshold: 0.5 });
-  const { ref: descriptionRef, inView: descriptionInView } = useInView({ threshold: 0.5 });
-  const { ref: keyFactsRef, inView: keyFactsInView } = useInView({ threshold: 0.5 });
-  const { ref: petStoryRef, inView: petStoryInView } = useInView({ threshold: 0.5 });
-  const { ref: contactRef, inView: contactInView } = useInView({ threshold: 0.5 });
+  const { ref: photoRef, inView: photoInView } = useInView({});
+  const { ref: descriptionRef, inView: descriptionInView } = useInView({});
+  const { ref: keyFactsRef, inView: keyFactsInView } = useInView({
+    rootMargin: "-40% 0% 0% 0% ", threshold: 0.5
+  });
+  const { ref: petStoryRef, inView: petStoryInView } = useInView({
+    rootMargin: "-40% 0% 0% 0% ", threshold: 0.5
+  });
+  const { ref: contactRef, inView: contactInView } = useInView({
+    rootMargin: "-40% 0% 0% 0% ", threshold: 0.5
+  });
 
   useEffect(() => {
     if (photoInView) setActiveSection("photo");
@@ -114,19 +115,25 @@ const CreateAdoptionPost = () => {
     else if (keyFactsInView) setActiveSection("keyFacts");
     else if (petStoryInView) setActiveSection("petStory");
     else if (contactInView) setActiveSection("contact");
-  }, [photoInView, descriptionInView, keyFactsInView, petStoryInView, contactInView]);
+  }, [
+    photoInView,
+    descriptionInView,
+    keyFactsInView,
+    petStoryInView,
+    contactInView,
+  ]);
 
   return (
     <>
       <UserNav />
-      <div className="flex mt-20 items-center h-[90vh] justify-between">
-        <div className="w-[15%] h-[50vh] ">
-          <ul className="flex flex-col h-full w-full justify-between items-center p-7 font-semibold">
+      <div className="flex mt-20 items-center h-[90vh] justify-around">
+        <div className="w-[25%] h-[50vh] p-7">
+          <ul className="h-full w-full font-semibold grid grid-row-5 gap-2 ">
             {sections.map((section) => (
               <li
                 key={section}
-                className={`cursor-pointer ${
-                  activeSection === section ? "text-blue-500" : ""
+                className={`cursor-pointer w-full flex items-center justify-center shadow-md rounded-lg ${
+                  activeSection === section ? "bg-btnColor text-white" : ""
                 }`}
               >
                 {section.charAt(0).toUpperCase() + section.slice(1)}
@@ -134,14 +141,14 @@ const CreateAdoptionPost = () => {
             ))}
           </ul>
         </div>
-        <div className="w-[85%] h-[90vh] flex justify-center items-center">
+        <div className="w-[75%] h-[90vh] flex justify-center items-center">
           <form
             onSubmit={handleSubmit(formSubmit)}
-            className="overflow-y-auto h-full w-[90%] flex flex-col p-9 bg-slate-100 text-zinc-600 gap-9"
+            className="overflow-y-auto h-full w-full flex flex-col p-9 bg-slate-100 text-zinc-600 gap-9"
           >
             {/* image */}
+            <h2 className="font-semibold text-2xl">Photos</h2>
             <div className="flex flex-col gap-3" id="photo" ref={photoRef}>
-              <h2 className="font-semibold text-2xl">Photos</h2>
               <p className="text-md">Please add the image of the pet </p>
               <div
                 className="h-[400px] w-[400px] bg-white rounded-lg cursor-pointer p-8"
@@ -153,7 +160,9 @@ const CreateAdoptionPost = () => {
 
             {/* characterstics */}
 
-            <h2 className="font-semibold text-2xl" ref={descriptionRef}>Description</h2>
+            <h2 className="font-semibold text-2xl" ref={descriptionRef}>
+              Description
+            </h2>
             <div className="grid grid-cols-3 gap-9 p-9" id="description">
               <div className="flex gap-3 text-sm items-center">
                 <label htmlFor="petname">Petname :</label>
@@ -270,9 +279,8 @@ const CreateAdoptionPost = () => {
             </div>
 
             {/* keyfacts */}
+            <h2 className="font-semibold text-2xl">Key facts</h2>
             <div className="flex flex-col gap-5" ref={keyFactsRef}>
-              <h2 className="font-semibold text-2xl">Key facts</h2>
-
               <textarea
                 id="facts"
                 className="h-[100px] w-full rounded-lg p-3 text-sm focus:outline-none"
@@ -287,8 +295,12 @@ const CreateAdoptionPost = () => {
 
             {/* Petstory */}
 
-            <div className="flex flex-col gap-5" id="petStory" ref={petStoryRef}>
-              <h2 className="font-semibold text-2xl">Pet Story</h2>
+            <h2 className="font-semibold text-2xl">Pet Story</h2>
+            <div
+              className="flex flex-col gap-5"
+              id="petStory"
+              ref={petStoryRef}
+            >
               <textarea
                 {...register("myStory", { required: "Story is required" })}
                 id="petstory"
@@ -299,7 +311,9 @@ const CreateAdoptionPost = () => {
             </div>
 
             {/* contact */}
-            <h2 className="font-semibold text-2xl" ref={contactRef}>Contact</h2>
+            <h2 className="font-semibold text-2xl" ref={contactRef}>
+              Contact
+            </h2>
             <div className="grid grid-cols-3 gap-9 p-9" id="contact">
               <div className="flex gap-3 text-sm items-center">
                 <label htmlFor="phone"> Phone: </label>
