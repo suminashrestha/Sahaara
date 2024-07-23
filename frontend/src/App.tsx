@@ -29,7 +29,7 @@ export default function App() {
   return (
     <>
       <Provider store={store}>
-        <ToastContainer position="top-right" />
+        <ToastContainer position="top-right" className="mt-20"/>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Homepage />} />

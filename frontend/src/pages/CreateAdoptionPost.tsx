@@ -1,7 +1,13 @@
-import React, { ChangeEvent, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useInView } from "react-intersection-observer";
 import Button from "../components/Button";
 import ErrorText from "../components/ErrorText";
 import API from "../config/baseUrl";
@@ -10,6 +16,7 @@ import { AdoptionPostSchema } from "../redux/reducers/AdoptionReducer/AdoptionRe
 
 const CreateAdoptionPost = () => {
   const [img, setImg] = useState<string>("/upload.png");
+
   const {
     register,
     handleSubmit,
@@ -36,7 +43,6 @@ const CreateAdoptionPost = () => {
       myStory: "",
       category: "", //
       adoptionPostImage: null,
-
     },
   });
 
@@ -62,15 +68,15 @@ const CreateAdoptionPost = () => {
       if (data.adoptionPostImage) {
         formData.append("adoptionPostImage", data.adoptionPostImage);
       }
-      console.log(formData)
-      const response = await API.post("/api/v1/adoption-posts",formData, {
+      const response = await API.post("/api/v1/adoption-posts", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           body: JSON.stringify(data),
         },
       });
 
-      toast.success("Adoption post created successfully!");
+      console.log(response);
+      toast.success(response.data.message);
 
       reset();
       // navigate("/");
@@ -93,17 +99,39 @@ const CreateAdoptionPost = () => {
 
   const imgRef = useRef<HTMLInputElement>(null);
 
+  const sections = ["photo", "description", "keyFacts", "petStory", "contact"];
+  const [activeSection, setActiveSection] = useState<string>("");
+
+  const { ref: photoRef, inView: photoInView } = useInView({ threshold: 0.5 });
+  const { ref: descriptionRef, inView: descriptionInView } = useInView({ threshold: 0.5 });
+  const { ref: keyFactsRef, inView: keyFactsInView } = useInView({ threshold: 0.5 });
+  const { ref: petStoryRef, inView: petStoryInView } = useInView({ threshold: 0.5 });
+  const { ref: contactRef, inView: contactInView } = useInView({ threshold: 0.5 });
+
+  useEffect(() => {
+    if (photoInView) setActiveSection("photo");
+    else if (descriptionInView) setActiveSection("description");
+    else if (keyFactsInView) setActiveSection("keyFacts");
+    else if (petStoryInView) setActiveSection("petStory");
+    else if (contactInView) setActiveSection("contact");
+  }, [photoInView, descriptionInView, keyFactsInView, petStoryInView, contactInView]);
+
   return (
     <>
       <UserNav />
       <div className="flex mt-20 items-center h-[90vh] justify-between">
         <div className="w-[15%] h-[50vh] ">
           <ul className="flex flex-col h-full w-full justify-between items-center p-7 font-semibold">
-            <li>Photo</li>
-            <li>Description</li>
-            <li>Key Facts</li>
-            <li>Pet Story</li>
-            <li>Contact</li>
+            {sections.map((section) => (
+              <li
+                key={section}
+                className={`cursor-pointer ${
+                  activeSection === section ? "text-blue-500" : ""
+                }`}
+              >
+                {section.charAt(0).toUpperCase() + section.slice(1)}
+              </li>
+            ))}
           </ul>
         </div>
         <div className="w-[85%] h-[90vh] flex justify-center items-center">
@@ -112,11 +140,11 @@ const CreateAdoptionPost = () => {
             className="overflow-y-auto h-full w-[90%] flex flex-col p-9 bg-slate-100 text-zinc-600 gap-9"
           >
             {/* image */}
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3" id="photo" ref={photoRef}>
               <h2 className="font-semibold text-2xl">Photos</h2>
               <p className="text-md">Please add the image of the pet </p>
               <div
-                className="h-[400px] w-[400px] bg-white rounded-lg cursor-pointer"
+                className="h-[400px] w-[400px] bg-white rounded-lg cursor-pointer p-8"
                 onClick={() => imgRef.current?.click()}
               >
                 <img src={img} alt="" className="h-full w-full" />
@@ -125,140 +153,124 @@ const CreateAdoptionPost = () => {
 
             {/* characterstics */}
 
-            <div className="flex flex-col gap-1">
-              <h2 className="font-semibold text-2xl">Description</h2>
-              <div className="flex gap-12 w-full p-9">
-                <div className="flex gap-3 text-sm items-center">
-                  <label htmlFor="petname">
-                    Petname<span className="text-red-500">*</span> :
-                  </label>
-                  <input
-                    id="petname"
-                    className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
-                    type="text"
-                    {...register("name", { required: "Pets Name is required" })}
-                    autoComplete="off"
-                  />
-                </div>
-                {errors.name && toast.error(errors.name.message)}
+            <h2 className="font-semibold text-2xl" ref={descriptionRef}>Description</h2>
+            <div className="grid grid-cols-3 gap-9 p-9" id="description">
+              <div className="flex gap-3 text-sm items-center">
+                <label htmlFor="petname">Petname :</label>
+                <input
+                  id="petname"
+                  className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
+                  type="text"
+                  {...register("name", { required: "Pets Name is required" })}
+                  autoComplete="off"
+                />
+              </div>
+              {errors.name && toast.error(errors.name.message)}
 
-                <div className="flex gap-3 text-sm items-center">
-                  <label htmlFor="category">
-                    Category<span className="text-red-500">*</span> :
-                  </label>
-                  <input
-                    id="category"
-                    className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
-                    type="text"
-                    {...register("category", {
-                      required: "Pets Name is required",
-                    })}
-                    autoComplete="off"
-                  />
-                  {errors.category && toast.error(errors.category.message)}
-                </div>
-
-                <div className="flex gap-3 items-center text-sm">
-                  <label htmlFor="gender">Gender</label>
-                  <select
-                    {...register("gender")}
-                    className="p-1 bg-white focus:outline-none"
-                    id="gender"
-                  >
-                    <option value="male">male</option>
-                    <option value="female">female</option>
-                    <option value="unknown">unknown</option>
-                  </select>
-                </div>
-
-                <div className="flex gap-3 items-center text-sm">
-                  Size:
-                  <select
-                    {...register("size")}
-                    className="p-1 bg-white focus:outline-none"
-                    defaultValue="medium"
-                  >
-                    <option value="small">small</option>
-                    <option value="medium">medium</option>
-                    <option value="large">large</option>
-                  </select>
-                </div>
+              <div className="flex gap-3 text-sm items-center">
+                <label htmlFor="category">Category :</label>
+                <input
+                  id="category"
+                  className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
+                  type="text"
+                  {...register("category", {
+                    required: "Category is required",
+                  })}
+                  autoComplete="off"
+                />
+                {errors.category && toast.error(errors.category.message)}
               </div>
 
-              <div className="flex gap-9 w-full p-9">
-                <div className="flex gap-3 text-sm items-center">
-                  <label htmlFor="age">
-                    Age<span className="text-red-500">*</span> :
-                  </label>
-
-                  <input
-                    id="age"
-                    className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
-                    type="text"
-                    {...register("age", { required: "age is required" })}
-                    autoComplete="off"
-                  />
-                  {errors.age && toast.error(errors.age.message)}
-                </div>
-
-                <div className="flex gap-3 text-sm items-center">
-                  <label htmlFor="breed">Breed: </label>
-                  <input
-                    id="breed"
-                    className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
-                    type="text"
-                    {...register("breed")}
-                    autoComplete="off"
-                  />
-                </div>
-
-                <div className="flex gap-3 items-center text-sm">
-                  Coat Length:
-                  <select
-                    {...register("size")}
-                    className="p-1 bg-white focus:outline-none"
-                    defaultValue="medium"
-                  >
-                    <option value="small">small</option>
-                    <option value="medium">medium</option>
-                    <option value="large">large</option>
-                  </select>
-                </div>
+              <div className="flex gap-3 items-center text-sm">
+                <label htmlFor="gender">Gender</label>
+                <select
+                  {...register("gender")}
+                  className="p-1 bg-white focus:outline-none rounded-lg"
+                  id="gender"
+                >
+                  <option value="male">male</option>
+                  <option value="female">female</option>
+                  <option value="unknown">unknown</option>
+                </select>
               </div>
 
-              <div className="flex gap-9 w-full p-9">
-                <div className="flex gap-3 text-sm items-center">
-                  <label htmlFor="breed">
-                    Color<span className="text-red-500">* </span>:{" "}
-                  </label>
-                  <input
-                    id="color"
-                    className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
-                    type="text"
-                    {...register("color", { required: "color is required" })}
-                    autoComplete="off"
-                  />
-                  {errors.color && toast.error(errors.color.message)}
-                </div>
-               
-                <div className="flex gap-3 text-sm items-center">
-                  <label htmlFor="health">
-                    Health<span className="text-red-500">* </span>:{" "}
-                  </label>
-                  <input
-                    id="health"
-                    className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
-                    type="text"
-                    {...register("health", { required: "health is required" })}
-                    autoComplete="off"
-                  />
-                  {errors.health && toast.error(errors.health.message)}
-                </div>
+              <div className="flex gap-3 items-center text-sm">
+                Size:
+                <select
+                  {...register("size")}
+                  className="p-1 bg-white focus:outline-none rounded-lg"
+                  defaultValue="medium"
+                >
+                  <option value="small">small</option>
+                  <option value="medium">medium</option>
+                  <option value="large">large</option>
+                </select>
+              </div>
+
+              <div className="flex gap-3 text-sm items-center">
+                <label htmlFor="age">Age :</label>
+
+                <input
+                  id="age"
+                  className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
+                  type="text"
+                  {...register("age", { required: "Age is required" })}
+                  autoComplete="off"
+                />
+                {errors.age && toast.error(errors.age.message)}
+              </div>
+
+              <div className="flex gap-3 text-sm items-center">
+                <label htmlFor="breed">Breed: </label>
+                <input
+                  id="breed"
+                  className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
+                  type="text"
+                  {...register("breed")}
+                  autoComplete="off"
+                />
+              </div>
+
+              <div className="flex gap-3 items-center text-sm">
+                Coat Length:
+                <select
+                  {...register("coatLength")}
+                  className="p-1 bg-white focus:outline-none rounded-lg"
+                  defaultValue="short"
+                >
+                  <option value="short">short</option>
+                  <option value="medium">medium</option>
+                  <option value="long">long</option>
+                </select>
+              </div>
+
+              <div className="flex gap-3 text-sm items-center">
+                <label htmlFor="color">Color: </label>
+                <input
+                  id="color"
+                  className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
+                  type="text"
+                  {...register("color", { required: "Color is required" })}
+                  autoComplete="off"
+                />
+                {errors.color && toast.error(errors.color.message)}
+              </div>
+
+              <div className="flex gap-3 text-sm items-center">
+                <label htmlFor="health">Health: </label>
+                <input
+                  id="health"
+                  className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
+                  type="text"
+                  {...register("health", { required: "Health is required" })}
+                  autoComplete="off"
+                />
+                {errors.health && toast.error(errors.health.message)}
               </div>
             </div>
 
             {/* keyfacts */}
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5" ref={keyFactsRef}>
               <h2 className="font-semibold text-2xl">Key facts</h2>
 
               <textarea
@@ -274,10 +286,11 @@ const CreateAdoptionPost = () => {
             </div>
 
             {/* Petstory */}
-            <div className="flex flex-col gap-5">
+
+            <div className="flex flex-col gap-5" id="petStory" ref={petStoryRef}>
               <h2 className="font-semibold text-2xl">Pet Story</h2>
               <textarea
-                {...register("myStory", { required: "story is required" })}
+                {...register("myStory", { required: "Story is required" })}
                 id="petstory"
                 className="h-[100px] w-full rounded-lg p-3 text-sm focus:outline-none"
                 placeholder="Share anything here about your pet. (Your pet profile will be visible to the public. For your safety, do not include any personal details or contact information)"
@@ -286,65 +299,56 @@ const CreateAdoptionPost = () => {
             </div>
 
             {/* contact */}
-            <div className="flex flex-col gap-5">
-              <h2 className="font-semibold text-2xl">Contact</h2>
+            <h2 className="font-semibold text-2xl" ref={contactRef}>Contact</h2>
+            <div className="grid grid-cols-3 gap-9 p-9" id="contact">
+              <div className="flex gap-3 text-sm items-center">
+                <label htmlFor="phone"> Phone: </label>
+                <input
+                  id="phone"
+                  className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
+                  type="text"
+                  {...register("contact.phone", {
+                    required: "Phone is required",
+                  })}
+                  autoComplete="off"
+                />
+                {errors.contact?.phone &&
+                  toast.error(errors.contact.phone.message)}
+              </div>
+              <div className="flex gap-3 text-sm items-center">
+                <label htmlFor="email">Email: </label>
+                <input
+                  id="email"
+                  className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
+                  type="email"
+                  {...register("contact.email", {
+                    required: "Email is required",
+                  })}
+                  autoComplete="off"
+                />
+                {errors.contact?.email &&
+                  toast.error(errors.contact.email.message)}
+              </div>
 
-              <div className="flex gap-9 w-full p-9">
-                <div className="flex gap-3 text-sm items-center">
-                  <label htmlFor="phone">
-                    {" "}
-                    Phone<span className="text-red-500">* </span>:{" "}
-                  </label>
-                  <input
-                    id="phone"
-                    className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
-                    type="text"
-                    {...register("contact.phone", {
-                      required: "phone is required",
-                    })}
-                    autoComplete="off"
-                  />
-                  {errors.contact?.phone &&
-                    toast.error(errors.contact.phone.message)}
-                </div>
-                <div className="flex gap-3 text-sm items-center">
-                  <label htmlFor="email">
-                    Email<span className="text-red-500">* </span>:{" "}
-                  </label>
-                  <input
-                    id="email"
-                    className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
-                    type="email"
-                    {...register("contact.email", {
-                      required: "email is required",
-                    })}
-                    autoComplete="off"
-                  />
-                  {errors.contact?.email &&
-                    toast.error(errors.contact.email.message)}
-                </div>
-
-                <div className="flex gap-3 text-sm items-center">
-                  <label htmlFor="name">Your name: </label>
-                  <input
-                    id="name"
-                    className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
-                    type="text"
-                    {...register("contact.name")}
-                    autoComplete="off"
-                  />
-                </div>
-
-                <div className="flex gap-3 text-sm items-center">
-                  <label htmlFor="location">Location: </label>
-                  <input
-                    id="location"
-                    className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
-                    type="text"
-                    {...register("contact.address")}
-                    autoComplete="off"
-                  />
-                </div>
+              <div className="flex gap-3 text-sm items-center">
+                <label htmlFor="name">Your name: </label>
+                <input
+                  id="name"
+                  className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
+                  type="text"
+                  {...register("contact.name")}
+                  autoComplete="off"
+                />
+              </div>
+              <div className="flex gap-3 text-sm items-center">
+                <label htmlFor="location">Location: </label>
+                <input
+                  id="location"
+                  className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
+                  type="text"
+                  {...register("contact.address")}
+                  autoComplete="off"
+                />
               </div>
             </div>
             {/* imageupload */}
@@ -368,6 +372,3 @@ const CreateAdoptionPost = () => {
 };
 
 export default CreateAdoptionPost;
-
-
-

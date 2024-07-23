@@ -37,14 +37,14 @@ interface DisplayCardsProps {
 
 const DisplayCards: React.FC<DisplayCardsProps> = ({ post }) => {
   return (
-    <div className="max-w-xs rounded-2xl overflow-hidden shadow-lg bg-white">
+    <div className="w-[300px] rounded-2xl h-[500px] shadow-lg bg-white p-3">
       <img
-        className="w-full h-64 object-cover"
+        className="w-full h-[50%] object-cover rounded-md"
         src={`${post.adoptionPostImage? post.adoptionPostImage : "/upload.png"}`}
         alt="Pet Name"
       />
       <div className="p-4 text-center">
-        <h2 className="text-2xl font-bold mb-2">{post.name}</h2>
+        <h2 className="text-xl font-bold mb-2">{post.name.toUpperCase()}</h2>
         <div className="flex justify-center space-x-2">
           <span className="px-2 py-1 bg-gray-200 rounded-full text-sm">
             {post.size}

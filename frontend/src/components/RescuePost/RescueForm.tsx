@@ -115,11 +115,11 @@ function RescueForm() {
           />
         </div>
 
+        <h3 className="text-center mt-8">Please choose an image to upload</h3>
         <div
           onClick={handleClick}
           className="cursor-pointer bg-white shadow-md p-9"
         >
-          <h3 className="text-center mt-8">Please choose an image to upload</h3>
           <img src={img} alt="Uploaded" className="h-auto w-full" />
           <input
             type="file"

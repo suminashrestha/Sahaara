@@ -53,6 +53,7 @@ const ViewAdoptionPost = () => {
           </select>
         </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 p-13 mx-auto">
+            
             {sortedPosts.map((post) => (
               <DisplayCards post={post as AdoptionPostSchema} key={post._id} />
             ))}
