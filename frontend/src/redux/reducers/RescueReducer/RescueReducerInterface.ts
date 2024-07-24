@@ -2,6 +2,7 @@ export default interface RescueReducerInterface {
   isLoading: boolean;
   error?: string | null;
   posts: RescuePostSchema[];
+  post : RescuePostSchema | null
 }
 
 export interface RescuePostSchema {
@@ -18,4 +19,5 @@ export interface RescuePostSchema {
   location?: { lng: string; lat: string };
   rescuePostAuthor?: { _id: string; username: string; type: string };
   rescuePostImage?: string;
+  createdAt: string
 }

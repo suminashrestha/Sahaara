@@ -21,18 +21,17 @@ function SingleRescuePost() {
     }
   }, [dispatch, id]);
 
-  if (isLoading) <Loader />;
-
   useEffect(() => {
     if (error) toast.error(error);
   }, [error]);
 
+  if (isLoading) {
+    return  <Loader />;
+   }
+   
   return (
-    <div>
-        {
-            post && 
-            <RescueCard post={post} />
-        }
+    <div className="h-full w-full">
+      {post ? <RescueCard post={post} /> : "somash"}
     </div>
   );
 }

@@ -13,6 +13,7 @@ import { CgSpinner } from "react-icons/cg";
 import useUser from "../../hooks/useUser";
 import { ActionTypes } from "../../constants/action_types";
 import { useNavigate } from "react-router";
+import moment from "moment";
 
 interface IComment {
   _id?: string;
@@ -21,7 +22,7 @@ interface IComment {
   comment?: string;
 }
 
-interface RescuePostProps {
+export interface RescuePostProps {
   post: {
     _id: string;
     title?: string;
@@ -31,6 +32,7 @@ interface RescuePostProps {
     location?: { lng: string; lat: string };
     rescuePostAuthor?: { _id: string; username: string; type: string };
     rescuePostImage?: string;
+    createdAt: string;
   };
 }
 
@@ -91,7 +93,7 @@ const RescueCard: React.FC<RescuePostProps> = ({ post }) => {
           >
             {post?.rescuePostAuthor?.username}
           </h3>
-          <h3 className="text-sm"> eta chai date </h3>
+          <h3 className="text-sm">{moment(post.createdAt).fromNow()}</h3>
         </div>
       </div>
       <div className="p-2 flex flex-col">
