@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { IComment, ILike, RescuePost } from "../models/rescue-post.model";
 import asyncHandler from "../utils/asyncHandler";
 import { AuthRequest } from "./adoption-post.controllers";
-import mongoose from "mongoose";
+import { Individual } from "../models/individual.model";
+import { Organization } from "../models/organization.model";
 
 const getAllRescuePosts = asyncHandler(async (req: Request, res: Response) => {
   const rescuePosts = await RescuePost.aggregate([
@@ -45,7 +46,7 @@ const getAllRescuePosts = asyncHandler(async (req: Request, res: Response) => {
 
 const createRescuePost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-    const { title, description, lat,lng } = req.body;
+    const { title, description, location } = req.body;
     let rescuePostImage = "";
     if (req.file?.path) {
       rescuePostImage = req.file.path;
@@ -55,10 +56,7 @@ const createRescuePost = asyncHandler(
       rescuePostAuthor: req.user._id,
       title,
       description,
-      location: {
-        lng: Number(lng),
-        lat: Number(lat)
-      },
+      location: location ?? "",
       rescuePostImage,
       likes: [],
       comments: [],
@@ -306,7 +304,6 @@ const addLike = asyncHandler(async (req: AuthRequest, res: Response) => {
       message: "The post has already been upvoted",
     });
   }
-
   rescuePost.likes.push(req.user._id);
   await rescuePost.save();
 

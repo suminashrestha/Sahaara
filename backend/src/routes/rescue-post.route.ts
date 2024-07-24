@@ -22,14 +22,18 @@ router
   .post(
     authenticateWithJwt,
     authorize(["individual", "organization"]),
-    upload.single("rescuePostImage"),
+    upload.single("adoptionPostImage"),
     createRescuePost
   );
 
 router
   .route("/:postId")
   .delete(authenticateWithJwt, deleteRescuePost)
-  .put(authenticateWithJwt, upload.single("rescuePostImage"), updateRescuePost)
+  .put(
+    authenticateWithJwt,
+    upload.single("adoptionPostImage"),
+    updateRescuePost
+  )
   .get(authenticateWithJwt, getSingleRescuePost);
 
 router.route("/:postId/comments").put(authenticateWithJwt, addComment);
@@ -39,8 +43,8 @@ router
   .put(authenticateWithJwt, updateComment)
   .delete(authenticateWithJwt, deleteComment);
 
-router.route("/:postId/like").put(authenticateWithJwt, addLike);
+router.route("/:postId/like").put(addLike);
 
-router.route("/:postId/remove-like").put(authenticateWithJwt, removeLike);
+router.route("/:postId/remove-like").put(removeLike);
 
 export { router as rescuePostRoute };

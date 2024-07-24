@@ -2,27 +2,19 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { useEffect, useState } from "react";
 import { PiMessengerLogoLight } from "react-icons/pi";
+import { IoSettings } from "react-icons/io5";
 import { IoLogOut } from "react-icons/io5";
-import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
-import { logout } from "../redux/actions/authActions";
+import { useAuth } from "../context/AuthContext";
+import CreateAdoptionPost from "../pages/CreateAdoptionPost";
 
 function UserNav() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
 
-  const dispatch = useAppDispatch();
-  const { isLoginSuccessful, user } = useAppSelector(
-    (state) => state.authentication
-  );
-
-  useEffect(() => {
-    if (!isLoginSuccessful) {
-      navigate("/");
-    }
-  }, [isLoginSuccessful]);
-
+  const { logout, user } = useAuth();
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -40,11 +32,9 @@ function UserNav() {
   }, []);
   function toggleDropdown() {
     setIsDropdownVisible((isDropdownVisible) => !isDropdownVisible);
-    setIsVisible(false);
   }
   function handleVisiblity() {
     setIsVisible((isVisible) => !isVisible);
-    setIsDropdownVisible(false);
   }
 
   return (
@@ -53,19 +43,12 @@ function UserNav() {
         isScrolled ? "bg-white bg-opacity-90" : "bg-transparent"
       }`}
     >
-      <nav className="flex justify-center backdrop-blur-xl">
-        <ul className=" h-20 flex justify-between items-center w-full shadow-md px-2 ">
+      <nav className="flex justify-center">
+        <ul className=" h-20 flex justify-between items-center w-full shadow-md px-2">
           <li className="font-Oswald font-thin text-2xl h-[100%] flex items-center">
-            <img
-              src="/logo.png"
-              alt="sahaara"
-              className="h-[90%] cursor-pointer"
-              onClick={() => navigate("/profile/rescue")}
-            />
+            <img src="/logo.png" alt="sahaara" className="h-[90%]" />
           </li>
-
           <div className="flex items-center justify-end w-[30%] gap-6">
-            {<li></li>}
             <li>
               <Button onClick={toggleDropdown}>Adoption Portal</Button>
               {isDropdownVisible && (
@@ -74,7 +57,7 @@ function UserNav() {
                     <li
                       className="py-2 px-4 hover:bg-gray-100 cursor-pointer rounded-md"
                       onClick={() => {
-                        navigate("/createadoption");
+                        navigate("/adoption");
                       }}
                     >
                       Create Adoption Posts
@@ -104,6 +87,7 @@ function UserNav() {
           </div>
         </ul>
       </nav>
+
       {isVisible ? (
         <div className="fixed right-10 w-[250px] h-[120px] flex p-5  flex-col shadow-md z-30 ">
           <NavLink to="">
@@ -121,7 +105,8 @@ function UserNav() {
               icon={<IoLogOut size={30} />}
               text="Log Out"
               onClick={() => {
-                dispatch(logout());
+                logout();
+                navigate("/");
               }}
             />
           </ul>

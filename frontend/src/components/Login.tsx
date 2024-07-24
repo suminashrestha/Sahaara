@@ -3,18 +3,11 @@ import Button from "./Button";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
-import { login } from "../redux/actions/authActions";
-import { useEffect } from "react";
-import { FaArrowRotateRight } from "react-icons/fa6";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-  const dispatch = useAppDispatch();
-  const { error, isLoading, isLoginSuccessful } = useAppSelector(
-    (state) => state.authentication
-  );
+  const { login } = useAuth();
   const navigate = useNavigate();
-
   const {
     register,
     reset,
@@ -27,21 +20,14 @@ const Login = () => {
     },
   });
 
-  useEffect(() => {
-    if (error) {
-      toast(error);
-    }
-  }, [error]);
-
-  useEffect(() => {
-    if (isLoginSuccessful) {
-      navigate("/profile");
-    }
-  }, [isLoginSuccessful]);
-
   const submitData = async (data: { identifier: string; password: string }) => {
     const { identifier, password } = data;
-    dispatch(login(identifier, password));
+    try {
+      await login(identifier, password);
+      navigate("/profile");
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    }
     reset();
   };
 
@@ -82,12 +68,7 @@ const Login = () => {
           <Link to="/reset">Forgot password?</Link>
         </li>
       </ul>
-      <Button type="submit">
-        {isLoading ? (
-          <FaArrowRotateRight size={14} className="inline animate-spin mr-2" />
-        ) : null}
-        Login
-      </Button>
+      <Button>Login</Button>
     </form>
   );
 };

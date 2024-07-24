@@ -13,25 +13,17 @@ export interface IRescuePost extends Document {
   rescuePostAuthor: mongoose.Schema.Types.ObjectId;
   title: string;
   description: string;
-  location?: ILocation;
+  location?: string;
   rescuePostImage?: string;
   likes: ILike[];
   comments: IComment[];
 }
 
-interface ILocation extends Document{
-  lng: number,
-  lat: number
-}
 const likeSchema: Schema<ILike> = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-});
-const locationSchema: Schema<ILocation> = new Schema({
-  lng: Number,
-  lat: Number
 });
 
 const commentSchema: Schema<IComment> = new Schema(
@@ -65,7 +57,7 @@ const rescuePostSchema: Schema<IRescuePost> = new Schema(
       type: String,
       required: true,
     },
-    location: locationSchema,
+    location: String,
     rescuePostImage: {
       type: String,
     },

@@ -3,7 +3,7 @@ import RescueNav from "./RescueNav";
 
 function RescuePostSideBar() {
   return (
-    <div className="h-[full] w-[40%] flex justify-center overflow-y-auto bg-slate-100">
+    <div className="h-[full] w-[40%] flex justify-center overflow-y-auto">
       <div className="flex flex-col w-[90%]">
         <RescueNav/>
         <Outlet />

@@ -15,19 +15,18 @@ import CreateAdoptionPost from "./pages/CreateAdoptionPost";
 import Donation from "./pages/Donation";
 import Success from "./pages/Success";
 import Cancel from "./pages/Cancel";
+import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import RescueForm from "./components/RescuePost/RescueForm";
 import ViewRescuePost from "./components/RescuePost/ViewRescuePost";
 
 import ViewAdoptionPost from "./pages/ViewAdoptionPost";
-import { Provider } from "react-redux";
-import store from "./redux/store";
-import SingleAdoptionPost from "./components/AdoptionPost/SingleAdoptionPost";
-
+import AdoptCat from "./components/AdoptionPost/AdoptCat";
+import AdoptDog from "./components/AdoptionPost/AdoptDog";
 export default function App() {
   return (
     <>
-      <Provider store={store}>
+      <AuthProvider>
         <ToastContainer position="top-right" />
         <BrowserRouter>
           <Routes>
@@ -49,7 +48,7 @@ export default function App() {
             </Route>
 
             <Route
-              path="createadoption"
+              path="adoption"
               element={
                 <ProtectedRoute>
                   <CreateAdoptionPost />
@@ -64,17 +63,9 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+            <Route path="/adoptcats" element={<AdoptCat />} />
+            <Route path="/adoptdogs" element={<AdoptDog />} />
 
-            <Route
-              path="viewadoption/:id"
-              element={
-                <ProtectedRoute>
-                  <SingleAdoptionPost />
-                </ProtectedRoute>
-              }
-            />
-
-            
             <Route path="join" element={<LoginSignup />}>
               <Route index element={<Navigate replace to="login" />} />
               <Route path="login" element={<Login />} />
@@ -83,7 +74,7 @@ export default function App() {
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>
-      </Provider>
+      </AuthProvider>
     </>
   );
 }

@@ -1,46 +1,26 @@
 import mongoose, { model } from "mongoose";
 
 interface IVolunteerPost extends mongoose.Document {
-  user: mongoose.Schema.Types.ObjectId;
+  userId: mongoose.Schema.Types.ObjectId; //only org
   title: string;
-  location?: string;
-  date?: Date;
-  eventTime?: string;
+  description: string;
 }
 
 const volunteerPostSchema: mongoose.Schema<IVolunteerPost> =
-  new mongoose.Schema(
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-      },
-      title: {
-        type: String,
-        required: true,
-      },
-      location: {
-        type: String,
-      },
-      date: {
-        type: Date,
-      },
-      eventTime: {
-        type: String, // Store as string in "HH:MM" format
-        required: true,
-        validate: {
-          validator: function (v: string) {
-            return /^([01]\d|2[0-3]):([0-5]\d)$/.test(v); // Validate "HH:MM" format
-          },
-          message: (props: any) => `${props.value} is not a valid time format!`,
-        },
-      },
+  new mongoose.Schema({
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
-    {
-      timestamps: true,
-    }
-  );
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+  });
 
 export const VolunteerPost = model<IVolunteerPost>(
   "VolunteerPost",

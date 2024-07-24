@@ -7,9 +7,8 @@ import {
   resetPassword,
   logoutUser,
   refreshAccessToken,
-  toggleVolunteerMode,
 } from "../controllers";
-import { authenticateWithJwt, authorize } from "../middlewares/auth.middleware";
+import { authenticateWithJwt } from "../middlewares/auth.middleware";
 
 const router = express.Router();
 
@@ -26,12 +25,5 @@ router.route("/reset-password").post(resetPassword);
 router.route("/logout").post(authenticateWithJwt, logoutUser);
 
 router.route("/refresh-token").post(refreshAccessToken);
-
-router.put(
-  "/toggle-volunteer-mode",
-  authenticateWithJwt,
-  authorize(["individual"]),
-  toggleVolunteerMode
-);
 
 export { router as userRoute };

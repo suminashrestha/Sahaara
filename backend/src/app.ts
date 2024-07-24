@@ -17,8 +17,6 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(express.static("public"));
-
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/profile", profileRoute);
 app.use("/api/v1/rescue-posts", rescuePostRoute);

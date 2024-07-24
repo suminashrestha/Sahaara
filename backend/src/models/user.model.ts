@@ -1,4 +1,5 @@
-import mongoose, { Document, Schema, model } from "mongoose";
+import { Document, Schema, model } from "mongoose";
+import { AdoptionPost } from "./adoption-post.model";
 
 export enum UserType {
   Individual = "individual",
@@ -11,12 +12,10 @@ export interface IUser extends Document {
   email: string;
   password: string;
   type: UserType;
-  isVolunteer?: boolean;
   verifyCode: string;
   isVerified: boolean;
   verifyCodeExpiry: Date;
   refreshToken?: string;
-  profile?: mongoose.Schema.Types.ObjectId;
 }
 
 const userSchema: Schema<IUser> = new Schema(
@@ -40,17 +39,9 @@ const userSchema: Schema<IUser> = new Schema(
       enum: UserType,
       required: [true, "type is required"],
     },
-    isVolunteer: {
-      type: Boolean,
-      default: false,
-    },
     refreshToken: String,
     verifyCode: String,
     verifyCodeExpiry: Date,
-    profile: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Profile",
-    },
     isVerified: {
       type: Boolean,
       default: false,

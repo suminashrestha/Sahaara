@@ -11,7 +11,7 @@ function OTPverificationPage() {
   const { username } = useParams();
   const [otp, setOtp] = useState("");
 
-  function handleOtpChange(e: any) {
+  function handleOtpChange(e) {
     setOtp(e.target.value);
   }
   async function handleotp() {
@@ -23,7 +23,7 @@ function OTPverificationPage() {
       navigate("/join/login");
       toast.success(data.message);
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      toast.success(error.response.data.message);
     }
   }
   return (
