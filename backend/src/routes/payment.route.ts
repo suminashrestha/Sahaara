@@ -17,6 +17,8 @@ router.route("/").post(async (req, res) => {
             currency: "usd",
             product_data: {
               name: "Donation",
+              description:
+                "Thank You for helping us. We are very grateful for your support.",
             },
             unit_amount: amount * 100, // amount in cents
           },

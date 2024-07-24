@@ -13,10 +13,7 @@ const organizationSchema: Schema<IOrganization> = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    name: {
-      type: String,
-      required: true,
-    },
+    name: String,
     location: String,
     profilePicture: String,
   },

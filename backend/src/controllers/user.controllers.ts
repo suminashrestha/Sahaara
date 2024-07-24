@@ -1,5 +1,9 @@
 import { CookieOptions, Request, Response } from "express";
+<<<<<<< HEAD
 import { User, UserType } from "../models/user.model";
+=======
+import {  User, UserType } from "../models/user.model";
+>>>>>>> aa0397204373d4015d12be71021a90aa25f02fcd
 import bcrypt from "bcryptjs";
 import { sendVerificationCode } from "../utils/sendVerificationCode";
 import { ApiResponse } from "../types/apiResponse";
@@ -408,6 +412,40 @@ const refreshAccessToken = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
+<<<<<<< HEAD
+=======
+const toggleVolunteerMode = asyncHandler(
+  async (req: AuthRequest, res: Response) => {
+    const { isVolunteer } = req.body;
+
+    if (typeof isVolunteer !== "boolean") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid input for volunteer mode",
+      });
+    }
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Couldn't update the Volunteer mode",
+      });
+    }
+
+    user.isVolunteer = isVolunteer;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      data: "huehuehue",
+    });
+  }
+);
+
+>>>>>>> aa0397204373d4015d12be71021a90aa25f02fcd
 export {
   signUpHandler,
   signInHandler,

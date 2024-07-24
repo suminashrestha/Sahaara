@@ -1,6 +1,6 @@
 import express from "express";
 import upload from "../middlewares/upload.middleware";
-import { authenticateWithJwt, authorize } from "../middlewares/auth.middleware";
+import { authorize } from "../middlewares/auth.middleware";
 import {
   createRescuePost,
   deleteRescuePost,
@@ -20,7 +20,6 @@ router
   .route("/")
   .get(getAllRescuePosts)
   .post(
-    authenticateWithJwt,
     authorize(["individual", "organization"]),
     upload.single("adoptionPostImage"),
     createRescuePost
@@ -28,20 +27,16 @@ router
 
 router
   .route("/:postId")
-  .delete(authenticateWithJwt, deleteRescuePost)
-  .put(
-    authenticateWithJwt,
-    upload.single("adoptionPostImage"),
-    updateRescuePost
-  )
-  .get(authenticateWithJwt, getSingleRescuePost);
+  .delete(deleteRescuePost)
+  .put(upload.single("rescuePostImage"), updateRescuePost)
+  .get(getSingleRescuePost);
 
-router.route("/:postId/comments").put(authenticateWithJwt, addComment);
+router.route("/:postId/comments").put(addComment);
 
 router
   .route("/:postId/comments/:commentId")
-  .put(authenticateWithJwt, updateComment)
-  .delete(authenticateWithJwt, deleteComment);
+  .put(updateComment)
+  .delete(deleteComment);
 
 router.route("/:postId/like").put(addLike);
 

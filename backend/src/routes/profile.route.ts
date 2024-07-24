@@ -1,36 +1,35 @@
 import express from "express";
 import upload from "../middlewares/upload.middleware";
-import { authenticateWithJwt, authorize } from "../middlewares/auth.middleware";
+import { authorize } from "../middlewares/auth.middleware";
 
 import {
   createProfile,
   getProfile,
-  getMyProfile,
-  toggleVolunteerMode,
+  getUserAdoptionPosts,
+  getUserRescuePosts,
 } from "../controllers";
 
 const router = express.Router();
 
 router.post(
   "/",
-  authenticateWithJwt,
   authorize(["individual", "organization"]),
   upload.single("profilePicture"),
   createProfile
 );
 
+router.get("/:userId", authorize(["individual", "organization"]), getProfile);
+
 router.get(
-  "/:profileId",
-  authenticateWithJwt,
+  "/:userId/user-adoption-posts",
   authorize(["individual", "organization"]),
-  getProfile
+  getUserAdoptionPosts
 );
 
 router.get(
-  "/me",
-  authenticateWithJwt,
+  "/:userId/user-rescue-posts",
   authorize(["individual", "organization"]),
-  getMyProfile
+  getUserRescuePosts
 );
 
 router.put(

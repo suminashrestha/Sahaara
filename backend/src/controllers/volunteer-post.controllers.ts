@@ -2,7 +2,11 @@ import { Response } from "express";
 import { VolunteerPost } from "../models/volunteer-post.model";
 import asyncHandler from "../utils/asyncHandler";
 import { AuthRequest } from "./adoption-post.controllers";
+<<<<<<< HEAD
 import { Individual } from "../models/individual.model";
+=======
+import { User, UserType } from "../models/user.model";
+>>>>>>> aa0397204373d4015d12be71021a90aa25f02fcd
 
 const getAllVolunteerPosts = asyncHandler(
   async (req: AuthRequest, res: Response) => {
@@ -54,12 +58,35 @@ const getAllVolunteerPosts = asyncHandler(
 
 const createVolunteerPost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
+<<<<<<< HEAD
     const { title, description } = req.body;
+=======
+    const { title, location, date, eventTime } = req.body;
+
+    const [hoursStr, minutesStr] = eventTime.split(":");
+    const hours = String(parseInt(hoursStr, 10)).padStart(2, "0");
+    const minutes = String(parseInt(minutesStr, 10)).padStart(2, "0");
+
+    const formattedTime = `${hours}:${minutes}`;
+    let formattedDate = "";
+    if (date) {
+      const _date = new Date(date);
+      formattedDate = `${_date.getFullYear()}-${String(
+        _date.getMonth() + 1
+      ).padStart(2, "0")}-${String(_date.getDate()).padStart(2, "0")}`;
+    }
+>>>>>>> aa0397204373d4015d12be71021a90aa25f02fcd
 
     const volunteerPost = new VolunteerPost({
       userId: req.user._id,
       title,
+<<<<<<< HEAD
       description,
+=======
+      location,
+      date: formattedDate,
+      eventTime: formattedTime,
+>>>>>>> aa0397204373d4015d12be71021a90aa25f02fcd
     });
 
     const savedPost = await volunteerPost.save();

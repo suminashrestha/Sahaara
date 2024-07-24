@@ -3,7 +3,10 @@ import Button from "./Button";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
+import { login } from "../redux/actions/authActions";
+import { useEffect } from "react";
+import { CgSpinner } from "react-icons/cg";
 
 const Login = () => {
   const { login } = useAuth();
@@ -19,6 +22,18 @@ const Login = () => {
       password: "",
     },
   });
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isLoginSuccessful) {
+      navigate("/profile");
+    }
+  }, [isLoginSuccessful]);
 
   const submitData = async (data: { identifier: string; password: string }) => {
     const { identifier, password } = data;
@@ -68,7 +83,10 @@ const Login = () => {
           <Link to="/reset">Forgot password?</Link>
         </li>
       </ul>
-      <Button>Login</Button>
+      <Button type="submit">
+        {isLoading && <CgSpinner className="inline mr-1" size={24} />}
+        Login
+      </Button>
     </form>
   );
 };

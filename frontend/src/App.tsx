@@ -6,7 +6,6 @@ import Contact from "./pages/Contact";
 import LoginSignup from "./pages/SignupLogin";
 import OTPverificationPage from "./pages/OTPverificationPage";
 import Landing from "./pages/Landing";
-
 import Login from "./components/Login";
 import SignUp from "./components/Signup";
 import PageNotFound from "./pages/PageNotFound";
@@ -21,13 +20,29 @@ import RescueForm from "./components/RescuePost/RescueForm";
 import ViewRescuePost from "./components/RescuePost/ViewRescuePost";
 
 import ViewAdoptionPost from "./pages/ViewAdoptionPost";
-import AdoptCat from "./components/AdoptionPost/AdoptCat";
-import AdoptDog from "./components/AdoptionPost/AdoptDog";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import SingleAdoptionPost from "./components/AdoptionPost/SingleAdoptionPost";
+import AdoptionLanding from "./pages/AdoptionLanding";
+import SingleRescuePost from "./components/RescuePost/SingleRescuePost";
+
+import CreateVolunteer from "./pages/CreateVolunteer";
+import ViewVolunteer from "./pages/ViewVolunteer";
+import Profile from "./pages/Profile/Profile";
+
 export default function App() {
   return (
     <>
-      <AuthProvider>
-        <ToastContainer position="top-right" />
+      <Provider store={store}>
+        <ToastContainer
+          autoClose={700}
+          position="top-right"
+          stacked
+          limit={3}
+          draggable
+          hideProgressBar
+          theme="dark"
+        />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Homepage />} />
@@ -45,6 +60,7 @@ export default function App() {
               <Route index element={<Navigate to="rescue" />} />
               <Route path="rescue" element={<ViewRescuePost />} />
               <Route path="createrescue" element={<RescueForm />} />
+              <Route path=":id" element={<SingleRescuePost />} />
             </Route>
 
             <Route
@@ -63,9 +79,58 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
+<<<<<<< HEAD
             <Route path="/adoptcats" element={<AdoptCat />} />
             <Route path="/adoptdogs" element={<AdoptDog />} />
 
+=======
+            <Route
+              path="userprofile/:userId"
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route />
+
+            <Route
+              path="viewadoption/:id"
+              element={
+                <ProtectedRoute>
+                  <SingleAdoptionPost />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="createvolunteer"
+              element={
+                <ProtectedRoute>
+                  <CreateVolunteer />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="viewvolunteer"
+              element={
+                <ProtectedRoute>
+                  <ViewVolunteer />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="adoption"
+              element={
+                <ProtectedRoute>
+                  <AdoptionLanding />
+                </ProtectedRoute>
+              }
+            />
+
+>>>>>>> aa0397204373d4015d12be71021a90aa25f02fcd
             <Route path="join" element={<LoginSignup />}>
               <Route index element={<Navigate replace to="login" />} />
               <Route path="login" element={<Login />} />
