@@ -24,7 +24,7 @@ app.use(express.static("public"));
 app.use("/api/v1/user", userRoute);
 app.use("/create-checkout-session", stripeRoute);
 
-// routes that need authentication
+// routes that needs authentication
 app.use(authenticateWithJwt);
 app.use("/api/v1/profile", profileRoute);
 app.use("/api/v1/rescue-posts", rescuePostRoute);

@@ -2,7 +2,12 @@ import express from "express";
 import upload from "../middlewares/upload.middleware";
 import { authorize } from "../middlewares/auth.middleware";
 
-import { createProfile, getProfile, getMyProfile } from "../controllers";
+import {
+  createProfile,
+  getProfile,
+  getUserAdoptionPosts,
+  getUserRescuePosts,
+} from "../controllers";
 
 const router = express.Router();
 
@@ -13,12 +18,18 @@ router.post(
   createProfile
 );
 
+router.get("/:userId", authorize(["individual", "organization"]), getProfile);
+
 router.get(
-  "/:profileId",
+  "/:userId/user-adoption-posts",
   authorize(["individual", "organization"]),
-  getProfile
+  getUserAdoptionPosts
 );
 
-router.get("/me", authorize(["individual", "organization"]), getMyProfile);
+router.get(
+  "/:userId/user-rescue-posts",
+  authorize(["individual", "organization"]),
+  getUserRescuePosts
+);
 
 export { router as profileRoute };

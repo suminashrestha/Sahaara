@@ -80,3 +80,4 @@ const rescuePostSchema: Schema<IRescuePost> = new Schema(
 );
 
 export const RescuePost = model<IRescuePost>("RescuePost", rescuePostSchema);
+export const Comment = model<IComment>("Comment", commentSchema);

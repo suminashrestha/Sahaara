@@ -11,4 +11,5 @@ interface User {
   email: string;
   type: string;
   username: string;
+  isVolunteer?: boolean;
 }

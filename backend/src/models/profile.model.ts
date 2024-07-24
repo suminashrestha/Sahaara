@@ -12,18 +12,10 @@ const profileSchema: Schema<IProfile> = new Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
     },
-    name: {
-      type: String,
-      required: true,
-    },
-    location: {
-      type: String,
-    },
-    profilePicture: {
-      type: String,
-    },
+    name: String,
+    location: String,
+    profilePicture: String,
   },
   {
     timestamps: true,

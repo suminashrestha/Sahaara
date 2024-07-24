@@ -1,10 +1,9 @@
-import { FaFilter } from "react-icons/fa";
 import UserNav from "../components/UserNav";
 import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { useEffect, useState } from "react";
 import { getAllAdoptionPosts } from "../redux/actions/adoptionActions";
 import { toast } from "react-toastify";
-import DisplayCards from "../components/AdoptionPost/DisplayCards";
+import DisplayCard from "../components/AdoptionPost/DisplayCard";
 import { AdoptionPostSchema } from "../redux/reducers/AdoptionReducer/AdoptionReducerInterface";
 import Loader from "../components/Loader";
 const ViewAdoptionPost = () => {
@@ -23,7 +22,7 @@ const ViewAdoptionPost = () => {
   }, [posts]);
 
   useEffect(() => {
-    if (error) toast(error);
+    if (error) toast.error(error);
   }, [error]);
 
   if (isLoading) {
@@ -64,7 +63,7 @@ const ViewAdoptionPost = () => {
         <div className="flex h-full w-full justify-center items-center">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 p-13 mx-auto w-[95%] p-7">
             {sortedPosts.map((post) => (
-              <DisplayCards post={post as AdoptionPostSchema} key={post._id} />
+              <DisplayCard post={post as AdoptionPostSchema} key={post._id} />
             ))}
           </div>
         </div>

@@ -7,10 +7,33 @@ import Button from "../components/Button";
 import ErrorText from "../components/ErrorText";
 import API from "../config/baseUrl";
 import UserNav from "../components/UserNav";
-import { AdoptionPostSchema } from "../redux/reducers/AdoptionReducer/AdoptionReducerInterface";
 
+interface IAdoption{
+  _id: string;
+  name: string;
+  age: string;
+  breed: string;
+  gender: string;
+  size: string;
+  color: string;
+  coatLength: string;
+  characterstics: string;
+  health: string;
+  contact: {
+    email: string;
+    phone: string;
+    name: string;
+    address: string;
+  };
+  myStory: string;
+  category: string;
+  adoptionImage?: string;
+  createdAt: string;
+  adoptionPostImage?: File | null;
+}
 const CreateAdoptionPost = () => {
   const [img, setImg] = useState<string>("/upload.png");
+
 
   const {
     register,
@@ -18,7 +41,7 @@ const CreateAdoptionPost = () => {
     reset,
     formState: { errors },
     setValue,
-  } = useForm<AdoptionPostSchema>({
+  } = useForm<IAdoption>({
     defaultValues: {
       name: "",
       breed: "",
@@ -36,18 +59,19 @@ const CreateAdoptionPost = () => {
         address: "",
       },
       myStory: "",
-      category: "", //
+      category: "", 
       adoptionPostImage: null,
     },
   });
 
-  const formSubmit = async (data: AdoptionPostSchema) => {
+  const formSubmit = async (data: IAdoption) => {
     try {
       const formData = new FormData();
       formData.append("name", data.name);
       formData.append("breed", data.breed);
       formData.append("age", data.age);
       formData.append("gender", data.gender);
+      formData.append("category", data.category);
       formData.append("size", data.size);
       formData.append("color", data.color);
       formData.append("coatLength", data.coatLength);
@@ -100,13 +124,13 @@ const CreateAdoptionPost = () => {
   const { ref: photoRef, inView: photoInView } = useInView({});
   const { ref: descriptionRef, inView: descriptionInView } = useInView({});
   const { ref: keyFactsRef, inView: keyFactsInView } = useInView({
-    rootMargin: "-40% 0% 0% 0% ", threshold: 0.5
+    rootMargin: "-60% 0% 0% 0% ", threshold: 0.5
   });
   const { ref: petStoryRef, inView: petStoryInView } = useInView({
-    rootMargin: "-40% 0% 0% 0% ", threshold: 0.5
+    rootMargin: "-60% 0% 0% 0% ", threshold: 0.5
   });
   const { ref: contactRef, inView: contactInView } = useInView({
-    rootMargin: "-40% 0% 0% 0% ", threshold: 0.5
+    rootMargin: "-60% 0% 0% 0% ", threshold: 0
   });
 
   useEffect(() => {

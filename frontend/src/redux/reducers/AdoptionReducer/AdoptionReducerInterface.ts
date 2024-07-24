@@ -14,8 +14,8 @@ export interface AdoptionPostSchema {
   size: string;
   color: string;
   coatLength: string;
-  characterstics: string;
-  health: string;
+  characterstics: string[];
+  health: string[];
   contact: {
     email: string;
     phone: string;

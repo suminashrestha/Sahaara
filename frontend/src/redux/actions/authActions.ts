@@ -51,4 +51,9 @@ const logout = (): Actiontype => async (dispatch: Dispatch<Action>) => {
   }
 };
 
+export const toggleVolunteerMode = (isVolunteer: boolean) => ({
+  type: ActionTypes.TOGGLE_VOLUNTEER_MODE,
+  payload: isVolunteer,
+});
+
 export { logout, login };

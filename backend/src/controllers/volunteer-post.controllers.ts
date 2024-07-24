@@ -3,7 +3,6 @@ import { VolunteerPost } from "../models/volunteer-post.model";
 import asyncHandler from "../utils/asyncHandler";
 import { AuthRequest } from "./adoption-post.controllers";
 import { User, UserType } from "../models/user.model";
-import { Profile } from "../models/profile.model";
 
 const getAllVolunteerPosts = asyncHandler(
   async (req: AuthRequest, res: Response) => {
@@ -59,12 +58,19 @@ const createVolunteerPost = asyncHandler(
     const minutes = String(parseInt(minutesStr, 10)).padStart(2, "0");
 
     const formattedTime = `${hours}:${minutes}`;
+    let formattedDate = "";
+    if (date) {
+      const _date = new Date(date);
+      formattedDate = `${_date.getFullYear()}-${String(
+        _date.getMonth() + 1
+      ).padStart(2, "0")}-${String(_date.getDate()).padStart(2, "0")}`;
+    }
 
     const volunteerPost = new VolunteerPost({
       user: req.user._id,
       title,
       location,
-      date,
+      date: formattedDate,
       eventTime: formattedTime,
     });
 

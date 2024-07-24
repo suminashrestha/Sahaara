@@ -6,14 +6,16 @@ export default interface RescueReducerInterface {
 
 export interface RescuePostSchema {
   _id: string;
-  authorUserName: string;
-  title: string;
-  description: string;
+  title?: string;
+  comments?: {
+    name: string;
+    commenter: string;
+    comment: string;
+    _id: string;
+  }[];
+  description?: string;
+  likes?: { user: string; _id: string }[];
+  location?: { lng: string; lat: string };
+  rescuePostAuthor?: { _id: string; username: string; type: string };
   rescuePostImage?: string;
-  location?: {
-    lat: number;
-    lng: number;
-  };
-  comments: { username: string; content: string }[];
-  likes: { username: string }[];
 }

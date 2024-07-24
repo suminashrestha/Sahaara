@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { login } from "../redux/actions/authActions";
 import { useEffect } from "react";
-import { FaArrowRotateRight } from "react-icons/fa6";
+import { CgSpinner } from "react-icons/cg";
 
 const Login = () => {
   const dispatch = useAppDispatch();
@@ -29,7 +29,7 @@ const Login = () => {
 
   useEffect(() => {
     if (error) {
-      toast(error);
+      toast.error(error);
     }
   }, [error]);
 
@@ -83,9 +83,7 @@ const Login = () => {
         </li>
       </ul>
       <Button type="submit">
-        {isLoading ? (
-          <FaArrowRotateRight size={14} className="inline animate-spin mr-2" />
-        ) : null}
+        {isLoading && <CgSpinner className="inline mr-1" size={24} />}
         Login
       </Button>
     </form>

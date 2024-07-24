@@ -68,6 +68,14 @@ const reducer = (
         isLoading: false,
       };
 
+    case ActionTypes.TOGGLE_VOLUNTEER_MODE:
+      return {
+        ...state,
+        user: state.user
+          ? { ...state.user, isVolunteer: action.payload }
+          : null,
+      };
+
     default:
       return state;
   }

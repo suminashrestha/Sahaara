@@ -1,5 +1,5 @@
 import { CookieOptions, Request, Response } from "express";
-import { IUser, User, UserType } from "../models/user.model";
+import {  User, UserType } from "../models/user.model";
 import bcrypt from "bcryptjs";
 import { sendVerificationCode } from "../utils/sendVerificationCode";
 import { ApiResponse } from "../types/apiResponse";
@@ -429,7 +429,7 @@ const toggleVolunteerMode = asyncHandler(
       });
     }
 
-    const user = await User.findOne({ user: req.user._id });
+    const user = await User.findById(req.user._id);
 
     if (!user) {
       return res.status(400).json({
@@ -444,6 +444,7 @@ const toggleVolunteerMode = asyncHandler(
     res.status(200).json({
       success: true,
       message: "User updated successfully",
+      data: "huehuehue",
     });
   }
 );

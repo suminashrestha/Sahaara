@@ -7,9 +7,9 @@ export default function AdoptionLanding() {
     <div>
       <UserNav />
       <div className="mt-20 flex h-[90vh] w-full bg-[url('/adoption_landing.jpg')] bg-no-repeat bg-cover">
-        <div className="flex flex-col items-end w-full h-full">
+        <div className="flex flex-col items-end w-full h-full justify-center gap-8 p-9">
           <div
-            className="border-transparent bg-secondary hover:bg-btnHover rounded-2xl text-white transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-110 duration-200 ... h-[25%] w-[35%] m-5 p-5  items-center
+            className="border-transparent bg-btnColor hover:bg-slate-500 rounded-2xl text-white transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-110 duration-200 ... h-[25%] w-[35%]  p-5  items-center
           "
             onClick={() => {
               navigate("/createadoption");
@@ -19,7 +19,7 @@ export default function AdoptionLanding() {
             <p className="p-3">Start the process.</p>
           </div>
           <div
-            className="border-transparent bg-secondary hover:bg-btnHover rounded-2xl text-white transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-110 duration-200 ... h-[25%] w-[35%] m-5 p-5  items-center"
+            className="border-transparent bg-btnColor hover:bg-slate-500 rounded-2xl text-white transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-110 duration-200 ... h-[25%] w-[35%]  p-5  items-center"
             onClick={() => {
               navigate("/viewadoption");
             }}

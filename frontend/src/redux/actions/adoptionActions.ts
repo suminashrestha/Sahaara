@@ -26,14 +26,14 @@ function getAllAdoptionPosts(): Actiontype {
   };
 }
 
-function getSingleAdoptionPost(): Actiontype {
+function getSingleAdoptionPost(postId: string): Actiontype {
   return async function (dispatch: Dispatch<Action>) {
     dispatch({
       type: ActionTypes.GET_SINGLE_ADOPTION_POST_REQUEST,
     });
     try {
-      const { data } = await API.get("/api/v1/adoption-posts");
-    //   console.log(data)
+      const { data } = await API.get(`/api/v1/adoption-posts/${postId}`);
+      // console.log(data)
       dispatch({
         type: ActionTypes.GET_SINGLE_ADOPTION_POST_SUCCESS,
         payload: { post: data.data },

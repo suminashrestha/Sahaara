@@ -12,7 +12,7 @@ const getAllRescuePosts = asyncHandler(async (req: Request, res: Response) => {
     populate: { path: "profile", select: "profilePicture" },
   });
 
-  if (!rescuePosts.length) {
+  if (!rescuePosts || rescuePosts.length === 0) {
     return res.status(404).json({
       success: false,
       message: "No Posts found",
