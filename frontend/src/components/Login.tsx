@@ -9,8 +9,12 @@ import { useEffect } from "react";
 import { CgSpinner } from "react-icons/cg";
 
 const Login = () => {
-  const { login } = useAuth();
+  const dispatch = useAppDispatch();
+  const { error, isLoading, isLoginSuccessful } = useAppSelector(
+    (state) => state.authentication
+  );
   const navigate = useNavigate();
+
   const {
     register,
     reset,
@@ -37,12 +41,7 @@ const Login = () => {
 
   const submitData = async (data: { identifier: string; password: string }) => {
     const { identifier, password } = data;
-    try {
-      await login(identifier, password);
-      navigate("/profile");
-    } catch (error: any) {
-      toast.error(error.response.data.message);
-    }
+    dispatch(login(identifier, password));
     reset();
   };
 

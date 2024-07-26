@@ -7,6 +7,7 @@ import Button from "../components/Button";
 import ErrorText from "../components/ErrorText";
 import API from "../config/baseUrl";
 import UserNav from "../components/UserNav";
+import axios from "axios";
 
 interface IAdoption {
   _id: string;
@@ -25,8 +26,8 @@ interface IAdoption {
     name: string;
     address: string;
   };
-  myStory: string;
   category: string;
+  myStory: string;
   adoptionImage?: string;
   createdAt: string;
   adoptionPostImage?: File | null;
@@ -57,36 +58,35 @@ const CreateAdoptionPost = () => {
         name: "",
         address: "",
       },
-      myStory: "",
       category: "",
+      myStory: "",
       adoptionPostImage: null,
     },
   });
 
   const formSubmit = async (data: IAdoption) => {
     try {
-      const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("breed", data.breed);
-      formData.append("age", data.age);
-      formData.append("gender", data.gender);
-      formData.append("category", data.category);
-      formData.append("size", data.size);
-      formData.append("color", data.color);
-      formData.append("coatLength", data.coatLength);
-      formData.append("myStory", data.myStory);
-      formData.append("characterstics", data.characterstics);
-      formData.append("contact.email", data.contact.email);
-      formData.append("contact.phone", data.contact.phone);
-      formData.append("contact.address", data.contact.address);
-      formData.append("contact.name", data.contact.name);
-      formData.append("health", data.health);
-      formData.append("contact", JSON.stringify(data.contact));
-
+      const formData1 = new FormData();
+      formData1.append("name", data.name);
+      formData1.append("breed", data.breed);
+      formData1.append("age", data.age);
+      formData1.append("gender", data.gender);
+      formData1.append("size", data.size);
+      formData1.append("color", data.color);
+      formData1.append("coatLength", data.coatLength);
+      formData1.append("myStory", data.myStory);
+      formData1.append("characterstics", data.characterstics);
+      formData1.append("contact.email", data.contact.email);
+      formData1.append("contact.phone", data.contact.phone);
+      formData1.append("contact.address", data.contact.address);
+      formData1.append("contact.name", data.contact.name);
+      formData1.append("health", data.health);
+      formData1.append("contact", JSON.stringify(data.contact));
+      formData1.append("category", data.category);
       if (data.adoptionPostImage) {
-        formData.append("adoptionPostImage", data.adoptionPostImage);
+        formData1.append("adoptionPostImage", data.adoptionPostImage);
       }
-      const response = await API.post("/api/v1/adoption-posts", formData, {
+      const response = await API.post("/api/v1/adoption-posts", formData1, {
         headers: {
           "Content-Type": "multipart/form-data",
           body: JSON.stringify(data),
@@ -102,7 +102,26 @@ const CreateAdoptionPost = () => {
       toast.error("Failed to create adoption post.");
     }
   };
-
+  async function classifyImage(image: File) {
+    try {
+      const formData2 = new FormData();
+      formData2.append("file", image);
+      const response = await axios.post(
+        "http://localhost:8001/classify",
+        formData2,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setValue("category", response.data.label);
+      toast(response.data.label);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      null;
+    }
+  }
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -110,6 +129,7 @@ const CreateAdoptionPost = () => {
       reader.onload = () => {
         setValue("adoptionPostImage", file);
         setImg(reader.result as string);
+        classifyImage(file);
       };
       reader.readAsDataURL(file);
     }
@@ -201,20 +221,6 @@ const CreateAdoptionPost = () => {
                 />
               </div>
               {errors.name && toast.error(errors.name.message)}
-
-              <div className="flex gap-3 text-sm items-center">
-                <label htmlFor="category">Category :</label>
-                <input
-                  id="category"
-                  className="p-3 text-sm text-zinc-600 rounded-lg bg-white focus:outline-none"
-                  type="text"
-                  {...register("category", {
-                    required: "Category is required",
-                  })}
-                  autoComplete="off"
-                />
-                {errors.category && toast.error(errors.category.message)}
-              </div>
 
               <div className="flex gap-3 items-center text-sm">
                 <label htmlFor="gender">Gender</label>

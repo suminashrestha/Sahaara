@@ -39,7 +39,7 @@ function RescueMap() {
     <div className="h-full w-[60%] bg-yellow-300 z-10">
       <MapContainer
         className="h-full"
-        center={[40, 0]}
+        center={mapPosition}
         zoom={13}
         scrollWheelZoom={true}
       >

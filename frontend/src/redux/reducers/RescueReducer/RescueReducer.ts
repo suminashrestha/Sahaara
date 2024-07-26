@@ -5,7 +5,6 @@ const initialState: RescueReducerInterface = {
   posts: [],
   isLoading: false,
   error: null,
-  post: null
 };
 
 const reducer = (state = initialState, action: any): RescueReducerInterface => {
@@ -33,6 +32,30 @@ const reducer = (state = initialState, action: any): RescueReducerInterface => {
         error: action.payload.error,
       };
 
+      case ActionTypes.GET_SINGLE_RESCUE_POST_SUCCESS:
+      return {
+        ...state,
+        post: action.payload.post,
+        isLoading: false,
+        error: null,
+      };
+
+      case ActionTypes.GET_SINGLE_RESCUE_POST_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+      };
+
+
+      case ActionTypes.GET_SINGLE_RESCUE_POST_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
+      };
+
+
     case ActionTypes.DELETE_COMMENT_SUCCESS:
       return {
         ...state,
@@ -50,29 +73,6 @@ const reducer = (state = initialState, action: any): RescueReducerInterface => {
         error: null,
       };
 
-      case ActionTypes.GET_SINGLE_RESCUE_POST_REQUEST:
-      return {
-        ...state,
-        error: null,
-        isLoading: true,
-      };
-
-      case ActionTypes.GET_SINGLE_RESCUE_POST_SUCCESS:
-      return {
-        ...state,
-        post: action.payload.post,
-        isLoading: false,
-        error: null,
-      };
-
-    case ActionTypes.GET_SINGLE_RESCUE_POST_FAILURE:
-      return {
-        ...state,
-        isLoading: false,
-        posts: [],
-        error: action.payload.error,
-      };
-
     case ActionTypes.DELETE_COMMENT_FAILURE:
       return {
         ...state,
@@ -81,7 +81,8 @@ const reducer = (state = initialState, action: any): RescueReducerInterface => {
       };
 
     case ActionTypes.ADD_COMMENT_SUCCESS:
-      
+      // const newComment = action.payload.comment;
+      // console.log("newCommenttttttttttttttttttttttttttt", newComment);
       return {
         ...state,
         posts: state.posts.map((post) =>
@@ -123,8 +124,6 @@ const reducer = (state = initialState, action: any): RescueReducerInterface => {
         isLoading: false,
         error: action.payload.error,
       };
-
-      
 
     default:
       return state;

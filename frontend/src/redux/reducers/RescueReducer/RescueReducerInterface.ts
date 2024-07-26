@@ -2,7 +2,7 @@ export default interface RescueReducerInterface {
   isLoading: boolean;
   error?: string | null;
   posts: RescuePostSchema[];
-  post : RescuePostSchema | null
+  post: RescuePostSchema | null
 }
 
 export interface RescuePostSchema {

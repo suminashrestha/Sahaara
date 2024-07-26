@@ -14,7 +14,6 @@ import CreateAdoptionPost from "./pages/CreateAdoptionPost";
 import Donation from "./pages/Donation";
 import Success from "./pages/Success";
 import Cancel from "./pages/Cancel";
-import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import RescueForm from "./components/RescuePost/RescueForm";
 import ViewRescuePost from "./components/RescuePost/ViewRescuePost";
@@ -25,10 +24,10 @@ import store from "./redux/store";
 import SingleAdoptionPost from "./components/AdoptionPost/SingleAdoptionPost";
 import AdoptionLanding from "./pages/AdoptionLanding";
 import SingleRescuePost from "./components/RescuePost/SingleRescuePost";
-
 import CreateVolunteer from "./pages/CreateVolunteer";
 import ViewVolunteer from "./pages/ViewVolunteer";
 import Profile from "./pages/Profile/Profile";
+import ImageClassifier from "./components/ImageClassifier";
 
 export default function App() {
   return (
@@ -42,6 +41,7 @@ export default function App() {
           draggable
           hideProgressBar
           theme="dark"
+          className="mt-20"
         />
         <BrowserRouter>
           <Routes>
@@ -51,6 +51,7 @@ export default function App() {
             <Route path="success" element={<Success />} />
             <Route path="cancel" element={<Cancel />} />
             <Route path="donate" element={<Donation />} />
+            <Route path="xyz" element={<ImageClassifier />} />
             <Route
               path="otpverify/:username"
               element={<OTPverificationPage />}
@@ -64,7 +65,7 @@ export default function App() {
             </Route>
 
             <Route
-              path="adoption"
+              path="createadoption"
               element={
                 <ProtectedRoute>
                   <CreateAdoptionPost />
@@ -133,7 +134,7 @@ export default function App() {
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>
-      </AuthProvider>
+      </Provider>
     </>
   );
 }

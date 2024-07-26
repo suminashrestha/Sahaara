@@ -1,8 +1,8 @@
 import { ChangeEvent, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import API from "../../config/baseUrl";
-import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import useGeolocation from "../../hooks/useGeolocation"; // Adjust the path to your useGeolocation hook
 
 interface FormData {
   title: string;
@@ -14,7 +14,7 @@ interface FormData {
 function RescueForm() {
   const [img, setImg] = useState<string>("/upload.png");
   const imgRef = useRef<HTMLInputElement>(null);
-  const { register, handleSubmit, reset } = useForm<FormData>({
+  const { register, handleSubmit, reset, watch, setValue } = useForm<FormData>({
     defaultValues: {
       title: "",
       description: "",
@@ -22,14 +22,18 @@ function RescueForm() {
       rescuePostImage: null,
     },
   });
-  const navigate = useNavigate();
+  const { isLoading, position, error, getPosition } = useGeolocation();
+
+  const locationEnabled = watch("locationEnabled");
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setImg(reader.result as string);
+        setValue("rescuePostImage", file);
+      setImg(reader.result as string);
+
       };
       reader.readAsDataURL(file);
     }
@@ -45,7 +49,6 @@ function RescueForm() {
       return;
     }
 
-    console.log(data);
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
@@ -60,23 +63,24 @@ function RescueForm() {
       console.log(position);
     }
     try {
+      console.log(formData);
       const { data } = await API.post("/api/v1/rescue-posts", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
       console.log(data);
-      // navigate()
       toast.success(data.message);
+      setImg('/upload.png')
+      reset(); // Reset form after submission
     } catch (error: any) {
       console.log(error);
       toast.error(error.response.data.message);
     }
-    reset(); // Reset form after submission
   };
 
   return (
-    <div className="w-full h-[80%] p-5 rounded-lg shadow-md overflow-y-auto">
+    <div className="w-full h-[80%] p-5 rounded-lg shadow-md overflow-y-auto bg-white">
       <form
         className="flex flex-col gap-6 text-zinc-600"
         onSubmit={handleSubmit(onSubmit)}
@@ -103,6 +107,11 @@ function RescueForm() {
             type="checkbox"
             {...register("locationEnabled")}
             className="rounded-lg h-5 w-5"
+            onChange={() => {
+              if (!locationEnabled) {
+                getPosition();
+              }
+            }}
           />
         </div>
 
@@ -114,7 +123,6 @@ function RescueForm() {
           <img src={img} alt="Uploaded" className="h-auto w-full" />
           <input
             type="file"
-            {...register("rescuePostImage")}
             className="hidden"
             onChange={handleImageChange}
             ref={imgRef}
@@ -123,11 +131,13 @@ function RescueForm() {
 
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4"
+          className="bg-btnColor hover:bg- text-white px-4 py-2 rounded-md mt-4"
         >
           Submit
         </button>
       </form>
+      {isLoading && <p>Loading location...</p>}
+      {error && <p>Error: {error}</p>}
     </div>
   );
 }
