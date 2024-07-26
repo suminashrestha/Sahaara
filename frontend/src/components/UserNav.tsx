@@ -74,7 +74,7 @@ function UserNav() {
         <ul className=" h-20 flex justify-between items-center w-full shadow-md px-2 ">
           <li className="font-Oswald font-thin text-2xl h-[100%] flex items-center">
             <img
-              src="/Logo.png"
+              src="/logo.png"
               alt="sahaara"
               className="h-[90%] cursor-pointer"
               onClick={() => navigate("/profile/rescue")}

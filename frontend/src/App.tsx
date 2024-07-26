@@ -24,7 +24,6 @@ import store from "./redux/store";
 import SingleAdoptionPost from "./components/AdoptionPost/SingleAdoptionPost";
 import AdoptionLanding from "./pages/AdoptionLanding";
 import SingleRescuePost from "./components/RescuePost/SingleRescuePost";
-
 import CreateVolunteer from "./pages/CreateVolunteer";
 import ViewVolunteer from "./pages/ViewVolunteer";
 import Profile from "./pages/Profile/Profile";
@@ -41,6 +40,7 @@ export default function App() {
           draggable
           hideProgressBar
           theme="dark"
+          className="mt-20"
         />
         <BrowserRouter>
           <Routes>
