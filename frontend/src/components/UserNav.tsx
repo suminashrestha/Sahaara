@@ -1,7 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { useEffect, useState } from "react";
-import { PiMessengerLogoLight } from "react-icons/pi";
 import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { logout, toggleVolunteerMode } from "../redux/actions/authActions";
 import { TbLogout2 } from "react-icons/tb";
@@ -104,14 +103,10 @@ function UserNav() {
                 Adoption Portal
               </Button>
             </li>
-            <li>
-              <PiMessengerLogoLight size={30} />
-            </li>
             <li onClick={handleVisiblity}>
-              <img
-                src="https://i.pravatar.cc/100?u=zz"
-                className="rounded-full w-[40px] cursor-pointer"
-              />
+            <div className="rounded-[50%] w-[40px] h-[40px] flex justify-center items-center text-white font-bold bg-btnColor cursor-pointer">
+                  {user?.username.charAt(0).toUpperCase()}
+              </div>
             </li>
           </div>
         </ul>
@@ -125,11 +120,9 @@ function UserNav() {
             }}
           >
             <div className="flex gap-2 items-center hover:bg-gray-100 hover:text-black px-2 py-2 rounded-md border-b-2 cursor-pointer">
-              <img
-                src="https://i.pravatar.cc/100?u=zz"
-                alt="user"
-                className="rounded-[50%] w-[30px]"
-              />
+              <div className="rounded-[50%] w-[40px] h-[40px] flex justify-center items-center text-black font-bold bg-white">
+                  {user?.username.charAt(0).toUpperCase()}
+              </div>
               <h3 className="font-semibold">{user?.username}</h3>
             </div>
           </div>

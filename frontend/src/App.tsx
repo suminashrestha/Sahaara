@@ -11,9 +11,6 @@ import SignUp from "./components/Signup";
 import PageNotFound from "./pages/PageNotFound";
 import { ToastContainer } from "react-toastify";
 import CreateAdoptionPost from "./pages/CreateAdoptionPost";
-import Donation from "./pages/Donation";
-import Success from "./pages/Success";
-import Cancel from "./pages/Cancel";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import RescueForm from "./components/RescuePost/RescueForm";
 import ViewRescuePost from "./components/RescuePost/ViewRescuePost";
@@ -28,6 +25,9 @@ import CreateVolunteer from "./pages/CreateVolunteer";
 import ViewVolunteer from "./pages/ViewVolunteer";
 import Profile from "./pages/Profile/Profile";
 import ImageClassifier from "./components/ImageClassifier";
+import Donation from "./pages/Donation/Donation";
+import Success from "./pages/Donation/_components/Success";
+import Cancel from "./pages/Donation/_components/Cancel";
 
 export default function App() {
   return (

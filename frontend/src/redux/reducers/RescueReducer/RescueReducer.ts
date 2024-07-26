@@ -81,8 +81,8 @@ const reducer = (state = initialState, action: any): RescueReducerInterface => {
       };
 
     case ActionTypes.ADD_COMMENT_SUCCESS:
-      // const newComment = action.payload.comment;
-      // console.log("newCommenttttttttttttttttttttttttttt", newComment);
+      const newComment = action.payload.comment;
+      console.log("newCommenttttttttttttttttttttttttttt", newComment);
       return {
         ...state,
         posts: state.posts.map((post) =>

@@ -21,6 +21,21 @@ const ProfileRescuePost = ({ userId }: { userId?: string }) => {
     getRescuePosts();
   }, [userId]);
 
+  const deletePost = async (postId: string) => {
+    try {
+      const { data } = await API.delete(`/api/v1/rescue-posts/${postId}`);
+
+      const _postId = data.data._id;
+
+      setRescuePosts((prevState) => {
+        if (!prevState) return null;
+        return prevState?.filter((p) => p._id !== _postId);
+      });
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    }
+  };
+
   if (!rescuePosts || rescuePosts.length === 0) return null;
 
   return (
@@ -30,7 +45,11 @@ const ProfileRescuePost = ({ userId }: { userId?: string }) => {
       </div>
       <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-4 p-4">
         {rescuePosts.map((post) => (
-          <ProfileRescueCard key={post._id} post={post} />
+          <ProfileRescueCard
+            key={post._id}
+            post={post}
+            deletePost={deletePost}
+          />
         ))}
       </div>
     </div>

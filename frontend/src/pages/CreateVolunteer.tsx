@@ -54,9 +54,9 @@ const CreateVolunteer = () => {
         },
       });
 
-      if (response.status !== 200) return;
+      // if (response.status !== 200) return;
 
-      toast.success("Event Created  ");
+      toast.success("Event Created ");
       reset();
     } catch (error: any) {
       toast.error(error.response.data.message);

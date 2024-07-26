@@ -20,7 +20,7 @@ const rescuePin = L.icon({
 });
 
 function RescueMap() {
-  const [mapPosition, setMapPosition] = useState<[number, number]>([40, 0]);
+  const [mapPosition, setMapPosition] = useState<[number, number]>([27.7172,85.3240]);
   const { posts } = useAppSelector((state) => state.rescuePost);
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ function RescueMap() {
 
   useEffect(() => {
     if (geoLocationPosition) {
-      setMapPosition([geoLocationPosition.lat || 40, geoLocationPosition.lng || 0]);
+      setMapPosition([geoLocationPosition.lat || 27.7172, geoLocationPosition.lng || 85.3240]);
     }
   }, [geoLocationPosition]);
 

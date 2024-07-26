@@ -58,7 +58,7 @@ const SingleAdoptionPost: React.FC = () => {
         </div>
         <div className="w-full h-[80%] flex p-5 gap-9">
           <img
-            src={post?.adoptionPostImage}
+            src={post?.adoptionPostImage || "https://via.placeholder.com/150"}
             alt=""
             className="w-[40%] h-full shadow-lg"
           />
@@ -127,8 +127,8 @@ const SingleAdoptionPost: React.FC = () => {
           <div className="bg-white h-1/4 w-full rounded-lg overflow-y-auto flex flex-col gap-5 p-5">
             <h2 className="text-2xl font-semibold">Key features</h2>
             <ul className="grid grid-cols-2 h-full overflow-y-auto">
-              {post?.characterstics.map((character) => (
-                <li className="flex items-center gap-3">
+              {post?.characterstics.map((character, idx) => (
+                <li className="flex items-center gap-3" key={idx + 1}>
                   <GiCheckMark />
                   {character}
                 </li>
@@ -136,7 +136,12 @@ const SingleAdoptionPost: React.FC = () => {
             </ul>
           </div>
         </div>
-        <AdoptionForm email={post?.contact.email} phone={post?.contact.phone} address={post?.contact.address} name={post?.contact.name}/>
+        <AdoptionForm
+          email={post?.contact.email}
+          phone={post?.contact.phone}
+          address={post?.contact.address}
+          name={post?.contact.name}
+        />
       </div>
     </div>
   );

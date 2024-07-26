@@ -4,9 +4,9 @@ import cookieParser from "cookie-parser";
 import errorHandler from "./middlewares/errorHandler";
 import {
   adoptionPostRoute,
+  donationRoute,
   profileRoute,
   rescuePostRoute,
-  stripeRoute,
   userRoute,
   volunteerPostRoute,
 } from "./routes";
@@ -22,7 +22,7 @@ app.use(express.static("public"));
 
 // public routes
 app.use("/api/v1/user", userRoute);
-app.use("/create-checkout-session", stripeRoute);
+app.use("/api/v1/donate", donationRoute);
 
 // routes that needs authentication
 app.use(authenticateWithJwt);

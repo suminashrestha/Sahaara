@@ -26,6 +26,5 @@ export interface AdoptionPostSchema {
   category: string;
   adoptionImage?: string;
   createdAt: string;
-  adoptionPostImage?: File | null;
+  adoptionPostImage?: string | null;
 }
-

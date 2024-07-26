@@ -7,6 +7,7 @@ import {
   getAllAdoptionPosts,
   getSingleAdoptionPost,
   updateAdoptionPost,
+  sendEnquiryData,
 } from "../controllers";
 
 const router = express.Router();
@@ -25,5 +26,7 @@ router
   .delete(deleteAdoptionPost)
   .put(upload.single("adoptionPostImage"), updateAdoptionPost)
   .get(getSingleAdoptionPost);
+
+router.route("/send-enquiry").post(sendEnquiryData);
 
 export { router as adoptionPostRoute };

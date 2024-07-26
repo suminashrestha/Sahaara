@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AdoptionPost } from "../models/adoption-post.model";
 import asyncHandler from "../utils/asyncHandler";
+import { sendMailToUser } from "../utils/sendMailToUser";
 
 export interface AuthRequest extends Request {
   user?: any;
@@ -237,10 +238,54 @@ const getSingleAdoptionPost = asyncHandler(
   }
 );
 
+const sendEnquiryData = asyncHandler((req: AuthRequest, res: Response) => {
+  const {
+    numberOfFamily,
+    residence,
+    homeStatus,
+    haveOtherPets,
+    allergies,
+    petExperience,
+  } = req.body;
+
+  const defaultEmail = req.query.defaultEmail as string;
+  const userId = req.user._id;
+  const userType = req.user.type;
+  // const fromMail = req.user.email;
+
+  const dataToSend: {
+    userId: string;
+    userType: "individual" | "organization";
+    numberOfFamily: number;
+    residence: string;
+    homeStatus: string;
+    haveOtherPets: string;
+    allergies: string;
+    petExperience: string;
+  } = {
+    userId,
+    userType,
+    numberOfFamily,
+    residence,
+    homeStatus,
+    haveOtherPets,
+    allergies,
+    petExperience,
+  };
+
+  sendMailToUser(defaultEmail, dataToSend);
+
+  res.status(200).json({
+    success: true,
+    message: "For now the message has been sent",
+  });
+});
+
 export {
   createAdoptionPost,
   deleteAdoptionPost,
   updateAdoptionPost,
   getAllAdoptionPosts,
   getSingleAdoptionPost,
+  sendEnquiryData,
 };

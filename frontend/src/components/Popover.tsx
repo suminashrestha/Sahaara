@@ -37,7 +37,7 @@ const Popover: React.FC<PopoverProps> = ({ content, children }) => {
       {isOpen && (
         <div className="absolute z-10 mt-2 right-3 shadow-lg rounded-lgbg-white flex flex-col justify-around gap-1">
           {content.map((item, idx) => (
-            <div key={idx + 1} className="px-2 py-1 bg-black rounded-md">
+            <div key={idx + 1} className="px-2 py-1 bg-black  text-white rounded-md">
               {item}
             </div>
           ))}

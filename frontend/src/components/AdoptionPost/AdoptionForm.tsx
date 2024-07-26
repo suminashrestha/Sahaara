@@ -6,6 +6,7 @@ import { useState } from "react";
 import { IoArrowBackCircle } from "react-icons/io5";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import API from "../../config/baseUrl";
 
 interface AdoptionFormProps {
   email: string | undefined;
@@ -45,8 +46,13 @@ function AdoptionForm({ email, phone, address, name }: AdoptionFormProps) {
     }
   });
 
-  const submitEnquiry=(data)=>{
-        
+  const submitEnquiry=async(values : any)=>{
+        try{
+          const {data} =await API.post(`/api/v1/adoption-posts/send-enquiry?defaultEmail=${defaultEmail}`, values)
+          toast.success(data.message)
+        }catch(e: any){
+          toast.error("Something went wrong!")
+        }
   }
   return (
     <div className="flex flex-col h-[500px] w-[500px] gap-5 text-zinc-600 justify-center bg-white shadow-md rounded-lg">

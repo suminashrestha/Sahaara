@@ -1,7 +1,6 @@
 import { CookieOptions, Request, Response } from "express";
-import {  User, UserType } from "../models/user.model";
+import { User, UserType } from "../models/user.model";
 import bcrypt from "bcryptjs";
-import { sendVerificationCode } from "../utils/sendVerificationCode";
 import { ApiResponse } from "../types/apiResponse";
 import { signupSchema } from "../validators/signup.validators";
 import { signinSchema } from "../validators/signin.validators";
@@ -12,10 +11,11 @@ import {
 } from "../utils/generateTokens";
 import { verifySchema } from "../validators/verify-code.validators";
 import asyncHandler from "../utils/asyncHandler";
-import { sendResetCode } from "../utils/sendResetCode";
+import { sendCode } from "../utils/sendCode";
 import { AuthRequest } from "./adoption-post.controllers";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { maileType } from "../types/mailType";
 
 dotenv.config();
 
@@ -83,7 +83,7 @@ const signUpHandler = asyncHandler(
 
         await existingUser.save();
 
-        await sendVerificationCode(email, verifyCode);
+        await sendCode(email, verifyCode, maileType.VERIFY_OTP);
 
         return res.status(200).json({
           success: true,
@@ -109,7 +109,7 @@ const signUpHandler = asyncHandler(
 
       await newUser.save();
 
-      await sendVerificationCode(email, verifyCode);
+      await sendCode(email, verifyCode, maileType.VERIFY_OTP);
 
       return res.status(201).json({
         success: true,
@@ -283,7 +283,7 @@ const getVerificationCode = asyncHandler(
 
     await user.save();
 
-    await sendResetCode(email, verifyCode);
+    await sendCode(email, verifyCode, maileType.RESET);
 
     res.status(200).json({
       success: true,

@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import useUser from "../hooks/useUser";
 
 interface IVolunteerPost {
-  user: { username: string };
+  user: { username: string, _id: string };
   title: string;
   location?: string;
   date?: Date;
@@ -96,7 +96,7 @@ const ViewVolunteer = () => {
 
 const VolunteerPostCard: React.FC<{ post: IVolunteerPost }> = ({ post }) => {
   const { title, location, date, eventTime, user } = post;
-
+  const navigate= useNavigate()
   const formattedDate = date ? format(new Date(date), "yyyy-MM-dd") : "N/A";
   const formattedEventTime = eventTime ? formatEventTime(eventTime) : "N/A";
 
@@ -116,7 +116,7 @@ const VolunteerPostCard: React.FC<{ post: IVolunteerPost }> = ({ post }) => {
         </p>
         <p className="text-end font-semibold">
           Organized By{" "}
-          <span className="font-bold underline">{user.username}</span>
+          <span className="font-bold underline cursor-pointer hover:text-blue-600" onClick={()=>navigate(`/userprofile/${post.user._id}`)}>{user.username}</span>
         </p>
       </div>
     </div>

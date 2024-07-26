@@ -118,7 +118,7 @@ const getUserAdoptionPosts = asyncHandler(
       name: post.name,
       age: post.age,
       category: post.category,
-      adoptionPostImage: post.adoptionPostImage,
+      adoptionImage: post.adoptionPostImage,
     }));
 
     res.status(200).json({

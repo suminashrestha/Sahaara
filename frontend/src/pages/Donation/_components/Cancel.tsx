@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import Button from "../components/Button";
+import Button from "../../../components/Button";
 import { FaArrowRotateRight } from "react-icons/fa6";
 
 const Cancel: React.FC = () => {

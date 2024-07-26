@@ -11,25 +11,24 @@ import {
 
 const router = express.Router();
 
-router.post(
-  "/",
-  authorize(["individual", "organization"]),
-  upload.single("profilePicture"),
-  createProfile
-);
+router
+  .route("/")
+  .post(
+    authorize(["individual", "organization"]),
+    upload.single("profilePicture"),
+    createProfile
+  );
 
-router.get("/:userId", authorize(["individual", "organization"]), getProfile);
+router
+  .route("/:userId")
+  .get(authorize(["individual", "organization"]), getProfile);
 
-router.get(
-  "/:userId/user-adoption-posts",
-  authorize(["individual", "organization"]),
-  getUserAdoptionPosts
-);
+router
+  .route("/:userId/user-adoption-posts")
+  .get(authorize(["individual", "organization"]), getUserAdoptionPosts);
 
-router.get(
-  "/:userId/user-rescue-posts",
-  authorize(["individual", "organization"]),
-  getUserRescuePosts
-);
+router
+  .route("/:userId/user-rescue-posts")
+  .get(authorize(["individual", "organization"]), getUserRescuePosts);
 
 export { router as profileRoute };
