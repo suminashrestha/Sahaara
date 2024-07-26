@@ -6,35 +6,34 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import L from "leaflet";
 
+// Define icons
 const myLocation = L.icon({
-  iconUrl: "/myLocation.png",
-  iconSize: [100, 95], // Size of the icon
-  iconAnchor: [50, 50], // Point of the icon which will correspond to marker's location
-  // popupAnchor: [-3, -76], //
+  iconUrl: '/myLocation.png', 
+  iconSize: [100, 95],
+  iconAnchor: [50, 50],
 });
+
 const rescuePin = L.icon({
-  iconUrl: "/rescueLocation.png",
-  iconSize: [40, 40], // Size of the icon
-  iconAnchor: [20, 40], // Point of the icon which will correspond to marker's location
-  // popupAnchor: [-3, -76], //
+  iconUrl: '/rescueLocation.png', 
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
 });
 
 function RescueMap() {
-  const [mapPosition, setMapPositon] = useState([40, 0]);
-  // const dispatch = useAppDispatch();
+  const [mapPosition, setMapPosition] = useState<[number, number]>([40, 0]);
   const { posts } = useAppSelector((state) => state.rescuePost);
   const navigate = useNavigate();
 
-  const {
-    isLoading: isLoadingPosition,
-    position: geoLocationPosition,
-    getPosition,
-  } = useGeolocation();
+  const { isLoading: isLoadingPosition, position: geoLocationPosition, getPosition } = useGeolocation();
 
   useEffect(() => {
-    if (geoLocationPosition)
-      setMapPositon([geoLocationPosition?.lat, geoLocationPosition.lng]);
+    if (geoLocationPosition) {
+      setMapPosition([geoLocationPosition.lat || 40, geoLocationPosition.lng || 0]);
+    }
   }, [geoLocationPosition]);
+
+  // Ensure posts is an array
+  const postList = Array.isArray(posts) ? posts : [];
 
   return (
     <div className="h-full w-[60%] bg-yellow-300 z-10">
@@ -44,28 +43,29 @@ function RescueMap() {
         zoom={13}
         scrollWheelZoom={true}
       >
-        <Marker position={mapPosition} icon={myLocation}></Marker>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {posts.map((post) => (
+        <Marker position={mapPosition} icon={myLocation}></Marker>
+        {postList.map((post) => (
           <Marker
-            position={[post.location?.lat, post.location?.lng]}
+            position={[
+              post.location?.lat || 0, 
+              post.location?.lng || 0
+            ]}
             key={post._id}
             icon={rescuePin}
           >
             <Popup>
               <div className="flex flex-col justify-center gap-2">
-                {post.title}
-                <Button onClick={() => navigate(`${post._id}`)}>
-                  View post
-                </Button>
+                {post.title || "No Title"}
+                <Button onClick={() => navigate(`${post._id}`)}>View post</Button>
               </div>
             </Popup>
           </Marker>
         ))}
-        <ChangeCenter position={mapPosition} />
+        <ChangeCenter position={{ lat: mapPosition[0], lng: mapPosition[1] }} />
       </MapContainer>
       <div className="absolute bottom-10 right-96 z-[1000]">
         <Button type="position" onClick={getPosition}>
@@ -76,11 +76,7 @@ function RescueMap() {
   );
 }
 
-function ChangeCenter({
-  position,
-}: {
-  position: { lat: number; lng: number };
-}) {
+function ChangeCenter({ position }: { position: { lat: number; lng: number } }) {
   const map = useMap();
   map.setView(position);
   return null;

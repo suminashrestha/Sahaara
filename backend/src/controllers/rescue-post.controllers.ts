@@ -2,13 +2,8 @@ import { Request, Response } from "express";
 import { IComment, ILike, RescuePost } from "../models/rescue-post.model";
 import asyncHandler from "../utils/asyncHandler";
 import { AuthRequest } from "./adoption-post.controllers";
-<<<<<<< HEAD
-import { Individual } from "../models/individual.model";
-import { Organization } from "../models/organization.model";
-=======
 import { User } from "../models/user.model";
 import mongoose from "mongoose";
->>>>>>> aa0397204373d4015d12be71021a90aa25f02fcd
 
 const getAllRescuePosts = asyncHandler(async (req: Request, res: Response) => {
   const rescuePosts = await RescuePost.find({}).populate({
@@ -34,12 +29,8 @@ const getAllRescuePosts = asyncHandler(async (req: Request, res: Response) => {
 
 const createRescuePost = asyncHandler(
   async (req: AuthRequest, res: Response) => {
-<<<<<<< HEAD
-    const { title, description, location } = req.body;
-=======
     const { title, description, lat, lng } = req.body;
 
->>>>>>> aa0397204373d4015d12be71021a90aa25f02fcd
     let rescuePostImage = "";
     if (req.file?.filename) {
       rescuePostImage = ` ${req.protocol}://${req.get("host")}/images/${
@@ -51,14 +42,10 @@ const createRescuePost = asyncHandler(
       rescuePostAuthor: req.user._id,
       title,
       description,
-<<<<<<< HEAD
-      location: location ?? "",
-=======
       location: {
         lng: Number(lng),
         lat: Number(lat),
       },
->>>>>>> aa0397204373d4015d12be71021a90aa25f02fcd
       rescuePostImage,
       likes: [],
       comments: [],
@@ -340,31 +327,6 @@ const addLike = asyncHandler(async (req: AuthRequest, res: Response) => {
       error: error.message,
     });
   }
-<<<<<<< HEAD
-
-  if (
-    rescuePost.likes.filter(
-      (like: ILike) => like.user.toString() === req.user._id.toString()
-    ).length > 0
-  ) {
-    return res.status(404).json({
-      success: false,
-      message: "The post has already been upvoted",
-    });
-  }
-  rescuePost.likes.push(req.user._id);
-  await rescuePost.save();
-
-  res.status(200).json({
-    success: true,
-    message: "Upvoted this post",
-    data: {
-      likes: rescuePost.likes,
-      likesCount: rescuePost.likes.length,
-    },
-  });
-=======
->>>>>>> aa0397204373d4015d12be71021a90aa25f02fcd
 });
 
 const removeLike = asyncHandler(async (req: AuthRequest, res: Response) => {

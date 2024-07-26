@@ -34,7 +34,6 @@ function getSingleRescuePost(postId: string): Actiontype {
     });
     try {
       const { data } = await API.get(`/api/v1/rescue-posts/${postId}`);
-      console.log(data)
       dispatch({
         type: ActionTypes.GET_SINGLE_RESCUE_POST_SUCCESS,
         payload: { post: data.data },

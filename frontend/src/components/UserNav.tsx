@@ -1,12 +1,12 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { useEffect, useState } from "react";
-import { PiMessengerLogoLight } from "react-icons/pi";
 import { useAppDispatch, useAppSelector } from "../hooks/useRedux";
 import { logout, toggleVolunteerMode } from "../redux/actions/authActions";
 import { TbLogout2 } from "react-icons/tb";
 import API from "../config/baseUrl";
 import { toast } from "react-toastify";
+import useUser from "../hooks/useUser";
 
 function UserNav() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -14,6 +14,7 @@ function UserNav() {
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
 
+  const { username } = useUser();
   const dispatch = useAppDispatch();
   const { isLoginSuccessful, user } = useAppSelector(
     (state) => state.authentication
@@ -73,7 +74,7 @@ function UserNav() {
         <ul className=" h-20 flex justify-between items-center w-full shadow-md px-2">
           <li className="font-Oswald font-thin text-2xl h-[100%] flex items-center">
             <img
-              src="/Logo.png"
+              src="/logo.png"
               alt="sahaara"
               className="h-[90%] cursor-pointer"
               onClick={() => navigate("/profile/rescue")}
@@ -103,14 +104,10 @@ function UserNav() {
                 Adoption Portal
               </Button>
             </li>
-            <li>
-              <PiMessengerLogoLight size={30} />
-            </li>
             <li onClick={handleVisiblity}>
-              <img
-                src="https://i.pravatar.cc/100?u=zz"
-                className="rounded-full w-[40px] cursor-pointer"
-              />
+              <div className="rounded-[50%] bg-black w-[50px] h-[50px] text-white flex justify-center items-center">
+                {username.charAt(0).toUpperCase()}
+              </div>
             </li>
           </div>
         </ul>
@@ -124,11 +121,9 @@ function UserNav() {
             }}
           >
             <div className="flex gap-2 items-center hover:bg-gray-100 hover:text-black px-2 py-2 rounded-md border-b-2 cursor-pointer">
-              <img
-                src="https://i.pravatar.cc/100?u=zz"
-                alt="user"
-                className="rounded-[50%] w-[30px]"
-              />
+              <div className="rounded-[50%] bg-gray-300 w-[40px] h-[40px] text-black flex justify-center items-center">
+                {username.charAt(0).toUpperCase()}
+              </div>
               <h3 className="font-semibold">{user?.username}</h3>
             </div>
           </div>

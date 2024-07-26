@@ -32,11 +32,4 @@ router.get(
   getUserRescuePosts
 );
 
-router.put(
-  "/toggle-volunteer-mode",
-  authenticateWithJwt,
-  authorize(["individual", "organization"]),
-  toggleVolunteerMode
-);
-
 export { router as profileRoute };

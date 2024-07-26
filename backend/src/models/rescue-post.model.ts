@@ -13,7 +13,7 @@ export interface IRescuePost extends Document {
   rescuePostAuthor: mongoose.Types.ObjectId;
   title: string;
   description: string;
-  location?: string;
+  location?: ILocation;
   rescuePostImage?: string;
   likes: ILike[];
   comments: IComment[];
@@ -60,7 +60,7 @@ const rescuePostSchema: Schema<IRescuePost> = new Schema(
       type: String,
       required: true,
     },
-    location: String,
+    location: locationSchema,
     rescuePostImage: {
       type: String,
     },

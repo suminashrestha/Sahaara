@@ -21,7 +21,7 @@ router
   .get(getAllRescuePosts)
   .post(
     authorize(["individual", "organization"]),
-    upload.single("adoptionPostImage"),
+    upload.single("rescuePostImage"),
     createRescuePost
   );
 

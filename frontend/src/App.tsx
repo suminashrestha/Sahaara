@@ -79,11 +79,6 @@ export default function App() {
                 </ProtectedRoute>
               }
             />
-<<<<<<< HEAD
-            <Route path="/adoptcats" element={<AdoptCat />} />
-            <Route path="/adoptdogs" element={<AdoptDog />} />
-
-=======
             <Route
               path="userprofile/:userId"
               element={
@@ -130,7 +125,6 @@ export default function App() {
               }
             />
 
->>>>>>> aa0397204373d4015d12be71021a90aa25f02fcd
             <Route path="join" element={<LoginSignup />}>
               <Route index element={<Navigate replace to="login" />} />
               <Route path="login" element={<Login />} />

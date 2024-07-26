@@ -1,13 +1,13 @@
 import mongoose, { Document, Schema, model } from "mongoose";
 
-export interface IOrganization extends Document {
+export interface IProfile extends Document {
   user: mongoose.Schema.Types.ObjectId;
   name: string;
-  location: string;
+  location?: string;
   profilePicture?: string;
 }
 
-const organizationSchema: Schema<IOrganization> = new Schema(
+const profileSchema: Schema<IProfile> = new Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -22,7 +22,4 @@ const organizationSchema: Schema<IOrganization> = new Schema(
   }
 );
 
-export const Organization = model<IOrganization>(
-  "Organization",
-  organizationSchema
-);
+export const Profile = model<IProfile>("Profile", profileSchema);

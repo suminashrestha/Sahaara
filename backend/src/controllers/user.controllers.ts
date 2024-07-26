@@ -1,9 +1,5 @@
 import { CookieOptions, Request, Response } from "express";
-<<<<<<< HEAD
-import { User, UserType } from "../models/user.model";
-=======
 import {  User, UserType } from "../models/user.model";
->>>>>>> aa0397204373d4015d12be71021a90aa25f02fcd
 import bcrypt from "bcryptjs";
 import { sendVerificationCode } from "../utils/sendVerificationCode";
 import { ApiResponse } from "../types/apiResponse";
@@ -97,15 +93,21 @@ const signUpHandler = asyncHandler(
     } else {
       const verifyCodeExpiry = new Date(Date.now() + 3600000);
 
-      const newUser = await User.create({
+      const newUser = new User({
         username,
         email,
         password: hashedPassword,
         type,
         verifyCode,
         isVerified: false,
-        verifyCodeExpiry: verifyCodeExpiry,
+        verifyCodeExpiry,
       });
+
+      if (type === UserType.Individual) {
+        newUser.isVolunteer = false;
+      }
+
+      await newUser.save();
 
       await sendVerificationCode(email, verifyCode);
 
@@ -182,13 +184,23 @@ const signInHandler = asyncHandler(
     res.cookie("refreshToken", refreshToken, options);
     res.cookie("accessToken", accessToken, options);
 
-    const loggedInUser = {
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      type: user.type,
-      isVerified: user.isVerified,
-    };
+    let loggedInUser;
+    if (user.type === UserType.Individual) {
+      loggedInUser = {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        type: user.type,
+        isVolunteer: user.isVolunteer,
+      };
+    } else {
+      loggedInUser = {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        type: user.type,
+      };
+    }
 
     return res.status(200).json({
       success: true,
@@ -281,8 +293,8 @@ const getVerificationCode = asyncHandler(
 );
 
 const resetPassword = asyncHandler(async (req: Request, res: Response) => {
-  const { username, verifyCode, newPassword, confirmNewPassword } = req.body;
-  if (!username || !verifyCode || !newPassword || !confirmNewPassword) {
+  const { username, verifyCode, newPassword } = req.body;
+  if (!username || !verifyCode || !newPassword) {
     return res.status(400).json({
       success: false,
       message: "All fields are required",
@@ -304,12 +316,6 @@ const resetPassword = asyncHandler(async (req: Request, res: Response) => {
   const isVerifyCodeNotExpired = new Date(user.verifyCodeExpiry) > new Date();
 
   if (isVerifyCodeCorrect && isVerifyCodeNotExpired) {
-    if (newPassword !== confirmNewPassword) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Passwords donot match" });
-    }
-
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
     await user.save();
@@ -412,8 +418,6 @@ const refreshAccessToken = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-<<<<<<< HEAD
-=======
 const toggleVolunteerMode = asyncHandler(
   async (req: AuthRequest, res: Response) => {
     const { isVolunteer } = req.body;
@@ -445,7 +449,6 @@ const toggleVolunteerMode = asyncHandler(
   }
 );
 
->>>>>>> aa0397204373d4015d12be71021a90aa25f02fcd
 export {
   signUpHandler,
   signInHandler,
@@ -454,4 +457,5 @@ export {
   resetPassword,
   logoutUser,
   refreshAccessToken,
+  toggleVolunteerMode,
 };
